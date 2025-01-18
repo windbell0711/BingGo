@@ -9,53 +9,71 @@
 def is_mycamp(is_camp_intl: bool) -> bool:
     return mycamp == is_camp_intl
 
-def valid(x: int) -> bool:
-    """检测当前位置合法 test2"""
-    if x % 10 == 9:
-        return False
-    if not 0 <= x <= 89:
-        return False
-    return True
-test2 = valid  # 别名适配
+class Beach:
+    def __init__(self):
+        self.beach: list[Qizi] = [None] * 90  # 沙场，每行末尾无子
 
-def not_occupied(x: int) -> bool:
-    """检测当前位置合法并且没有子 test"""
-    if valid(x) and beach[x] is None:
-        return True
-    return False
-test = not_occupied
+    def __getitem__(self, item):
+        """返回该位置棋子或None"""
+        return self.beach[item]
 
-def not_mine(x: int) -> bool:
-    """检测当前位置合法并且不是友方 eat"""
-    if not valid(x):
-        return False
-    if beach[x] is not None:
-        if is_mycamp(beach[x].camp_intl):
+    def set(self, p: int, qizi=None):
+        """将指定位置设定为棋子或None"""
+        self.beach[p] = qizi
+
+    def valid(self, x: int) -> bool:
+        """检测当前位置合法 test2"""
+        if x % 10 == 9:
             return False
-    return True
-eat = not_mine
-
-def enemy_occupied(x: int) -> bool:
-    """检测当前位置合法并且是敌方 special_eat"""
-    if not_mine(x) and not not_occupied(x):
+        if not 0 <= x <= 89:
+            return False
         return True
-    return False
-special_eat = enemy_occupied
+    test2 = valid  # 别名适配
+    
+    def not_occupied(self, x: int) -> bool:
+        """检测当前位置合法并且没有子 test"""
+        if self.valid(x) and self.beach[x] is None:
+            return True
+        return False
+    test = not_occupied
+    
+    def not_mine(self, x: int) -> bool:
+        """检测当前位置合法并且不是友方 eat"""
+        if not self.valid(x):
+            return False
+        if self.beach[x] is not None:
+            if is_mycamp(self.beach[x].camp_intl):
+                return False
+        return True
+    eat = not_mine
+    
+    def enemy_occupied(self, x: int) -> bool:
+        """检测当前位置合法并且是敌方 special_eat"""
+        if self.not_mine(x) and not self.not_occupied(x):
+            return True
+        return False
+    special_eat = enemy_occupied
 
 
 mycamp = 0  # 阵营 0-中象 1-国象
-beach = []  # 沙场，每行末尾无子
 
 
 class Qizi:
-    def __init__(self, idt: int, p: int, typ: int):
+    def __init__(self, idt: int, p: int, typ: int, beach):
         self.idt = idt  # id
         self.p = p  # 位置代码
         self.typ = typ  # 种类
         self.camp_intl = (typ > 7)  # False-中象; True-国象
+        self.beach = beach  # 所在沙场地址
         self.ma = []  # 可移动位置
 
     def get_ma(self):
+        # 快捷使用位置子判断方法
+        valid = self.beach.valid
+        not_occupied = self.beach.not_occupied
+        not_mine = self.beach.not_mine
+        enemy_occupied = self.beach.enemy_occupied
+
         ma = []  # move available positions
         if self.typ in (1, 8, 11):  # 直走
             p = self.p + 1
@@ -246,10 +264,12 @@ class Qizi:
 
 
 if __name__ == '__main__':
-    beach: list[Qizi] = [None] * 90
-    pao = Qizi(idt=10086, p=60, typ=5)  # 炮
-    bingo = Qizi(idt=8000, p=50, typ=7)  # 兵
-    pawn = Qizi(idt=12345, p=10, typ=13)  # Pawn
-    beach[60], beach[50], beach[10] = pao, bingo, pawn
+    beach = Beach()
+    pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
+    bingo = Qizi(idt=8000, p=50, typ=7, beach=beach)  # 兵
+    pawn = Qizi(idt=12345, p=10, typ=13, beach=beach)  # Pawn
+    beach.set(p=60, qizi=pao)
+    beach.set(p=50, qizi=bingo)
+    beach.set(p=10, qizi=pawn)
     pao.get_ma()
     print(pao.ma)
