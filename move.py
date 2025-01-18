@@ -6,8 +6,11 @@
 @File    : move.py
 """
 
+mycamp = 0  # 阵营 0-中象 1-国象
+
 def is_mycamp(is_camp_intl: bool) -> bool:
     return mycamp == is_camp_intl
+
 
 class Beach:
     def __init__(self):
@@ -17,11 +20,11 @@ class Beach:
         """返回该位置棋子或None"""
         return self.beach[item]
 
-    def set(self, p: int, qizi=None):
+    def set(self, qizi, p: int):
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
 
-    def valid(self, x: int) -> bool:
+    def valid(self, x: int) -> bool:  # 合法
         """检测当前位置合法 test2"""
         if x % 10 == 9:
             return False
@@ -30,14 +33,14 @@ class Beach:
         return True
     test2 = valid  # 别名适配
     
-    def not_occupied(self, x: int) -> bool:
+    def not_occupied(self, x: int) -> bool:  # 空
         """检测当前位置合法并且没有子 test"""
         if self.valid(x) and self.beach[x] is None:
             return True
         return False
     test = not_occupied
     
-    def not_mine(self, x: int) -> bool:
+    def not_mine(self, x: int) -> bool:  # 空 / 敌
         """检测当前位置合法并且不是友方 eat"""
         if not self.valid(x):
             return False
@@ -47,15 +50,12 @@ class Beach:
         return True
     eat = not_mine
     
-    def enemy_occupied(self, x: int) -> bool:
+    def enemy_occupied(self, x: int) -> bool:  # 敌
         """检测当前位置合法并且是敌方 special_eat"""
         if self.not_mine(x) and not self.not_occupied(x):
             return True
         return False
     special_eat = enemy_occupied
-
-
-mycamp = 0  # 阵营 0-中象 1-国象
 
 
 class Qizi:
@@ -268,8 +268,8 @@ if __name__ == '__main__':
     pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
     bingo = Qizi(idt=8000, p=50, typ=7, beach=beach)  # 兵
     pawn = Qizi(idt=12345, p=10, typ=13, beach=beach)  # Pawn
-    beach.set(p=60, qizi=pao)
-    beach.set(p=50, qizi=bingo)
-    beach.set(p=10, qizi=pawn)
+    beach.set(qizi=pao, p=60)
+    beach.set(qizi=bingo, p=50)
+    beach.set(qizi=pawn, p=10)
     pao.get_ma()
     print(pao.ma)

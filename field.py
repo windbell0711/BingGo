@@ -6,6 +6,10 @@
 """
 from move import *
 
+
+class War:
+    def __init__(self):
+
 if __name__ == '__main__':
     beach = Beach()
     pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
