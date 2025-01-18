@@ -6,11 +6,6 @@
 @File    : move.py
 """
 
-mycamp = 0  # 阵营 0-中象 1-国象
-
-def is_mycamp(is_camp_intl: bool) -> bool:
-    return mycamp == is_camp_intl
-
 
 class Beach:
     def __init__(self):
@@ -25,37 +20,34 @@ class Beach:
         self.beach[p] = qizi
 
     def valid(self, x: int) -> bool:  # 合法
-        """检测当前位置合法 test2"""
+        """检测当前位置合法"""
         if x % 10 == 9:
             return False
         if not 0 <= x <= 89:
             return False
         return True
-    test2 = valid  # 别名适配
-    
-    def not_occupied(self, x: int) -> bool:  # 空
-        """检测当前位置合法并且没有子 test"""
+
+    def occupied(self, x: int) -> bool:  # 非空
+        """检测当前位置合法并且有子"""
+        if self.valid(x) and self.beach[x] is not None:
+            return True
+        return False
+
+    def not_occupied(self, x: int) -> bool:  # 非空
+        """检测当前位置合法并且有子"""
         if self.valid(x) and self.beach[x] is None:
             return True
         return False
-    test = not_occupied
-    
-    def not_mine(self, x: int) -> bool:  # 空 / 敌
-        """检测当前位置合法并且不是友方 eat"""
-        if not self.valid(x):
-            return False
-        if self.beach[x] is not None:
-            if is_mycamp(self.beach[x].camp_intl):
-                return False
-        return True
-    eat = not_mine
-    
-    def enemy_occupied(self, x: int) -> bool:  # 敌
-        """检测当前位置合法并且是敌方 special_eat"""
-        if self.not_mine(x) and not self.not_occupied(x):
+
+    def ch_occupied(self, x: int) -> bool:  # 中
+        if self.occupied(x) and not self.beach[x].camp_intl:
             return True
         return False
-    special_eat = enemy_occupied
+
+    def in_occupied(self, x: int) -> bool:  # 国
+        if self.occupied(x) and self.beach[x].camp_intl:
+            return True
+        return False
 
 
 class Qizi:
@@ -67,133 +59,146 @@ class Qizi:
         self.beach = beach  # 所在沙场地址
         self.ma = []  # 可移动位置
 
-    def get_ma(self):
-        # 快捷使用位置子判断方法
-        valid = self.beach.valid
-        not_occupied = self.beach.not_occupied
-        not_mine = self.beach.not_mine
-        enemy_occupied = self.beach.enemy_occupied
+    def _not_mine(self, x: int) -> bool:  # 空 / 敌
+        """检测当前位置合法并且不是友方"""
+        if not self.beach.valid(x):
+            return False
+        if self.beach[x] is not None:
+            if self.camp_intl == self.beach[x].camp_intl:
+                return False
+        return True
 
+    def _enemy_occupied(self, x: int) -> bool:  # 敌
+        """检测当前位置合法并且是敌方"""
+        if self._not_mine(x) and self.beach.occupied(x):
+            return True
+        return False
+
+    def get_ma(self):
+        test2 = self.beach.valid
+        test = self.beach.not_occupied
+        eat = self._not_mine
+        special_eat = self._enemy_occupied
         ma = []  # move available positions
         if self.typ in (1, 8, 11):  # 直走
             p = self.p + 1
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 1
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 1
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -1
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p + 10
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 10
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 10
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -10
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
         if self.typ in (10, 11):  # 斜走的走子
             p = self.p + 11
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 11
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 11
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -11
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p + 9
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 9
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 9
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -9
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
         if self.typ == 2:  # 有马腿马
             p = self.p
-            if not_occupied(p + 1):  # 马腿处子的判断
-                if not_mine(p + 12):  # 落点吃子判断
+            if test(p + 1):  # 马腿处子的判断
+                if eat(p + 12):  # 落点吃子判断
                     ma.append(p + 12)
-                if not_mine(p - 8):
+                if eat(p - 8):
                     ma.append(p - 8)
-            if not_occupied(p - 1):
-                if not_mine(p - 12):
+            if test(p - 1):
+                if eat(p - 12):
                     ma.append(p - 12)
-                if not_mine(p + 8):
+                if eat(p + 8):
                     ma.append(p + 8)
-            if not_occupied(p + 10):
-                if not_mine(p + 21):
+            if test(p + 10):
+                if eat(p + 21):
                     ma.append(p + 21)
-                if not_mine(p + 19):
+                if eat(p + 19):
                     ma.append(p + 19)
-            if not_occupied(p - 10):
-                if not_mine(p - 21):
+            if test(p - 10):
+                if eat(p - 21):
                     ma.append(p - 21)
-                if not_mine(p - 19):
+                if eat(p - 19):
                     ma.append(p - 19)
         if self.typ == 9:  # 无马腿马
             p = self.p
-            if valid(p + 1):  # 马腿处子的判断
-                if not_mine(p + 12):  # 落点吃子判断
+            if test2(p + 1):  # 马腿处子的判断
+                if eat(p + 12):  # 落点吃子判断
                     ma.append(p + 12)
-                if not_mine(p - 8):
+                if eat(p - 8):
                     ma.append(p - 8)
-            if valid(p - 1):
-                if not_mine(p - 12):
+            if test2(p - 1):
+                if eat(p - 12):
                     ma.append(p - 12)
-                if not_mine(p + 8):
+                if eat(p + 8):
                     ma.append(p + 8)
-            if valid(p + 10):
-                if not_mine(p + 21):
+            if test2(p + 10):
+                if eat(p + 21):
                     ma.append(p + 21)
-                if not_mine(p + 19):
+                if eat(p + 19):
                     ma.append(p + 19)
-            if valid(p - 10):
-                if not_mine(p - 21):
+            if test2(p - 10):
+                if eat(p - 21):
                     ma.append(p - 21)
-                if not_mine(p - 19):
+                if eat(p - 19):
                     ma.append(p - 19)
         if self.typ == 3:  # xiang
             p = self.p
-            if not_occupied(p + 11):  # xiang腿处子的判断
-                if not_mine(p + 22):  # 落点吃子判断
+            if test(p + 11):  # xiang腿处子的判断
+                if eat(p + 22):  # 落点吃子判断
                     ma.append(p + 22)
-            if not_occupied(p - 11):
-                if not_mine(p - 22):
+            if test(p - 11):
+                if eat(p - 22):
                     ma.append(p - 22)
-            if not_occupied(p + 9):
-                if not_mine(p + 18):
+            if test(p + 9):
+                if eat(p + 18):
                     ma.append(p + 18)
-            if not_occupied(p - 9):
-                if not_mine(p - 18):
+            if test(p - 9):
+                if eat(p - 18):
                     ma.append(p - 18)
-        if self.typ in (4, 12):  # shi, king
+        if self.typ in (4, 12):  # shi king
             p = self.p
-            if not_mine(p - 11):
+            if eat(p - 11):
                 ma.append(p - 11)
-            if not_mine(p + 11):
+            if eat(p + 11):
                 ma.append(p + 11)
-            if not_mine(p - 9):
+            if eat(p - 9):
                 ma.append(p - 9)
-            if not_mine(p + 9):
+            if eat(p + 9):
                 ma.append(p + 9)
-        if self.typ == 6:  # shuai
+        if self.typ == 6:  # shuaui
             p = self.p
             if not p % 10 == 3:
                 ma.append(p - 1)
@@ -203,7 +208,7 @@ class Qizi:
                 ma.append(p - 10)
             if not p // 10 == 8:
                 ma.append(p + 10)
-        if self.typ in (7, 12):  # bingo, king
+        if self.typ in (7, 12):  # bingo king
             p = self.p
             if not p % 10 == 0:
                 ma.append(p + 1)
@@ -217,48 +222,48 @@ class Qizi:
                 ma.append(p + 10)
         if self.typ == 13:  # pawn
             p = self.p
-            if not_occupied(p + 10):
+            if test(p + 10):
                 ma.append(p + 10)
-            if enemy_occupied(p + 11):
+            if special_eat(p + 11):
                 ma.append(p + 11)
-            if enemy_occupied(p + 9):
+            if special_eat(p + 9):
                 ma.append(p + 9)
         if self.typ == 5:  # pao
             p = self.p + 1
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 1
             p += 1
-            while not_occupied(p):
+            while test(p):
                 p += 1
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p + 10
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += 10
             p += 10
-            while not_occupied(p):
+            while test(p):
                 p += 10
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 1
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -1
             p += -1
-            while not_occupied(p):
+            while test(p):
                 p += -1
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
             p = self.p - 10
-            while not_occupied(p):
+            while test(p):
                 ma.append(p)
                 p += -10
             p += -10
-            while not_occupied(p):
+            while test(p):
                 p += -10
-            if enemy_occupied(p):
+            if special_eat(p):
                 ma.append(p)
         self.ma = ma
 
