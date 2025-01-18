@@ -37,7 +37,7 @@ eat = not_mine
 
 def enemy_occupied(x: int) -> bool:
     """检测当前位置合法并且是敌方 special_eat"""
-    if not_mine(x) and not_occupied(x):
+    if not_mine(x) and not not_occupied(x):
         return True
     return False
 special_eat = enemy_occupied
@@ -52,7 +52,7 @@ class Qizi:
         self.idt = idt  # id
         self.p = p  # 位置代码
         self.typ = typ  # 种类
-        self.camp_intl = (typ < 7)  # False-中象; True-国象
+        self.camp_intl = (typ > 7)  # False-中象; True-国象
         self.ma = []  # 可移动位置
 
     def get_ma(self):
@@ -165,7 +165,7 @@ class Qizi:
             if not_occupied(p - 9):
                 if not_mine(p - 18):
                     ma.append(p - 18)
-        if self.typ in (4, 12):  # shi king
+        if self.typ in (4, 12):  # shi, king
             p = self.p
             if not_mine(p - 11):
                 ma.append(p - 11)
@@ -185,7 +185,7 @@ class Qizi:
                 ma.append(p - 10)
             if not p // 10 == 8:
                 ma.append(p + 10)
-        if self.typ in (7, 12):  # bingo king
+        if self.typ in (7, 12):  # bingo, king
             p = self.p
             if not p % 10 == 0:
                 ma.append(p + 1)
@@ -210,6 +210,7 @@ class Qizi:
             while not_occupied(p):
                 ma.append(p)
                 p += 1
+            p += 1
             while not_occupied(p):
                 p += 1
             if enemy_occupied(p):
@@ -218,6 +219,7 @@ class Qizi:
             while not_occupied(p):
                 ma.append(p)
                 p += 10
+            p += 10
             while not_occupied(p):
                 p += 10
             if enemy_occupied(p):
@@ -226,6 +228,7 @@ class Qizi:
             while not_occupied(p):
                 ma.append(p)
                 p += -1
+            p += -1
             while not_occupied(p):
                 p += -1
             if enemy_occupied(p):
@@ -234,6 +237,7 @@ class Qizi:
             while not_occupied(p):
                 ma.append(p)
                 p += -10
+            p += -10
             while not_occupied(p):
                 p += -10
             if enemy_occupied(p):
