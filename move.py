@@ -5,6 +5,7 @@
 @Coauthor: TheWindbell07
 @File    : move.py
 """
+import config
 
 
 class Beach:
@@ -18,6 +19,16 @@ class Beach:
     def set(self, qizi, p: int):
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
+
+    def continuously_set(self, qizis: dict):
+        i = 0
+        for (key, value) in qizis:
+            if isinstance(value, str):
+                value = config.typ_dict[value]
+            qizi = Qizi(idt=i, p=key, typ=value, beach=self)
+            self.set(qizi, key)
+            i += 1
+        return True
 
     def valid(self, x: int) -> bool:  # 合法
         """检测当前位置合法"""
@@ -53,6 +64,7 @@ class Beach:
 class Qizi:
     def __init__(self, idt: int, p: int, typ: int, beach):
         self.idt = idt  # id
+        self.alive = True
         self.p = p  # 位置代码
         self.typ = typ  # 种类
         self.camp_intl = (typ > 7)  # False-中象; True-国象
@@ -198,7 +210,7 @@ class Qizi:
                 ma.append(p - 9)
             if eat(p + 9):
                 ma.append(p + 9)
-        if self.typ == 6:  # shuaui
+        if self.typ == 6:  # shuai
             p = self.p
             if not p % 10 == 3:
                 ma.append(p - 1)
@@ -211,9 +223,9 @@ class Qizi:
         if self.typ in (7, 12):  # bingo king
             p = self.p
             if not p % 10 == 0:
-                ma.append(p + 1)
-            if not p % 10 == 8:
                 ma.append(p - 1)
+            if not p % 10 == 8:
+                ma.append(p + 1)
             if not p // 10 == 0:
                 ma.append(p - 10)
         if self.typ == 12:  # king
@@ -267,6 +279,15 @@ class Qizi:
                 ma.append(p)
         self.ma = ma
 
+    def move(self, p):
+        """对该子在beach中实施移动，包括吃子，不校验能否走到。"""
+        if self.beach[p] is not None:  # 吃子
+            self.beach[p].alive = False  # 你死
+            self.beach.set(None, p)  # 你走
+        self.beach.set(None, self.p)  # 我走
+        self.beach.set(self, p)  # 我来
+        self.p = p  # 我动
+
 
 if __name__ == '__main__':
     beach = Beach()
@@ -278,3 +299,5 @@ if __name__ == '__main__':
     beach.set(qizi=pawn, p=10)
     pao.get_ma()
     print(pao.ma)
+    pao.move(10)
+    print(beach.beach)
