@@ -212,25 +212,25 @@ class Qizi:
                 ma.append(p + 9)
         if self.typ == 6:  # shuai
             p = self.p
-            if not p % 10 == 3:
+            if not p % 10 == 3 and eat(p - 1):
                 ma.append(p - 1)
-            if not p % 10 == 5:
+            if not p % 10 == 5 and eat(p + 1):
                 ma.append(p + 1)
-            if not p // 10 == 6:
+            if not p // 10 == 6 and eat(p - 10):
                 ma.append(p - 10)
-            if not p // 10 == 8:
+            if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)
         if self.typ in (7, 12):  # bingo king
             p = self.p
-            if not p % 10 == 0:
+            if not p % 10 == 0 and eat(p - 1):
                 ma.append(p - 1)
-            if not p % 10 == 8:
+            if not p % 10 == 8 and eat(p + 1):
                 ma.append(p + 1)
-            if not p // 10 == 0:
+            if not p // 10 == 0 and eat(p - 10):
                 ma.append(p - 10)
         if self.typ == 12:  # king
             p = self.p
-            if not p // 10 == 8:
+            if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)
         if self.typ == 13:  # pawn
             p = self.p

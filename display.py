@@ -1,3 +1,10 @@
+"""
+-*- coding: utf-8 -*-
+@Time    : 2025-01-18
+@Author  : Lilold333
+@File    : display.py
+"""
+
 from kivy.config import Config
 
 # 必须在导入其他任何Kivy模块之前设置
@@ -36,6 +43,7 @@ class War:
             87: "马",
             88: "车",
             61: "炮",
+            64: "炮",  # 加一门炮
             67: "炮",
             50: "兵",
             52: "兵",
@@ -67,11 +75,11 @@ class War:
 
 
 if __name__ == '__main__':
-    war = War()
-    beach = war.beach
+    BingGo = War()
+    beach = BingGo.beach
 
 
-class war(App):
+class BingGo(App):
     def build(self):
         Window.size = (800, 600)
         self.layout = FloatLayout()
@@ -98,10 +106,10 @@ class war(App):
                 x = round((self.x - 66) / 133.3, 0)
                 y = 8 - round((self.y - 66) / 133.3, 0)
                 p = int(x + 10 * y)
-            if not beach[p] == None:
+            if not beach[p] is None:
                 sa = beach[p].get_ma()
                 print(beach[p].ma)
 
 
 if __name__ == '__main__':
-    war().run()
+    BingGo().run()
