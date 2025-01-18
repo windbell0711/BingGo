@@ -11,22 +11,22 @@ class War:
     def __init__(self):
         self.beach = Beach()
         self.beach.continuously_set(qizis={
-            90: "车",
-            91: "马",
-            92: "相",
-            93: "士",
-            94: "帅",
-            95: "士",
-            96: "相",
-            97: "马",
-            98: "车",
-            71: "炮",
-            77: "炮",
-            60: "兵",
-            62: "兵",
-            64: "兵",
-            66: "兵",
-            68: "兵",
+            80: "车",
+            81: "马",
+            82: "相",
+            83: "士",
+            84: "帅",
+            85: "士",
+            86: "相",
+            87: "马",
+            88: "车",
+            61: "炮",
+            67: "炮",
+            50: "兵",
+            52: "兵",
+            54: "兵",
+            56: "兵",
+            58: "兵",
 
             0: "rook",
             1: "knight",
@@ -52,12 +52,6 @@ class War:
 
 
 if __name__ == '__main__':
-    beach = Beach()
-    pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
-    bingo = Qizi(idt=8000, p=50, typ=7, beach=beach)  # 兵
-    pawn = Qizi(idt=12345, p=10, typ=13, beach=beach)  # Pawn
-    beach.set(p=60, qizi=pao)
-    beach.set(p=50, qizi=bingo)
-    beach.set(p=10, qizi=pawn)
-    pao.get_ma()
-    print(pao.ma)
+    war = War()
+    beach = war.beach
+    print(beach[18])

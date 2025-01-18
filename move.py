@@ -22,7 +22,7 @@ class Beach:
 
     def continuously_set(self, qizis: dict):
         i = 0
-        for (key, value) in qizis:
+        for key, value in qizis.items():
             if isinstance(value, str):
                 value = config.typ_dict[value]
             qizi = Qizi(idt=i, p=key, typ=value, beach=self)
