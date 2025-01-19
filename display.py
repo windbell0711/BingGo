@@ -13,8 +13,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
+from kivy.metrics import Metrics
 
 sa = []
+m = Metrics.density / 2
 
 def fx(p):
     return (p % 10 + 0.5) / 12
@@ -37,7 +39,7 @@ class War:
             87: "马",
             88: "车",
             61: "炮",
-            64: "炮",  # 加一门炮
+            64: "炮",
             67: "炮",
             50: "兵",
             52: "兵",
@@ -108,6 +110,8 @@ class BingGo(App):
     def get_p(self, window, touch):
         if touch.button == 'left':
             self.x, self.y = touch.pos
+            self.x = self.x / m
+            self.y = self.y / m
             if not self.x > 1250:
                 x = round((self.x - 66) / 133.3, 0)
                 y = 8 - round((self.y - 66) / 133.3, 0)
@@ -117,24 +121,21 @@ class BingGo(App):
                     print(beach[p].ma)
 
     def regret(self, window, touch):
-        """悔棋"""
         if touch.button == 'left':
             self.x, self.y = touch.pos
-            if 1316 < self.x < 1484 and 680 < self.y < 768:
+            if 131 * m < self.x < 1484 * m and 680 * m < self.y < 768 * m:
                 print("regret")
 
     def new(self, window, touch):
-        """新局"""
         if touch.button == 'left':
             self.x, self.y = touch.pos
-            if 1316 < self.x < 1484 and 483 < self.y < 568:
+            if 1316 * m < self.x < 1484 * m and 483 * m < self.y < 568 * m:
                 print("new")
 
     def story(self, window, touch):
-        """剧情"""
         if touch.button == 'left':
             self.x, self.y = touch.pos
-            if 1316 < self.x < 1484 and 263 < self.y < 356:
+            if 1316 * m < self.x < 1484 * m and 263 * m < self.y < 356 * m:
                 print("story")
 
 
