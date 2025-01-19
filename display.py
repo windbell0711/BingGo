@@ -5,7 +5,6 @@ Config.set('graphics', 'width', '800')
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
 
-from move import *
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -14,6 +13,9 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.metrics import Metrics
+
+from beach import *
+
 
 sa = []
 m = Metrics.density / 2
@@ -25,57 +27,14 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 
-class War:
-    def __init__(self):
-        self.beach = Beach()
-        self.beach.continuously_set(qizis={
-            80: "车",
-            81: "马",
-            82: "相",
-            83: "士",
-            84: "帅",
-            85: "士",
-            86: "相",
-            87: "马",
-            88: "车",
-            61: "炮",
-            64: "炮",
-            67: "炮",
-            50: "兵",
-            52: "兵",
-            54: "兵",
-            56: "兵",
-            58: "兵",
-
-            0: "rook",
-            1: "knight",
-            2: "bishop",
-            3: "king",
-            5: "queen",
-            6: "bishop",
-            7: "knight",
-            8: "rook",
-            10: "pawn",
-            11: "pawn",
-            12: "pawn",
-            13: "pawn",
-            14: "pawn",
-            15: "pawn",
-            16: "pawn",
-            17: "pawn",
-            18: "pawn"
-        })
-
-    def move_son(self, pfrom: int, pto: int):
-        self.beach.set(qizi=self.beach[pfrom], p=pto)
-
-
-if __name__ == '__main__':
-    binggo = War()
-    beach = binggo.beach
-
-
 class BingGo(App):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.beach = Beach()
+        self.beach.continuously_set(qizis=config.init_lineup)  # 初始化布局
+        self.sound = None
+        self.layout = None
+
     def build(self):
         # bgm设置
         self.sound = SoundLoader.load('./music/main.wav')
@@ -83,6 +42,8 @@ class BingGo(App):
             self.sound.volume = 1.0
             self.sound.loop = True
             self.sound.play()
+        else:
+            print("!声音播放出错", self.sound)
 
         # 窗口及背景图设置
         Window.size = (800, 600)
@@ -92,7 +53,7 @@ class BingGo(App):
         self.layout.add_widget(image)
 
         # 按键绑定
-        Window.bind(on_touch_down=self.get_p)
+        Window.bind(on_touch_down=self.print_ma)
         Window.bind(on_touch_down=self.regret)
         Window.bind(on_touch_down=self.new)
         Window.bind(on_touch_down=self.story)
@@ -110,7 +71,7 @@ class BingGo(App):
 
         return self.layout
 
-    def get_p(self, window, touch):
+    def print_ma(self, window, touch):
         """打印可移动位置"""
         if touch.button == 'left':
             self.x, self.y = touch.pos
@@ -121,7 +82,7 @@ class BingGo(App):
                 y = 8 - round((self.y - 66) / 133.3, 0)
                 p = int(x + 10 * y)
                 if not beach[p] is None:
-                    sa = beach[p].get_ma()
+                    beach[p].get_ma()
                     print(beach[p].ma)
 
     def regret(self, window, touch):
