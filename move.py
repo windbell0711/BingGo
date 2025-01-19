@@ -241,8 +241,8 @@ class Qizi:
                 ma.append(p + 11)
             if special_eat(p + 9):
                 ma.append(p + 9)
-            if p//10 == 1 and test(p+10) and test(p+20):  # 第一步
-                ma.append(p+20)
+            if p // 10 == 1 and test(p + 10) and test(p + 20):  # 兵的第一步
+                ma.append(p + 20)
         if self.typ == 5:  # pao
             p = self.p + 1
             while test(p):

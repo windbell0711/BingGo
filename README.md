@@ -47,7 +47,9 @@
 
 ### 完整规则
 ...
+
 中象规则参考：[象棋竞赛规则(2020版)](https://www.xqipu.com/node/94985)
+
 国象规则参考：[chess.org/rules](https://chess.org/rules)
 
 ## 游戏安装
@@ -63,4 +65,4 @@
 无论您是开发者还是用户，非常欢迎您来查看我们的[技术文档](README_tech.md)！
 
 ## 版权说明
-本项目采用...协议。
+本项目采用[Apache 2.0](LICENSE)协议。

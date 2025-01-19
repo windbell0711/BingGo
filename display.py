@@ -1,10 +1,3 @@
-"""
--*- coding: utf-8 -*-
-@Time    : 2025-01-18
-@Author  : Lilold333
-@File    : display.py
-"""
-
 from kivy.config import Config
 
 # 必须在导入其他任何Kivy模块之前设置
@@ -19,6 +12,7 @@ from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
+from kivy.core.audio import SoundLoader
 
 sa = []
 
@@ -75,19 +69,31 @@ class War:
 
 
 if __name__ == '__main__':
-    BingGo = War()
-    beach = BingGo.beach
+    binggo = War()  # modified
+    beach = binggo.beach
 
 
 class BingGo(App):
     def build(self):
+        self.sound = SoundLoader.load('./music/main.wav')
+        if self.sound:
+            self.sound.volume = 1.0
+            self.sound.loop = True
+            self.sound.play()
+
         Window.size = (800, 600)
         self.layout = FloatLayout()
-        image = Image(source='./img/beach.png', size=("550dp", "550dp"), size_hint=(None, None),
-                      pos_hint={'center_x': 0.375, 'center_y': 0.5})
+        image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
+                      pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.layout.add_widget(image)
 
         Window.bind(on_touch_down=self.get_p)
+
+        Window.bind(on_touch_down=self.regret)
+
+        Window.bind(on_touch_down=self.new)
+
+        Window.bind(on_touch_down=self.story)
 
         for i in range(0, 89):
             if not beach[i] is None:
@@ -106,9 +112,30 @@ class BingGo(App):
                 x = round((self.x - 66) / 133.3, 0)
                 y = 8 - round((self.y - 66) / 133.3, 0)
                 p = int(x + 10 * y)
-            if not beach[p] is None:
-                sa = beach[p].get_ma()
-                print(beach[p].ma)
+                if not beach[p] is None:
+                    sa = beach[p].get_ma()
+                    print(beach[p].ma)
+
+    def regret(self, window, touch):
+        """悔棋"""
+        if touch.button == 'left':
+            self.x, self.y = touch.pos
+            if 1316 < self.x < 1484 and 680 < self.y < 768:
+                print("regret")
+
+    def new(self, window, touch):
+        """新局"""
+        if touch.button == 'left':
+            self.x, self.y = touch.pos
+            if 1316 < self.x < 1484 and 483 < self.y < 568:
+                print("new")
+
+    def story(self, window, touch):
+        """剧情"""
+        if touch.button == 'left':
+            self.x, self.y = touch.pos
+            if 1316 < self.x < 1484 and 263 < self.y < 356:
+                print("story")
 
 
 if __name__ == '__main__':
