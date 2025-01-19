@@ -8,31 +8,31 @@ from qizi import *
 
 class Beach:
     def __init__(self):
-        self.beach: List[Qizi] = [None] * 90  # 沙场，每行末尾无子
-        # self.soldiers: Dict[int: List[Qizi]]  # TODO: 有待商议
+        self.beach: List[Qizi]  = [None] * 90  # 沙场，每行末尾无子
+        self.pieces: List[Qizi] = []  # 全体士兵，index为id，死后不移除
 
     def __getitem__(self, item):
         """返回该位置棋子或None"""
         return self.beach[item]
 
-    def set(self, qizi, p: int):
+    def set_son(self, qizi, p: int) -> int:
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
-        return True
+        self.pieces.append(qizi)
+        qizi.idt = len(self.pieces) - 1
+        return qizi.idt
 
-    def continuously_set(self, qizis: dict):
-        i = 0
+    def quick_set(self, qizis: dict):
         for key, value in qizis.items():
             if isinstance(value, str):
                 value = config.typ_dict[value]
-            qizi = Qizi(idt=i, p=key, typ=value, beach=self)
-            self.set(qizi, key)
-            i += 1
+            qizi = Qizi(p=key, typ=value, beach=self)
+            self.set_son(qizi, key)
         return True
 
-    def move_son(self, pfrom: int, pto: int):
-        self.set(qizi=self[pfrom], p=pto)
-        return True
+    def move_son(self, pfrom: int, pto: int) -> int:
+        self.set_son(qizi=self[pfrom], p=pto)
+        return self[pto].idt
 
     def valid(self, x: int) -> bool:  # 合法
         """检测当前位置合法"""
@@ -70,9 +70,9 @@ if __name__ == '__main__':
     pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
     bingo = Qizi(idt=8000, p=50, typ=7, beach=beach)  # 兵
     pawn = Qizi(idt=12345, p=10, typ=13, beach=beach)  # Pawn
-    beach.set(qizi=pao, p=60)
-    beach.set(qizi=bingo, p=50)
-    beach.set(qizi=pawn, p=10)
+    beach.set_son(qizi=pao, p=60)
+    beach.set_son(qizi=bingo, p=50)
+    beach.set_son(qizi=pawn, p=10)
     pao.get_ma()
     print(pao.ma)
     pao.move(10)

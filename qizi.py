@@ -11,9 +11,9 @@ import config
 
 
 class Qizi:
-    def __init__(self, idt: int, p: int, typ: int, beach):
-        self.idt = idt  # id
-        self.alive = True
+    def __init__(self, p: int, typ: int, beach):
+        self.idt = None  # 由Beach在set后任命
+        self.alive = True  # 是否存活
         self.p = p  # 位置代码
         self.typ = typ  # 种类
         self.camp_intl = (typ > 7)  # False-中象; True-国象
@@ -240,7 +240,7 @@ class Qizi:
         """对该子在beach中实施移动，包括吃子，不校验能否走到。"""
         if self.beach[p] is not None:  # 吃子
             self.beach[p].alive = False  # 你死
-            self.beach.set(None, p)  # 你走
-        self.beach.set(None, self.p)  # 我走
-        self.beach.set(self, p)  # 我来
+            self.beach.set_son(None, p)  # 你走
+        self.beach.set_son(None, self.p)  # 我走
+        self.beach.set_son(self, p)  # 我来
         self.p = p  # 我动
