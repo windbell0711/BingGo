@@ -90,7 +90,7 @@ class BingGo(App):
         Window.bind(on_touch_down=self.get_p)
 
         for i in range(0, 89):
-            if not beach[i] == None:
+            if not beach[i] is None:
                 p = beach[i].p
                 imagen = f'image_{i}'
                 globals()[imagen] = Image(source=f'./img/{beach[i].typ}.png', size_hint=(None, None),

@@ -19,6 +19,7 @@ class Beach:
     def set(self, qizi, p: int):
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
+        return True
 
     def continuously_set(self, qizis: dict):
         i = 0
@@ -240,6 +241,8 @@ class Qizi:
                 ma.append(p + 11)
             if special_eat(p + 9):
                 ma.append(p + 9)
+            if p//10 == 1 and test(p+10) and test(p+20):  # 第一步
+                ma.append(p+20)
         if self.typ == 5:  # pao
             p = self.p + 1
             while test(p):
