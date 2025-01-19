@@ -1,5 +1,8 @@
 # BingGo
-[<p align="right">中文</p>](README.md)
+<p align="right">
+  <a href="https://github.com/windbelljianjie0711/BingGo/README.md">中文</a> ·
+  <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">技术文档</a>
+</p>
 Bingo! The magical integration with Chinese chess and International chess. Immerse yourself in the intensive war and appreciate the charm of cultural fusion.
 
 

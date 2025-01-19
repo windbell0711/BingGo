@@ -71,32 +71,33 @@ class War:
 
 
 if __name__ == '__main__':
-    binggo = War()  # modified
+    binggo = War()
     beach = binggo.beach
 
 
 class BingGo(App):
     def build(self):
+        # bgm设置
         self.sound = SoundLoader.load('./music/main.wav')
         if self.sound:
             self.sound.volume = 1.0
             self.sound.loop = True
             self.sound.play()
 
+        # 窗口及背景图设置
         Window.size = (800, 600)
         self.layout = FloatLayout()
         image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.layout.add_widget(image)
 
+        # 按键绑定
         Window.bind(on_touch_down=self.get_p)
-
         Window.bind(on_touch_down=self.regret)
-
         Window.bind(on_touch_down=self.new)
-
         Window.bind(on_touch_down=self.story)
 
+        # 棋子贴图
         for i in range(0, 89):
             if not beach[i] is None:
                 p = beach[i].p
@@ -105,13 +106,16 @@ class BingGo(App):
                                           size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
                 self.layout.add_widget(globals()[imagen])
 
+        # self.layout.remove_widget(widget=globals()[f'image_{10}'])
+
         return self.layout
 
     def get_p(self, window, touch):
+        """打印可移动位置"""
         if touch.button == 'left':
             self.x, self.y = touch.pos
-            self.x = self.x / m
-            self.y = self.y / m
+            self.x /= m
+            self.y /= m
             if not self.x > 1250:
                 x = round((self.x - 66) / 133.3, 0)
                 y = 8 - round((self.y - 66) / 133.3, 0)
