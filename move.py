@@ -5,12 +5,14 @@
 @Coauthor: TheWindbell07
 @File    : move.py
 """
+from typing import List
+
 import config
 
 
 class Beach:
     def __init__(self):
-        self.beach: list[Qizi] = [None] * 90  # 沙场，每行末尾无子
+        self.beach: List[Qizi] = [None] * 90  # 沙场，每行末尾无子
 
     def __getitem__(self, item):
         """返回该位置棋子或None"""
@@ -221,11 +223,11 @@ class Qizi:
                 ma.append(p - 10)
             if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)
-        if self.typ in (7, 12):  # bingo king
+        if self.typ == 7:  # bingo
             p = self.p
-            if not p % 10 == 0 and eat(p - 1):
+            if not p % 10 == 0 and eat(p - 1) and not p // 10 == 5:
                 ma.append(p - 1)
-            if not p % 10 == 8 and eat(p + 1):
+            if not p % 10 == 8 and eat(p + 1) and not p // 10 == 5:
                 ma.append(p + 1)
             if not p // 10 == 0 and eat(p - 10):
                 ma.append(p - 10)
@@ -233,6 +235,12 @@ class Qizi:
             p = self.p
             if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)
+            if not p % 10 == 0 and eat(p - 1):
+                ma.append(p - 1)
+            if not p % 10 == 8 and eat(p + 1):
+                ma.append(p + 1)
+            if not p // 10 == 0 and eat(p - 10):
+                ma.append(p - 10)
         if self.typ == 13:  # pawn
             p = self.p
             if test(p + 10):
