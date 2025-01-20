@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing import List, Dict
+
 typ_dict = {
     "车": 1,
     "马": 2,

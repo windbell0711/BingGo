@@ -4,7 +4,10 @@
 @Author  : TheWindbell07
 @File    : beach.py
 """
+from __future__ import annotations
+
 from qizi import *
+
 
 class Beach:
     def __init__(self):
@@ -15,9 +18,11 @@ class Beach:
         """返回该位置棋子或None"""
         return self.beach[item]
 
-    def set_son(self, qizi, p: int) -> int:
+    def set_son(self, qizi, p: int) -> int | None:
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
+        if qizi is None:
+            return None
         self.pieces.append(qizi)
         qizi.idt = len(self.pieces) - 1
         return qizi.idt

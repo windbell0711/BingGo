@@ -1,10 +1,7 @@
 from kivy.config import Config
-
-# 必须在导入其他任何Kivy模块之前设置
-Config.set('graphics', 'width', '800')
+Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
-
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -15,6 +12,7 @@ from kivy.core.audio import SoundLoader
 from kivy.metrics import Metrics
 
 from beach import *
+
 
 sa = []
 m = Metrics.density / 2
