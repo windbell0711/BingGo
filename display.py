@@ -12,7 +12,6 @@ from kivy.core.audio import SoundLoader
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.clock import Clock
-import time
 
 from beach import *
 
