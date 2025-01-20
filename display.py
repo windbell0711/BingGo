@@ -3,9 +3,8 @@ Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块�
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
 from kivy.app import App
-from kivy.uix.button import Button
+# from kivy.uix.button import Button
 from kivy.uix.image import Image
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
@@ -25,20 +24,15 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 
-
-class BingGo(App):
+class War(FloatLayout):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(War, self).__init__(**kwargs)
         self.beach = Beach()
         self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
         self.active_qizi = None  # 当前棋子
         self.mycamp = False  # 我的阵营  False: 中象; True: 国象
         self.imgs = []
         
-        self.sound = None
-        self.layout = None
-
-    def build(self):
         # bgm设置
         self.sound = SoundLoader.load('./music/main.wav')
         if self.sound:
@@ -50,10 +44,9 @@ class BingGo(App):
 
         # 窗口及背景图设置
         Window.size = (800, 600)
-        self.layout = FloatLayout()
         image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
-        self.layout.add_widget(image)
+        self.add_widget(image)
 
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
@@ -65,31 +58,18 @@ class BingGo(App):
                 source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
                 pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
             ))
-            self.layout.add_widget(self.imgs[-1])
-
-        # 已弃用写法：
-        # for i in range(0, 89):
-        #     self.imgs = []
-        #     if not self.beach[i] is None:
-        #         p = self.beach[i].p
-        #         imagen = f'image_{i}'
-        #         self.imgs.append(imagen)
-        #         globals()[imagen] = Image(source=f'./img/{self.beach[i].typ}.png', size_hint=(None, None),
-        #                                   size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
-        #         self.layout.add_widget(globals()[imagen])
-
-        return self.layout
+            self.add_widget(self.imgs[-1])
 
     def place_piece(self, qizi: Qizi, p: int):
         idt = self.beach.set_son(qizi, p)
         self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
-        self.layout.add_widget(self.imgs[idt])
+        self.add_widget(self.imgs[idt])
 
     def kill_piece(self, qizi: Qizi):
         self.beach.set_son(None, qizi.p)
         qizi.alive = False
-        self.layout.remove_widget(self.imgs[qizi.idt])
+        self.remove_widget(self.imgs[qizi.idt])
 
     def _move_force(self, pfrom: int, pto: int):
         # 判断是否吃子
@@ -99,27 +79,26 @@ class BingGo(App):
         # 更新数据并获取棋子id
         idt = self.beach.move_son(pfrom, pto)
         # 确保图片置于顶层
-        self.layout.remove_widget(self.imgs[idt])
-        self.layout.add_widget(self.imgs[idt])
+        self.remove_widget(self.imgs[idt])
+        self.add_widget(self.imgs[idt])
         # 走子平移动画
         animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
         animation.start(self.imgs[idt])
         # 吃子消失动画
         if yummy:
-            Clock.schedule_once(lambda dt: self.layout.remove_widget(self.imgs[cuisine]), 0.1)
+            Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)
 
-    def exchange_check(self,p):  #王车易位检测
+    def exchange_check(self, p):  # 王车易位检测
         if self.active_qizi is not None and self.beach[3] is not None and self.mycamp:
-            if self.active_qizi.typ == 12 and self.beach[3].typ == 12 and self.beach[1] == self.beach[
-                2] == None and p == 0 and self.beach[p].typ == 8:
+            if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
+                    self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
                 self._move_force(pfrom=0, pto=2)
                 self._move_force(pfrom=3, pto=1)
                 self.mycamp = not self.mycamp
                 self.active_qizi = None
                 return
-
-            elif (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and self.beach[4] == self.beach[5] == self.beach[6]
-                  == self.beach[7] == None and p == 8 and self.beach[p].typ == 8):
+            elif (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
+                  self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and p == 8 and self.beach[p].typ == 8):
                 self._move_force(pfrom=8, pto=4)
                 self._move_force(pfrom=3, pto=5)
                 self.mycamp = not self.mycamp
@@ -143,10 +122,6 @@ class BingGo(App):
             print("已移动")
             self.mycamp = not self.mycamp
             self.active_qizi = None
-
-
-
-
         else:
             print("无法抵达或无法选中")
 
@@ -166,6 +141,11 @@ class BingGo(App):
                     print("sure")
                 elif 1476 < x < 1536:
                     print("gret")
+
+
+class BingGo(App):
+    def build(self):
+        return War()
 
 
 if __name__ == '__main__':
