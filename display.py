@@ -25,6 +25,7 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 
+
 class BingGo(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -107,6 +108,26 @@ class BingGo(App):
         if yummy:
             Clock.schedule_once(lambda dt: self.layout.remove_widget(self.imgs[cuisine]), 0.1)
 
+    def exchange_check(self,p):  #王车易位检测
+        if self.active_qizi is not None and self.beach[3] is not None and self.mycamp:
+            if self.active_qizi.typ == 12 and self.beach[3].typ == 12 and self.beach[1] == self.beach[
+                2] == None and p == 0 and self.beach[p].typ == 8:
+                self._move_force(pfrom=0, pto=2)
+                self._move_force(pfrom=3, pto=1)
+                self.mycamp = not self.mycamp
+                self.active_qizi = None
+                return
+
+            elif (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and self.beach[4] == self.beach[5] == self.beach[6]
+                  == self.beach[7] == None and p == 8 and self.beach[p].typ == 8):
+                self._move_force(pfrom=8, pto=4)
+                self._move_force(pfrom=3, pto=5)
+                self.mycamp = not self.mycamp
+                self.active_qizi = None
+                return
+
+        self.active_qizi = self.beach[p]
+
     def board(self, x, y):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
@@ -116,15 +137,19 @@ class BingGo(App):
             print("!位置不合法  p:", p)
             return
         if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp:  # 点选棋子为己方阵营
-            self.active_qizi = self.beach[p]
-            print(self.active_qizi.typ, self.active_qizi.get_ma())
+            self.exchange_check(p)
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
             self.mycamp = not self.mycamp
             self.active_qizi = None
+
+
+
+
         else:
             print("无法抵达或无法选中")
+
         return
 
     def handle_button_press(self, window, touch):
