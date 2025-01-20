@@ -55,35 +55,31 @@ class BingGo(App):
         Window.bind(on_touch_down=self.handle_button_press)
 
         # 棋子贴图  TODO: 统一化未完成
-        self.imgs = []
-        for qizi in self.beach.pieces:
-            self.imgs.append(Image(
-                source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
-                pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
-            ))
-            self.layout.add_widget(self.imgs[-1])
+        #self.imgs = []
+        #for qizi in self.beach.pieces:
+        #    self.imgs.append(Image(
+        #        source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
+        #        pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
+        #    ))
+        #    self.layout.add_widget(self.imgs[-1])
 
-        # for i in range(0, 89):
-        #     if not beach[i] is None:
-        #         p = beach[i].p
-        #         imagen = f'image_{i}'
-        #         globals()[imagen] = Image(source=f'./img/{beach[i].typ}.png', size_hint=(None, None),
-        #                                   size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
-        #         self.layout.add_widget(globals()[imagen])
+        for i in range(0, 89):
+            self.imgs = []
+            if not self.beach[i] is None:
+                 p = self.beach[i].p
+                 imagen = f'image_{i}'
+                 self.imgs.append(imagen)
+                 globals()[imagen] = Image(source=f'./img/{self.beach[i].typ}.png', size_hint=(None, None),
+                                           size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
+                 self.layout.add_widget(globals()[imagen])
+
 
         # self.layout.remove_widget(widget=globals()[f'image_{10}'])
-
         return self.layout
 
     def set_son(self, qizi, p: int):
         idt = self.beach.set_son(qizi, p)
-        self.imgs.append(Image(
-            source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
-            pos_hint={'center_x': fx(p), 'center_y': fy(p)}
-        ))
-        self.layout.add_widget(self.imgs[-1])  # TODO: 不在build内运行时可能存在潜在问题
-        if idt != len(self.imgs):
-            raise IndexError("子与贴图对应错误。", qizi, p, idt, len(self.imgs))
+
 
     def print_ma(self, window, touch):
         """打印可移动位置"""
@@ -95,9 +91,28 @@ class BingGo(App):
                 x = round((self.x - 66) / 133.3, 0)
                 y = 8 - round((self.y - 66) / 133.3, 0)
                 p = int(x + 10 * y)
-                if not self.beach[p] is None:
+                global sa
+                global former_p
+                if p in sa:
+                    imagen = f'image_{p}'
+                    if not self.beach[p]==None:
+                        self.layout.remove_widget(globals()[imagen])
+                    print(self.beach[p])
+                    self.beach[former_p].move(p)
+                    imagen2 = f'image_{former_p}'
+                    globals()[imagen] = Image(source=f'./img/{self.beach[p].typ}.png', size_hint=(None, None),
+                                              size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
+                    self.layout.add_widget(globals()[imagen])
+                    self.layout.remove_widget(globals()[imagen2])
+                    print(p, former_p)
+                    sa=[]
+
+                elif not self.beach[p] is None:
                     self.beach[p].get_ma()
                     print(self.beach[p].ma)
+                    sa=self.beach[p].ma
+                    former_p=p
+
 
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
