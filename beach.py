@@ -36,9 +36,10 @@ class Beach:
         return True
 
     def move_son(self, pfrom: int, pto: int) -> int:
-        """移动棋子，包括吃子逻辑"""
-        self.set_son(qizi=None, p=pfrom)  # 从原位置移除
-        self.set_son(qizi=self[pfrom], p=pto)  # 移动到新位置
+        """移动棋子，包括吃子"""
+        self.beach[pto] = self.beach[pfrom]  # 移动到新位置
+        self.beach[pfrom] = None  # 从原位置移除
+        self[pto].p = pto
         return self[pto].idt
 
     def valid(self, x: int) -> bool:  # 合法

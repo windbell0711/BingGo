@@ -235,6 +235,7 @@ class Qizi:
             if special_eat(p):
                 ma.append(p)
         self.ma = ma
+        return ma
 
     def move(self, p):
         """对该子在beach中实施移动，包括吃子，不校验能否走到"""

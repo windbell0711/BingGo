@@ -10,12 +10,14 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.metrics import Metrics
+from kivy.animation import Animation
+from kivy.clock import Clock
+import time
 
 from beach import *
 
 
-sa = []
-m = Metrics.density / 2
+M = Metrics.density / 2
 
 def fx(p):
     return (p % 10 + 0.5) / 12
@@ -29,8 +31,11 @@ class BingGo(App):
         super().__init__(**kwargs)
         self.beach = Beach()
         self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
-        self.sound = None
+        self.active_qizi = None  # 当前棋子
+        self.mycamp = False  # 我的阵营  False: 中象; True: 国象
         self.imgs = []
+        
+        self.sound = None
         self.layout = None
 
     def build(self):
@@ -51,87 +56,89 @@ class BingGo(App):
         self.layout.add_widget(image)
 
         # 按键绑定
-        Window.bind(on_touch_down=self.print_ma)
         Window.bind(on_touch_down=self.handle_button_press)
 
-        # 棋子贴图  TODO: 统一化未完成
-        #self.imgs = []
-        #for qizi in self.beach.pieces:
-        #    self.imgs.append(Image(
-        #        source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
-        #        pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
-        #    ))
-        #    self.layout.add_widget(self.imgs[-1])
+        # 棋子贴图  TODO: 统一化未完成，应将quick_set()从Beach搬至BingGo
+        self.imgs = []
+        for qizi in self.beach.pieces:
+            self.imgs.append(Image(
+                source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
+                pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
+            ))
+            self.layout.add_widget(self.imgs[-1])
 
-        for i in range(0, 89):
-            self.imgs = []
-            if not self.beach[i] is None:
-                 p = self.beach[i].p
-                 imagen = f'image_{i}'
-                 self.imgs.append(imagen)
-                 globals()[imagen] = Image(source=f'./img/{self.beach[i].typ}.png', size_hint=(None, None),
-                                           size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
-                 self.layout.add_widget(globals()[imagen])
+        # 已弃用写法：
+        # for i in range(0, 89):
+        #     self.imgs = []
+        #     if not self.beach[i] is None:
+        #         p = self.beach[i].p
+        #         imagen = f'image_{i}'
+        #         self.imgs.append(imagen)
+        #         globals()[imagen] = Image(source=f'./img/{self.beach[i].typ}.png', size_hint=(None, None),
+        #                                   size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
+        #         self.layout.add_widget(globals()[imagen])
 
-
-        # self.layout.remove_widget(widget=globals()[f'image_{10}'])
         return self.layout
 
-    def set_son(self, qizi, p: int):
+    def place_piece(self, qizi: Qizi, p: int):
         idt = self.beach.set_son(qizi, p)
+        self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
+                               size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+        self.layout.add_widget(self.imgs[idt])
 
+    def kill_piece(self, qizi: Qizi):
+        self.beach.set_son(None, qizi.p)
+        qizi.alive = False
+        self.layout.remove_widget(self.imgs[qizi.idt])
 
-    def print_ma(self, window, touch):
-        """打印可移动位置"""
-        if touch.button == 'left':
-            self.x, self.y = touch.pos
-            self.x /= m
-            self.y /= m
-            if not self.x > 1250:
-                x = round((self.x - 66) / 133.3, 0)
-                y = 8 - round((self.y - 66) / 133.3, 0)
-                p = int(x + 10 * y)
-                global sa
-                global former_p
-                if p in sa:
-                    imagen = f'image_{p}'
-                    if not self.beach[p]==None:
-                        self.layout.remove_widget(globals()[imagen])
-                    print(self.beach[p])
-                    self.beach[former_p].move(p)
-                    imagen2 = f'image_{former_p}'
-                    globals()[imagen] = Image(source=f'./img/{self.beach[p].typ}.png', size_hint=(None, None),
-                                              size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)})
-                    self.layout.add_widget(globals()[imagen])
-                    self.layout.remove_widget(globals()[imagen2])
-                    print(p, former_p)
-                    sa=[]
+    def _move_force(self, pfrom: int, pto: int):
+        # 判断是否吃子
+        yummy, cuisine = self.beach.occupied(pto), None
+        if yummy:
+            cuisine = self.beach[pto].idt
+        # 更新数据并获取棋子id
+        idt = self.beach.move_son(pfrom, pto)
+        # 确保图片置于顶层
+        self.layout.remove_widget(self.imgs[idt])
+        self.layout.add_widget(self.imgs[idt])
+        # 走子平移动画
+        animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.25)
+        animation.start(self.imgs[idt])
+        # 吃子消失动画
+        if yummy:
+            Clock.schedule_once(lambda dt: self.layout.remove_widget(self.imgs[cuisine]), 0.25)
 
-                elif not self.beach[p] is None:
-                    self.beach[p].get_ma()
-                    print(self.beach[p].ma)
-                    sa=self.beach[p].ma
-                    former_p=p
-
+    def board(self, x, y):
+        """点按棋盘"""
+        px = round((x - 66) / 133.3, 0)
+        py = 8 - round((y - 66) / 133.3, 0)
+        p = int(px + 10 * py)  # 点选的位置
+        if not self.beach.valid(p):
+            print("!位置不合法  p:", p)
+            return
+        if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp:  # 点选棋子为己方阵营
+            self.active_qizi = self.beach[p]
+            print(self.active_qizi.typ, self.active_qizi.get_ma())
+        elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
+            self._move_force(pfrom=self.active_qizi.p, pto=p)
+            print("已移动")
+        else:
+            print("无法抵达或无法选中")
+        return
 
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
             x, y = touch.pos
-            if self.is_within_bounds(x, y, "regret"):
-                print("regret")
-            elif self.is_within_bounds(x, y, "new"):
-                print("new")
-            elif self.is_within_bounds(x, y, "story"):
-                print("story")
-
-    def is_within_bounds(self, x, y, button_name):
-        bounds = {
-            "regret": (131 * m, 1484 * m, 680 * m, 768 * m),
-            "new": (1316 * m, 1484 * m, 483 * m, 568 * m),
-            "story": (1316 * m, 1484 * m, 263 * m, 356 * m)
-        }
-        x_min, x_max, y_min, y_max = bounds[button_name]
-        return x_min < x < x_max and y_min < y < y_max
+            x, y = x / M, y / M
+            if x < 1250:
+                self.board(x, y)
+            elif 1316 < x < 1484:
+                if 680 < y < 768:
+                    print("regret")
+                elif 483 < y < 568:
+                    print("new")
+                elif 263 < y < 356:
+                    print("story")
 
 
 if __name__ == '__main__':
