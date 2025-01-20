@@ -101,11 +101,11 @@ class BingGo(App):
         self.layout.remove_widget(self.imgs[idt])
         self.layout.add_widget(self.imgs[idt])
         # 走子平移动画
-        animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.25)
+        animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
         animation.start(self.imgs[idt])
         # 吃子消失动画
         if yummy:
-            Clock.schedule_once(lambda dt: self.layout.remove_widget(self.imgs[cuisine]), 0.25)
+            Clock.schedule_once(lambda dt: self.layout.remove_widget(self.imgs[cuisine]), 0.1)
 
     def board(self, x, y):
         """点按棋盘"""
@@ -121,6 +121,8 @@ class BingGo(App):
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
+            self.mycamp = not self.mycamp
+            self.active_qizi = None
         else:
             print("无法抵达或无法选中")
         return
@@ -128,16 +130,17 @@ class BingGo(App):
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
             x, y = touch.pos
+            print (x,y)
             x, y = x / M, y / M
             if x < 1250:
                 self.board(x, y)
-            elif 1316 < x < 1484:
-                if 680 < y < 768:
+            elif 750 < y < 848:
+                if 1268 < x < 1332:
                     print("regret")
-                elif 483 < y < 568:
-                    print("new")
-                elif 263 < y < 356:
-                    print("story")
+                elif 1342 < x < 1462:
+                    print("sure")
+                elif 1476 < x < 1536:
+                    print("gret")
 
 
 if __name__ == '__main__':
