@@ -5,9 +5,7 @@
 @Coauthor: TheWindbell07
 @File    : qizi.py
 """
-from __future__ import annotations
 from typing import List, Dict
-
 import config
 
 
@@ -41,7 +39,8 @@ class Qizi:
         test = self.beach.not_occupied
         eat = self._not_mine
         special_eat = self._enemy_occupied
-        ma = []  # move available positions
+        ma = []  # moveable positions
+
         if self.typ in (1, 8, 11):  # 直走
             p = self.p + 1
             while test(p):
@@ -238,7 +237,7 @@ class Qizi:
         self.ma = ma
 
     def move(self, p):
-        """对该子在beach中实施移动，包括吃子，不校验能否走到。"""
+        """对该子在beach中实施移动，包括吃子，不校验能否走到"""
         if self.beach[p] is not None:  # 吃子
             self.beach[p].alive = False  # 你死
             self.beach.set_son(None, p)  # 你走

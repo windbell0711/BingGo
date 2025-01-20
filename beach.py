@@ -36,7 +36,9 @@ class Beach:
         return True
 
     def move_son(self, pfrom: int, pto: int) -> int:
-        self.set_son(qizi=self[pfrom], p=pto)
+        """移动棋子，包括吃子逻辑"""
+        self.set_son(qizi=None, p=pfrom)  # 从原位置移除
+        self.set_son(qizi=self[pfrom], p=pto)  # 移动到新位置
         return self[pto].idt
 
     def valid(self, x: int) -> bool:  # 合法
@@ -72,9 +74,9 @@ class Beach:
 
 if __name__ == '__main__':
     beach = Beach()
-    pao = Qizi(idt=10086, p=60, typ=5, beach=beach)  # 炮
-    bingo = Qizi(idt=8000, p=50, typ=7, beach=beach)  # 兵
-    pawn = Qizi(idt=12345, p=10, typ=13, beach=beach)  # Pawn
+    pao = Qizi(p=60, typ=5, beach=beach)  # 炮
+    bingo = Qizi(p=50, typ=7, beach=beach)  # 兵
+    pawn = Qizi(p=10, typ=13, beach=beach)  # Pawn
     beach.set_son(qizi=pao, p=60)
     beach.set_son(qizi=bingo, p=50)
     beach.set_son(qizi=pawn, p=10)

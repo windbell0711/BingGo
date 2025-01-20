@@ -52,9 +52,7 @@ class BingGo(App):
 
         # 按键绑定
         Window.bind(on_touch_down=self.print_ma)
-        Window.bind(on_touch_down=self.regret)
-        Window.bind(on_touch_down=self.new)
-        Window.bind(on_touch_down=self.story)
+        Window.bind(on_touch_down=self.handle_button_press)
 
         # 棋子贴图  TODO: 统一化未完成
         self.imgs = []
@@ -101,23 +99,24 @@ class BingGo(App):
                     self.beach[p].get_ma()
                     print(self.beach[p].ma)
 
-    def regret(self, window, touch):
+    def handle_button_press(self, window, touch):
         if touch.button == 'left':
-            self.x, self.y = touch.pos
-            if 131 * m < self.x < 1484 * m and 680 * m < self.y < 768 * m:
+            x, y = touch.pos
+            if self.is_within_bounds(x, y, "regret"):
                 print("regret")
-
-    def new(self, window, touch):
-        if touch.button == 'left':
-            self.x, self.y = touch.pos
-            if 1316 * m < self.x < 1484 * m and 483 * m < self.y < 568 * m:
+            elif self.is_within_bounds(x, y, "new"):
                 print("new")
-
-    def story(self, window, touch):
-        if touch.button == 'left':
-            self.x, self.y = touch.pos
-            if 1316 * m < self.x < 1484 * m and 263 * m < self.y < 356 * m:
+            elif self.is_within_bounds(x, y, "story"):
                 print("story")
+
+    def is_within_bounds(self, x, y, button_name):
+        bounds = {
+            "regret": (131 * m, 1484 * m, 680 * m, 768 * m),
+            "new": (1316 * m, 1484 * m, 483 * m, 568 * m),
+            "story": (1316 * m, 1484 * m, 263 * m, 356 * m)
+        }
+        x_min, x_max, y_min, y_max = bounds[button_name]
+        return x_min < x < x_max and y_min < y < y_max
 
 
 if __name__ == '__main__':
