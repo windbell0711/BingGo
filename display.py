@@ -238,16 +238,18 @@ class War(FloatLayout):
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
             if x < 1250:
-                if not self.regret_mode:
-                    self.board(x, y)
-            elif 750 < y < 848:
+                if self.regret_mode == True:
+                    self.change_regret_mode()
+                self.board(x, y)
+            elif 750 < y < 848 and 1268<x<1536:
+                if self.regret_mode == False:
+                    self.change_regret_mode()
                 if 1268 < x < 1332:
-                    if self.regret_mode:
                         self.regret()
                 elif 1342 < x < 1462:
-                    self.change_regret_mode()
+                    pass
+                    #self.change_regret_mode()
                 elif 1476 < x < 1536:
-                    if self.regret_mode:
                         self.gret()
 
 
