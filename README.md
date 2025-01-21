@@ -3,7 +3,7 @@
   <a href="https://github.com/windbelljianjie0711/BingGo/README_en.md">EN</a> · 
   <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">技术文档</a>
 </p>
-挺兵！将中国象棋和国际象棋的玩法结合，9*9的棋局中，中象与国象两军对垒。一同见证这场世界交融的战斗、文化交融的盛宴！
+挺兵！将中国象棋和国际象棋的玩法结合，9×9的棋局中，中象与国象两军对垒。一同见证这场世界交融的战斗、文化交融的盛宴！
 
 
 [![](https://img.shields.io/badge/issues-0-blue)](https://github.com/windbell0711/BingGo/issues)
