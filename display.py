@@ -36,13 +36,13 @@ class War(FloatLayout):
         self.imgs = []
 
         # bgm设置
-        self.sound = SoundLoader.load('./music/main.wav')
-        if self.sound:
-            self.sound.volume = 1.0
-            self.sound.loop = True
-            self.sound.play()
-        else:
-            print("!声音播放出错", self.sound)
+        # self.sound = SoundLoader.load('./music/main.wav')
+        # if self.sound:
+        #     self.sound.volume = 1.0
+        #     self.sound.loop = True
+        #     self.sound.play()
+        # else:
+        #     print("!声音播放出错", self.sound)
 
         # 窗口及背景图设置
         Window.size = (800, 600)
