@@ -1,27 +1,16 @@
 # 技术文档
 
 
-
-## Objects and Functions
+## Objects and Functions (need updating)
 ```
 config.py
 ├── typ_dict: {"车": 1, "马": 2, ...}
+├── init_lineup
 └── ...
 
-move.py
-├── Beach
-│  *├── beach: list[Qizi|None] (len=90)
-│   │
-│  *├── __getitem__(item) (get) -> Qizi|None
-│  *├── set(qizi, p: int) (set)
-│  *├── continuously_set(qizis: dict{p(int): typ(str|int)}) (set)
-│   └┬─ valid(x: int) -> bool (judge)
-│    ├─ occupied(x: int) -> bool (judge)
-│    ├─ not_occupied(x: int) -> bool (judge)
-│    ├─ ch_occupied(x: int) -> bool (judge)
-│    └─ in_occupied(x: int) -> bool (judge)
+qizi.py
 └── Qizi
-    ├── idt (!ready-to-be-expired)
+    ├── idt
    *├── alive: bool
    *├── p: int (0-8, 10-18, ..., 80-88)
     ├── typ: int (1-13)(see typ_dict in config.py)
@@ -33,6 +22,19 @@ move.py
     ├── _enemy_occupied(x: int) -> bool
    *├── get_ma()
    *└── move(p: int)
+
+move.py
+└── Beach
+   *├── beach: list[Qizi|None] (len=90)
+    │
+   *├── __getitem__(item) (get) -> Qizi|None
+   *├── set(qizi, p: int) (set)
+   *├── continuously_set(qizis: dict{p(int): typ(str|int)}) (set)
+    └┬─ valid(x: int) -> bool (judge)
+     ├─ occupied(x: int) -> bool (judge)
+     ├─ not_occupied(x: int) -> bool (judge)
+     ├─ ch_occupied(x: int) -> bool (judge)
+     └─ in_occupied(x: int) -> bool (judge)
 
 display.py
 ├── War
@@ -49,10 +51,27 @@ display.py
 
 
 
-
+## How to contribute
 ```sh
 git clone https://github.com/windbell0711/BingGo.git
 ```
+
+
+## How to package
+### Create a .exe via PyInstaller
+1. Open the Terminal of the project  *e.g. D:/Documents/.../BingGo*
+2. Run pyinstaller: ```pyinstaller [-F] [-w] [-i ....ico] [-n ...] main.py```
+3. Modify the .spec file as below: ([example](BingGo.spec))
+   1. Add ```from kivy_deps import sdl2, glew``` at the beginning;
+   2. Add datas.  *e.g.*```[('D:/Documents/.../BingGo/img/*.png', './img'), ...]```
+   3. Add hiddenimports.  *e.g.*```['packaging','packaging.version','kivy','enchant']```
+   4. Add ```*[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)]``` to ```COLLECT()```.
+4. Run pyinstaller again: ```pyinstaller ....spec```
+
+*Reference:*
+1. [kivi document](https://kivy.org/doc/stable/guide/packaging-windows.html)
+2. [question on stackoverflow](https://stackoverflow.com/questions/62500014/cant-create-a-exe-with-python-kivy-on-windows-pyinstaller/62707185#62707185)
+
 
 ## Developing History
 ```

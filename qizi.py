@@ -202,38 +202,42 @@ class Qizi:
             while test(p):
                 ma.append(p)
                 p += 1
-            p += 1
-            while test(p):
+            if test2(p):
                 p += 1
-            if special_eat(p):
-                ma.append(p)
+                while test(p):
+                    p += 1
+                if special_eat(p):
+                    ma.append(p)
             p = self.p + 10
             while test(p):
                 ma.append(p)
                 p += 10
-            p += 10
-            while test(p):
+            if test2(p):
                 p += 10
-            if special_eat(p):
-                ma.append(p)
+                while test(p):
+                    p += 10
+                if special_eat(p):
+                    ma.append(p)
             p = self.p - 1
             while test(p):
                 ma.append(p)
                 p += -1
-            p += -1
-            while test(p):
+            if test2(p):
                 p += -1
-            if special_eat(p):
-                ma.append(p)
+                while test(p):
+                    p += -1
+                if special_eat(p):
+                    ma.append(p)
             p = self.p - 10
             while test(p):
                 ma.append(p)
                 p += -10
-            p += -10
-            while test(p):
+            if test2(p):
                 p += -10
-            if special_eat(p):
-                ma.append(p)
+                while test(p):
+                    p += -10
+                if special_eat(p):
+                    ma.append(p)
         self.ma = ma
         return ma
 
