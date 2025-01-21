@@ -5,7 +5,7 @@
 @Coauthor: TheWindbell07
 @File    : qizi.py
 """
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import config
 
 
@@ -41,7 +41,7 @@ class Qizi:
         special_eat = self._enemy_occupied
         ma = []  # moveable positions
 
-        if self.typ in (1, 8, 11,0):  # 直走
+        if self.typ in (1, 8, 11, 0):  # 直走
             p = self.p + 1
             while test(p):
                 ma.append(p)
@@ -91,7 +91,7 @@ class Qizi:
                 p += -9
             if special_eat(p):
                 ma.append(p)
-        if self.typ in (0,2):  # 有马腿马
+        if self.typ in (0, 2):  # 有马腿马
             p = self.p
             if test(p + 1):  # 马腿处子的判断
                 if eat(p + 12):  # 落点吃子判断
@@ -135,7 +135,7 @@ class Qizi:
                     ma.append(p - 21)
                 if eat(p - 19):
                     ma.append(p - 19)
-        if self.typ in (0,3):  # xiang
+        if self.typ in (0, 3):  # xiang
             p = self.p
             if test(p + 11):  # xiang腿处子的判断
                 if eat(p + 22):  # 落点吃子判断
