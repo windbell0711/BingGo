@@ -15,7 +15,8 @@
   <a href="https://github.com/windbelljianjie0711/BingGo">
     <img src="./img_readme/mahoupao.png" alt="Logo" width="160" height="160">
   </a>
-</p>[README_en.md](README_en.md)
+</p>
+
 <h3 align="center">BingGo</h3>
 <p align="center">the magical integration with Chinese chess and International chess</p>
 
@@ -25,8 +26,11 @@
   <a href="https://github.com/windbell0711/BingGo/issues">报告Bug</a>  ·
   <a href="https://github.com/windbell0711/BingGo/issues">提出新特性</a>
 </p>
-
+<p align="center">
+  <a href="https://github.com/windbelljianjie0711/BingGo/README_en.md"><u>ENGLISH</u></a>
+</p>
  
+
 ## 目录
 - [规则介绍](#规则介绍)
   - [主要修改](#主要修改)
