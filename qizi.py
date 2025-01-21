@@ -5,7 +5,7 @@
 @Coauthor: TheWindbell07
 @File    : qizi.py
 """
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import config
 
 
