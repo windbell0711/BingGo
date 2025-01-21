@@ -116,7 +116,7 @@ class War(FloatLayout):
             Clock.schedule_once(lambda dt:self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
         if self.beach[p].typ==7 and 0<=p<9:
             Clock.schedule_once(lambda dt:self.kill_piece(self.beach[p]),0.1)
-            Clock.schedule_once(lambda dt:self.place_piece(Qizi(p=p, typ=1, beach=self.beach), p=p),0.1)
+            Clock.schedule_once(lambda dt:self.place_piece(Qizi(p=p, typ=0, beach=self.beach), p=p),0.1)
 
 
     def board(self, x, y):
