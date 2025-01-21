@@ -242,12 +242,12 @@ class War(FloatLayout):
                     self.change_regret_mode()
                 self.board(x, y)
             elif 750 < y < 848 and 1268 < x < 1536:
+                self.remove_path()
                 if not self.regret_mode:
                     self.change_regret_mode()
                 if 1268 < x < 1332:
                     self.regret()
                 elif 1342 < x < 1462:
-                    #  self.change_regret_mode()
                     pass
                 elif 1476 < x < 1536:
                     self.gret()
