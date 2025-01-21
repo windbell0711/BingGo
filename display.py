@@ -1,4 +1,5 @@
 from kivy.config import Config
+
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -14,11 +15,12 @@ from kivy.clock import Clock
 
 from beach import *
 
-
 M = Metrics.density / 2
+
 
 def fx(p):
     return (p % 10 + 0.5) / 12
+
 
 def fy(p):
     return (8.5 - p // 10) / 9
@@ -32,7 +34,7 @@ class War(FloatLayout):
         self.active_qizi = None  # 当前棋子
         self.mycamp = False  # 我的阵营  False: 中象; True: 国象
         self.imgs = []
-        
+
         # bgm设置
         self.sound = SoundLoader.load('./music/main.wav')
         if self.sound:
@@ -98,7 +100,8 @@ class War(FloatLayout):
                 self.active_qizi = None
                 return
             elif (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
-                  self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and p == 8 and self.beach[p].typ == 8):
+                  self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and p == 8 and self.beach[
+                      p].typ == 8):
                 self._move_force(pfrom=8, pto=4)
                 self._move_force(pfrom=3, pto=5)
                 self.mycamp = not self.mycamp
@@ -106,6 +109,15 @@ class War(FloatLayout):
                 return
 
         self.active_qizi = self.beach[p]
+
+    def promotion(self,p):#升变
+        if self.beach[p].typ==13 and 79<p<89:
+            Clock.schedule_once(lambda dt:self.kill_piece(self.beach[p]),0.1)
+            Clock.schedule_once(lambda dt:self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
+        if self.beach[p].typ==7 and 0<=p<9:
+            Clock.schedule_once(lambda dt:self.kill_piece(self.beach[p]),0.1)
+            Clock.schedule_once(lambda dt:self.place_piece(Qizi(p=p, typ=1, beach=self.beach), p=p),0.1)
+
 
     def board(self, x, y):
         """点按棋盘"""
@@ -120,6 +132,7 @@ class War(FloatLayout):
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
+            self.promotion(p)
             self.mycamp = not self.mycamp
             self.active_qizi = None
         else:
@@ -130,7 +143,7 @@ class War(FloatLayout):
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
             x, y = touch.pos
-            print (x,y)
+            print(x, y)
             x, y = x / M, y / M
             if x < 1250:
                 self.board(x, y)
