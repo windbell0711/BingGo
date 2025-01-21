@@ -14,7 +14,6 @@ from kivy.clock import Clock
 
 from beach import *
 
-
 M = Metrics.density / 2
 
 def fx(p):
@@ -33,7 +32,7 @@ class War(FloatLayout):
         self.mycamp = False  # 我的阵营  False: 中象; True: 国象
         self.log: List[Tuple[int, int, int]] = [(7, 0, 0)]  # 走子日志  0: move; 1: place; 2: kill; 7: 分割符
         self.imgs = []
-        
+
         # bgm设置
         self.sound = SoundLoader.load('./music/main.wav')
         if self.sound:
@@ -90,6 +89,7 @@ class War(FloatLayout):
         animation.start(self.imgs[idt])
         # 吃子消失动画
         if yummy:
+            self.log.append((2, self.beach.pieces[cuisine].typ, pto))
             Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)
 
     def castling(self, p):  # 王车易位
@@ -105,11 +105,16 @@ class War(FloatLayout):
             return True
         return False
 
-    def save(self):
-        pass
-
-    def load(self):
-        pass
+    def promotion(self,p):  # 升变
+        if self.beach[p].typ == 13 and 79 < p < 89:
+            Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
+            Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
+            return True
+        if self.beach[p].typ == 7 and 0 <= p < 9:
+            Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
+            Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=0, beach=self.beach), p=p),0.1)
+            return True
+        return False
 
     def board(self, x, y):
         """点按棋盘"""
@@ -128,7 +133,8 @@ class War(FloatLayout):
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
-            self.ラウンドを終える()
+            self.promotion(p)
+            Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.15)
         else:
             print("无法抵达或无法选中")
         return
@@ -137,6 +143,13 @@ class War(FloatLayout):
         self.mycamp = not self.mycamp
         self.active_qizi = None
         self.log.append((7, 0, 0))
+        print(self.log)
+
+    def save(self):
+        pass
+
+    def load(self):
+        pass
 
     def regret(self):
         pass

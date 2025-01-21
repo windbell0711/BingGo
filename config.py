@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import List, Dict, Tuple
 
 typ_dict = {
+    "将": 0,
     "车": 1,
     "马": 2,
     "相": 3,
