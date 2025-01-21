@@ -151,6 +151,7 @@ class War(FloatLayout):
         if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp:  # 点选棋子为己方阵营
             # 王车易位检查
             if self.active_qizi is not None and self.beach[3] is not None and self.mycamp and self._castling(p):
+                self.remove_path()
                 self.ラウンドを終える()
             else:
                 self.active_qizi = self.beach[p]
@@ -160,6 +161,7 @@ class War(FloatLayout):
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
             self._promotion(p)
+            self.remove_path()
             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.15)
         else:
             print("无法抵达或无法选中")
@@ -169,7 +171,6 @@ class War(FloatLayout):
         self.mycamp = not self.mycamp
         self.active_qizi = None
         self.log.append((7, 0, 0))  # 回合结束
-        self.remove_path()
         print(self.log)
 
     def save(self):
