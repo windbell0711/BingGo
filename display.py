@@ -62,6 +62,25 @@ class War(FloatLayout):
             ))
             self.add_widget(self.imgs[-1])
 
+        self.dots = []
+
+    def show_path(self):
+        for p in self.active_qizi.get_ma():
+            if self.beach.occupied(p):
+                self.dots.append(Image(source='./img/big_dot.png', size_hint=(None, None),
+                                       size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                self.dots[-1].opacity = 0.5
+                self.add_widget(self.dots[-1])
+            else:
+                self.dots.append(Image(source='./img/small_dot.png', size_hint=(None, None),
+                                  size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                self.dots[-1].opacity = 0.5
+                self.add_widget(self.dots[-1])
+
+    def remove_path(self):
+        for i in self.dots:
+            self.remove_widget(i)
+
     def place_piece(self, qizi: Qizi, p: int, log=True):  # TODO: 可以占死人位
         idt = self.beach.set_son(qizi, p)
         self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
@@ -135,6 +154,8 @@ class War(FloatLayout):
                 self.ラウンドを終える()
             else:
                 self.active_qizi = self.beach[p]
+                self.remove_path()
+                self.show_path()
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
@@ -148,6 +169,7 @@ class War(FloatLayout):
         self.mycamp = not self.mycamp
         self.active_qizi = None
         self.log.append((7, 0, 0))  # 回合结束
+        self.remove_path()
         print(self.log)
 
     def save(self):

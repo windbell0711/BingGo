@@ -49,19 +49,21 @@ or chess, with the following primary modifications:
 3. An additional cannon is added to the Chinese chess set.
 4. The movement range restrictions for the advisors and elephants in Chinese chess are removed.
 5. In Chinese chess, a pawn can move one step forward, left, or right after advancing one step forward.
+6. Added Chinese chess piece **Marshal**
 
 ### Details
 
 The game starts with the Chinese chess side, and each side takes turns moving once according to the following methods
 
 #### For the Chinese Chess Side:
-- **General**: Moves one square along a straight line and cannot leave the palace (九宫格). If directly facing the King and at the start of its turn, it wins.
+- **General**: Moves one square along a straight line and cannot leave the palace. If directly facing the King and at the start of its turn, it wins.
 - **Advisor**: Moves one square diagonally.
 - **Elephant**: Moves two squares diagonally and cannot jump over any piece.
 - **Horse**: Moves one square along a straight line, then moves one square diagonally outward; it cannot jump over any piece if there is one on the path.
 - **Chariot**: Moves any number of squares along a straight line and cannot jump over any piece.
 - **Cannon**: Moves any number of squares along a straight line and cannot jump over any piece or capture in this way. It can capture an enemy piece if there is exactly one piece between it and the enemy piece.
-- **Soldier**: Moves one square forward, left, or right. Upon reaching the end of the board, it can immediately transform into a chariot (车).
+- **Soldier**: Moves one square forward, left, or right. Upon reaching the end of the board, it can immediately transform into a **marshal**.
+- **Marshal**: Moves in any of the above ways
 
 #### For the Chess Side:
 - **King**: Moves one square in any direction, either diagonally or straight. If the king is on the back rank and the rook is in its original position, the king can castle by moving two squares towards the rook, which then moves to the square next to the king.
@@ -70,7 +72,6 @@ The game starts with the Chinese chess side, and each side takes turns moving on
 - **Bishop**: Moves any number of squares diagonally and cannot jump over any piece.
 - **Knight**: Moves two squares in one direction and then one square perpendicular to that direction, jumping over any intervening pieces.
 - **Pawn**: Moves one square forward, or two squares forward from its starting position, but cannot capture in this way. It can capture an enemy piece that is one square diagonally ahead. Upon reaching the end of the board, it can immediately transform into a queen.
-
 ## Download
 
 ## Developer

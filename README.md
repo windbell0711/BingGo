@@ -15,7 +15,7 @@
   <a href="https://github.com/windbelljianjie0711/BingGo">
     <img src="./img_readme/mahoupao.png" alt="Logo" width="160" height="160">
   </a>
-</p>
+</p>[README_en.md](README_en.md)
 <h3 align="center">BingGo</h3>
 <p align="center">the magical integration with Chinese chess and International chess</p>
 
@@ -46,12 +46,13 @@
 3. 中国象棋增一中炮。
 4. 取消中象中，相、士的走子范围限制。
 5. 中象中，兵向前一步即可向前方、左侧或右侧移动一步。
+6. 新增了中国象棋棋子**将**
 
 ### 完整规则
 
 游戏由中国象棋方开始，安装以下方法轮流行走一次。
 
-#### 国象方：
+#### 中象方：
 **帅**
 沿直线移动一格，不能离开九宫格。
 若直接面对王，并处于自己的回合开始，胜。
@@ -73,8 +74,10 @@
 若直线上与敌方子间有且仅有一个子，可以将敌方子吃掉
 
 **兵**
-向前，左或右走一格，若到达底线，则可以立即变成车
+向前，左或右走一格，若到达底线，则可以立即变成将
 
+**将**
+有以上所有棋子的走子或吃子方式
 
 
 #### 国象方：
