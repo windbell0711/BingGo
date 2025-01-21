@@ -31,6 +31,8 @@ class War(FloatLayout):
         self.active_qizi = None  # 当前棋子
         self.mycamp = False  # 我的阵营  False: 中象; True: 国象
         self.log: List[Tuple[int, int, int]] = [(7, 0, 0)]  # 走子日志  0: move; 1: place; 2: kill; 7: 分割符
+        self.regret_mode = False
+        self.regret_pointer = 0
         self.imgs = []
 
         # bgm设置
@@ -51,7 +53,7 @@ class War(FloatLayout):
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
 
-        # 棋子贴图  TODO: 统一化未完成，应将quick_set()从Beach搬至BingGo
+        # 棋子贴图  TODO: 统一化未完成，应将quick_set()从Beach搬至War
         self.imgs = []
         for qizi in self.beach.pieces:
             self.imgs.append(Image(
@@ -60,39 +62,42 @@ class War(FloatLayout):
             ))
             self.add_widget(self.imgs[-1])
 
-    def place_piece(self, qizi: Qizi, p: int):
+    def place_piece(self, qizi: Qizi, p: int, log=True):  # TODO: 可以占死人位
         idt = self.beach.set_son(qizi, p)
         self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
         self.add_widget(self.imgs[idt])
-        self.log.append((1, qizi.typ, p))
+        if log:
+            self.log.append((1, qizi.typ, p))
 
-    def kill_piece(self, qizi: Qizi):
+    def kill_piece(self, qizi: Qizi, log=True):
         self.beach.set_son(None, qizi.p)
         qizi.alive = False
         self.remove_widget(self.imgs[qizi.idt])
-        self.log.append((2, qizi.typ, qizi.p))
+        if log:
+            self.log.append((2, qizi.typ, qizi.p))
 
-    def _move_force(self, pfrom: int, pto: int):
-        # 判断是否吃子
-        yummy, cuisine = self.beach.occupied(pto), None
+    def _move_force(self, pfrom: int, pto: int, log=True):
+        # 判断是否吃子，顺便写个日志
+        yummy = self.beach.occupied(pto)
         if yummy:
             cuisine = self.beach[pto].idt
+            if log:
+                self.log.append((2, self.beach.pieces[cuisine].typ, pto))
+            self.beach.pieces[cuisine].alive = False
+            Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)  # 吃子消失动画
         # 更新数据并获取棋子id，顺便写个日志
         idt = self.beach.move_son(pfrom, pto)
-        self.log.append((0, pfrom, pto))
+        if log:
+            self.log.append((0, pfrom, pto))
         # 确保图片置于顶层
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
         # 走子平移动画
         animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
         animation.start(self.imgs[idt])
-        # 吃子消失动画
-        if yummy:
-            self.log.append((2, self.beach.pieces[cuisine].typ, pto))
-            Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)
 
-    def castling(self, p):  # 王车易位
+    def _castling(self, p):  # 王车易位
         if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
                 self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
             self._move_force(pfrom=0, pto=2)
@@ -105,7 +110,7 @@ class War(FloatLayout):
             return True
         return False
 
-    def promotion(self,p):  # 升变
+    def _promotion(self,p):  # 升变
         if self.beach[p].typ == 13 and 79 < p < 89:
             Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
             Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
@@ -126,14 +131,14 @@ class War(FloatLayout):
             return
         if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp:  # 点选棋子为己方阵营
             # 王车易位检查
-            if self.active_qizi is not None and self.beach[3] is not None and self.mycamp and self.castling(p):
+            if self.active_qizi is not None and self.beach[3] is not None and self.mycamp and self._castling(p):
                 self.ラウンドを終える()
             else:
                 self.active_qizi = self.beach[p]
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():  # 点选位置self.active_qizi能走到
             self._move_force(pfrom=self.active_qizi.p, pto=p)
             print("已移动")
-            self.promotion(p)
+            self._promotion(p)
             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.15)
         else:
             print("无法抵达或无法选中")
@@ -142,7 +147,7 @@ class War(FloatLayout):
     def ラウンドを終える(self):
         self.mycamp = not self.mycamp
         self.active_qizi = None
-        self.log.append((7, 0, 0))
+        self.log.append((7, 0, 0))  # 回合结束
         print(self.log)
 
     def save(self):
@@ -151,23 +156,76 @@ class War(FloatLayout):
     def load(self):
         pass
 
+    def change_regret_mode(self):
+        """打开或关闭悔棋模式"""
+        if not self.regret_mode:  # 打开悔棋模式
+            if self.log[-1][0] != 7:  # log最后一项必是(7, 0, 0)
+                print("!log损坏")
+                return
+            self.regret_pointer = len(self.log) - 1  # 指向最后一项
+            self.regret_mode = True
+        else:  # 关闭悔棋模式
+            self.log = self.log[:self.regret_pointer + 1]
+            self.active_qizi = None
+            self.regret_mode = False
+
+    def reproduce_operation(self, oper: Tuple[int, int, int]) -> None:
+        if oper[0] == 0:
+            self._move_force(pfrom=oper[1], pto=oper[2], log=False)
+        elif oper[0] == 1:
+            self.place_piece(qizi=Qizi(p=oper[2], typ=oper[1], beach=self.beach), p=oper[2], log=False)
+        elif oper[0] == 2:
+            self.kill_piece(self.beach[oper[2]], log=False)
+
+    def reverse_operation(self, oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
+        if oper[0] == 0:
+            return (oper[0], oper[2], oper[1])
+        elif oper[0] == 1:
+            return (2, oper[1], oper[2])
+        elif oper[0] == 2:
+            return (1, oper[1], oper[2])
+        print("!无法逆向操作")
+        return oper
+
     def regret(self):
-        pass
+        if self.regret_pointer == 0:
+            print("!无法回退")
+            return
+        self.regret_pointer -= 1
+        while self.log[self.regret_pointer][0] != 7:
+            self.reproduce_operation(self.reverse_operation(self.log[self.regret_pointer]))
+            self.regret_pointer -= 1
+        self.mycamp = not self.mycamp
+        print("已回退一步")
+
+    def gret(self):
+        if self.regret_pointer == len(self.log) - 1:
+            print("!无法前进")
+            return
+        self.regret_pointer += 1
+        while self.log[self.regret_pointer][0] != 7:
+            self.reproduce_operation(self.log[self.regret_pointer])
+            self.regret_pointer += 1
+        self.mycamp = not self.mycamp
+        print("已前进一步")
 
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
             x, y = touch.pos
-            print(x, y)
+            print("touch.pos: ", x, y)
             x, y = x / M, y / M
             if x < 1250:
-                self.board(x, y)
+                if not self.regret_mode:
+                    self.board(x, y)
             elif 750 < y < 848:
                 if 1268 < x < 1332:
-                    print("regret")
+                    if self.regret_mode:
+                        self.regret()
                 elif 1342 < x < 1462:
-                    print("sure")
+                    self.change_regret_mode()
                 elif 1476 < x < 1536:
-                    print("gret")
+                    if self.regret_mode:
+                        self.gret()
 
 
 class BingGo(App):
