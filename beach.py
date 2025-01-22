@@ -41,6 +41,12 @@ class Beach:
         self.beach[pfrom] = None  # 从原位置移除
         self[pto].p = pto
         return self[pto].idt
+        
+    def virtual_move(self, qizi, p: int):
+        """虚拟移动，用于将死判断"""
+        self.beach[p] = qizi
+        if qizi is None:
+            return None
 
     def virtual_move(self, qizi, p: int):
         """虚拟移动，用于将死判断"""
