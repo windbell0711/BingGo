@@ -171,6 +171,13 @@ class Qizi:
                 ma.append(p - 10)
             if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)
+
+            p = self.p - 10
+            while test(p):
+                p += -10
+                if special_eat(p) and not self.beach[p]==None:
+                    if self.beach[p].typ==12:
+                        ma.append(p)
         if self.typ == 7:  # bingo
             p = self.p
             if not p % 10 == 0 and eat(p - 1) and not p // 10 == 5:
