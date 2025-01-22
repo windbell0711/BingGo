@@ -45,15 +45,6 @@ class War(FloatLayout):
         self.regret_pointer = 0
         self.imgs = []
 
-        # bgm设置
-        # self.sound = SoundLoader.load('./music/main.wav')
-        # if self.sound:
-        #     self.sound.volume = 1.0
-        #     self.sound.loop = True
-        #     self.sound.play()
-        # else:
-        #     print("!声音播放出错", self.sound)
-
         # 窗口及背景图设置
         Window.size = (800, 600)
         image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
@@ -400,10 +391,26 @@ class War(FloatLayout):
                     pass
                 elif 1476 < x < 1536:
                     self.gret()
+            elif 1458<x<1542 and 70<y<152:
+                self.__init__()
+            elif 174<y<262:
+                if 1266<x<1440:
+                    print("save")
+                elif 1418<x<1548:
+                    print("load")
+
 
 
 class BingGo(App):
     def build(self):
+        # bgm设置
+        # self.sound = SoundLoader.load('./music/main.wav')
+        # if self.sound:
+        #     self.sound.volume = 1.0
+        #     self.sound.loop = True
+        #     self.sound.play()
+        # else:
+        #     print("!声音播放出错", self.sound)
         return War()
 
 
