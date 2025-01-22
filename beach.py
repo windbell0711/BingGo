@@ -49,12 +49,6 @@ class Beach:
         if qizi is None:
             return None
 
-    def virtual_move(self, qizi, p: int):
-        """虚拟移动，用于将死判断"""
-        self.beach[p] = qizi
-        if qizi is None:
-            return None
-
     def valid(self, x: int) -> bool:  # 合法
         """检测当前位置合法"""
         if x % 10 == 9:
