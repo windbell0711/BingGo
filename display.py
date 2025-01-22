@@ -140,6 +140,101 @@ class War(FloatLayout):
             return True
         return False
 
+
+    def get_attack_pose(self):
+        for i in self.beach:
+            if not i == None:
+                if i.typ == 12:
+                    self.king_p = i.p
+                    print(i.p)
+                    break
+        for i in (63, 64, 65, 73, 74, 74, 83, 84, 85):
+            if not self.beach[i] == None:
+                if self.beach[i].typ == 6:
+                    self.shuai_p = self.beach[i].p
+                    print(self.beach[i].p)
+                    break
+        self.Chn = []
+        self.Intl = []
+        for i in self.beach:
+            if not i == None:
+                if i.camp_intl==True:#遍历国际象棋棋子
+                    self.Intl += i.get_ma()
+                else:
+                    self.Chn += i.get_ma()
+
+    def end(self):
+        self.beach.virtual_move(self.i, self.i.p)
+        self.beach.virtual_move(self.k, self.j)
+
+    def bgn(self):
+        self.beach.virtual_move(self.i, self.j)
+        self.beach.virtual_move(None, self.i.p)
+        self.get_attack_pose()
+
+    def king_is_checkmate(self):
+        for self.i in self.beach:
+            if not self.i == None:
+                if self.i.camp_intl==True:
+                    for self.j in self.i.get_ma():
+                        if not self.j == None:
+                            self.k=self.beach[self.j]
+                        else:
+                            self.k=None
+                        self.bgn()
+                        if self.mycamp==True:
+                            if not self.king_p in self.Chn:
+                                self.end()
+                                return False
+                        self.end()
+        return True
+
+    def shuai_is_checkmate(self):
+        for self.i in self.beach:
+            if not self.i == None:
+                if self.i.camp_intl==False:
+                    for self.j in self.i.get_ma():
+                        if not self.j == None:
+                            self.k=self.beach[self.j]
+                        else:
+                            self.k=None
+                        self.bgn()
+                        if self.mycamp==True:
+                            if not self.shuai_p in self.Intl:
+                                self.end()
+                                return False
+                        self.end()
+        return True
+
+
+
+
+    def check(self):
+        self.get_attack_pose()
+        if self.mycamp == True:
+            if self.shuai_p in self.Intl:
+                print("check")
+                Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
+                Clock.schedule_once(lambda dt: self.regret(), 0.2)
+                Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
+            elif self.king_p in self.Chn:
+                if self.king_is_checkmate():
+                    print("红方胜")
+                    return
+                print("check!")
+        else:
+            if self.king_p in self.Chn:
+                print("王被将军")
+                Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
+                Clock.schedule_once(lambda dt: self.regret(), 0.2)
+                Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
+            elif self.shuai_p in self.Intl:
+                if self.shuai_is_checkmate():
+                    print("黑方胜")
+                    return
+                print("将军！")
+
+
     def board(self, x, y):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
@@ -162,6 +257,7 @@ class War(FloatLayout):
             print("已移动")
             self._promotion(p)
             self.remove_path()
+
             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.15)
         else:
             print("无法抵达或无法选中")
@@ -172,6 +268,7 @@ class War(FloatLayout):
         self.active_qizi = None
         self.log.append((7, 0, 0))  # 回合结束
         print(self.log)
+        self.check()
 
     def save(self):
         pass
@@ -238,19 +335,19 @@ class War(FloatLayout):
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
             if x < 1250:
-                if self.regret_mode == True:
+                if self.regret_mode:
                     self.change_regret_mode()
                 self.board(x, y)
-            elif 750 < y < 848 and 1268<x<1536:
-                if self.regret_mode == False:
+            elif 750 < y < 848 and 1268 < x < 1536:
+                self.remove_path()
+                if not self.regret_mode:
                     self.change_regret_mode()
                 if 1268 < x < 1332:
-                        self.regret()
+                    self.regret()
                 elif 1342 < x < 1462:
                     pass
-                    #self.change_regret_mode()
                 elif 1476 < x < 1536:
-                        self.gret()
+                    self.gret()
 
 
 class BingGo(App):
@@ -258,5 +355,17 @@ class BingGo(App):
         return War()
 
 
+def reset():
+    import kivy.core.window as window
+    from kivy.base import EventLoop
+    if not EventLoop.event_listeners:
+        from kivy.cache import Cache
+        window.Window = window.core_select_lib('window', window.window_impl, True)
+        Cache.print_usage()
+        for cat in Cache._categories:
+            Cache._objects[cat] = {}
+
+
 if __name__ == '__main__':
+    reset()
     BingGo().run()

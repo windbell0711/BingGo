@@ -1,1 +1,3 @@
 Kivy==2.3.0
+PyInstaller
+pywin32

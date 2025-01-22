@@ -26,7 +26,7 @@ typ_dict = {
     "pawn": 13
 }
 
-init_lineup = {
+init_lineup = {  # TODO
     80: "车",
     81: "马",
     82: "相",
