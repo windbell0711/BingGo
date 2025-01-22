@@ -1,15 +1,16 @@
 # BingGo
 <p align="right">
   <a href="https://github.com/windbelljianjie0711/BingGo/README.md">中文</a> · 
-  <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">File</a>
+  <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">TECH</a>
 </p>
 Bing Go! Combining Chinese chess with chess, in the 9*9 chess game,  
 Witness the battle of world blending and the feast of cultural blending together!
 
-
+[![](https://img.shields.io/badge/python-3.7.5+-purple)](https://www.python.org)
 [![](https://img.shields.io/badge/issues-0-blue)](https://github.com/windbell0711/BingGo/issues)
-![](https://img.shields.io/badge/contributors-2-green)
-![](https://img.shields.io/badge/stars-1-orange)
+[![](https://img.shields.io/badge/contributors-2-green)](https://github.com/windbell0711/BingGo/graphs/contributors)
+![](https://img.shields.io/badge/stars-2-orange)
+[![](https://img.shields.io/badge/framework-kivy-darkred)](https://github.com/kivy/kivy)
 [![](https://img.shields.io/badge/LICENSE-Apache2.0-yellow)](https://github.com/windbell0711/BingGo?tab=Apache-2.0-1-ov-file#readme)
 
 <p align="center">

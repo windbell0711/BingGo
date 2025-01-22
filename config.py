@@ -1,3 +1,8 @@
+"""
+-*- coding: utf-8 -*-
+@Github  : windbell0711/BingGo
+@File    : config.py
+"""
 from __future__ import annotations
 from typing import List, Dict, Tuple
 

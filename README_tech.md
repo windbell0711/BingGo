@@ -23,13 +23,15 @@ qizi.py
    *├── get_ma()
    *└── move(p: int)
 
-move.py
+beach.py
 └── Beach
    *├── beach: list[Qizi|None] (len=90)
+   *├── pieces: list[Qizi] (corresponding with War.imgs)
     │
    *├── __getitem__(item) (get) -> Qizi|None
-   *├── set(qizi, p: int) (set)
-   *├── continuously_set(qizis: dict{p(int): typ(str|int)}) (set)
+   *├── set_son(qizi, p: int) (set)
+   *├── quick_set(qizis: dict{p(int): typ(str|int)}) (set)
+   *├── move_son(pfrom: int, pto: int) -> idt: int (move)
     └┬─ valid(x: int) -> bool (judge)
      ├─ occupied(x: int) -> bool (judge)
      ├─ not_occupied(x: int) -> bool (judge)
@@ -37,15 +39,47 @@ move.py
      └─ in_occupied(x: int) -> bool (judge)
 
 display.py
-├── War
+├── fx(p)
+├── fy(p)
+├── War(FloatLayout)
 │   ├── beach
-│  *└── move_son(pfrom: int, pto: int)
-└── BingGo(App)
-    ├── (build)
-    └┬─ get_p(window, touch)
-     ├─ regret(window, touch)
-     ├─ new(window, touch)
-     └─ story(window, touch)
+│   ├── active_qizi
+│   ├── mycamp
+│   │
+│   ├── log
+│   ├── regret_mode
+│   ├── regret_pointer
+│   ├── imgs: list[Image] (corresponding with Beach.pieces)
+│   │
+│   ├── sound
+│   ├── dots
+│   │
+│   ├── add_widget(image)
+│   ├── remove_widget(image)
+│   ├── show_path()
+│   ├── remove_path()
+│   ├── place_piece(qizi: Qizi, p: int, log=True)
+│   ├── kill_piece(qizi: Qizi, log=True)
+│   ├── _move_force(pfrom: int, pto: int, log=True)
+│   ├── _castling(p)
+│   ├── _promotion(p)
+│   │
+│   ├── handle_button_press(window, touch)
+│   ├── board(x, y)
+│   ├── ラウンドを終える()
+│   ├── save()
+│   ├── load()
+│   ├── change_regret_mode()
+│   ├── reproduce_operation(oper: Tuple[int, int, int]) -> None
+│   ├── reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]
+│   ├── regret()
+│   ├── gret()
+│   │
+│   └── ...
+├── BingGo(App)
+│   ├── (build)
+│   └── get_p(window, touch)
+└── reset()
 ```
 
 

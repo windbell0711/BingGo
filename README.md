@@ -5,10 +5,11 @@
 </p>
 挺兵！将中国象棋和国际象棋的玩法结合，9*9的棋局中，中象与国象两军对垒。一同见证这场世界交融的战斗、文化交融的盛宴！
 
-
+[![](https://img.shields.io/badge/python-3.7.5+-purple)](https://www.python.org)
 [![](https://img.shields.io/badge/issues-0-blue)](https://github.com/windbell0711/BingGo/issues)
-![](https://img.shields.io/badge/contributors-2-green)
-![](https://img.shields.io/badge/stars-1-orange)
+[![](https://img.shields.io/badge/contributors-2-green)](https://github.com/windbell0711/BingGo/graphs/contributors)
+![](https://img.shields.io/badge/stars-2-orange)
+[![](https://img.shields.io/badge/framework-kivy-darkred)](https://github.com/kivy/kivy)
 [![](https://img.shields.io/badge/LICENSE-Apache2.0-yellow)](https://github.com/windbell0711/BingGo?tab=Apache-2.0-1-ov-file#readme)
 
 <p align="center">
@@ -21,14 +22,14 @@
 <p align="center">the magical integration with Chinese chess and International chess</p>
 
 [<p align="center">**探索本项目的文档 »**</p>](#目录)
+
 <p align="center">
   <a href="https://github.com/windbell0711/BingGo">查看Demo</a>  ·
   <a href="https://github.com/windbell0711/BingGo/issues">报告Bug</a>  ·
   <a href="https://github.com/windbell0711/BingGo/issues">提出新特性</a>
 </p>
-<p align="center">
-  <a href="https://github.com/windbelljianjie0711/BingGo/README_en.md"><u>ENGLISH</u></a>
-</p>
+
+[<p align="center">ENGLISH</p>](README_en.md)
  
 
 ## 目录

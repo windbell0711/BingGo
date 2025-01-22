@@ -1,8 +1,10 @@
 """
 -*- coding: utf-8 -*-
 @Time    : 2025-01-17
+@Github  : windbell0711/BingGo
 @Author  : Lilold333
 @Coauthor: TheWindbell07
+@License : Apache 2.0
 @File    : qizi.py
 """
 from typing import List, Dict, Tuple

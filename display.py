@@ -1,3 +1,13 @@
+"""
+-*- coding: utf-8 -*-
+@Time    : 2025-01-17
+@Github  : windbell0711/BingGo
+@Author  : Lilold333
+@Coauthor: TheWindbell07
+@License : Apache 2.0
+@File    : diaplay.py
+"""
+
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
@@ -129,7 +139,7 @@ class War(FloatLayout):
             return True
         return False
 
-    def _promotion(self,p):  # 升变
+    def _promotion(self, p):  # 升变
         if self.beach[p].typ == 13 and 79 < p < 89:
             Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
             Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
