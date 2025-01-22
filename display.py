@@ -236,7 +236,7 @@ class War(FloatLayout):
                         else:
                             self.k=None
                         self.bgn()
-                        if self.mycamp==True:
+                        if self.mycamp==False:
                             if not self.shuai_p in self.Intl:
                                 print(self.i.p, self.j)
                                 self.end()
