@@ -181,7 +181,7 @@ class War(FloatLayout):
                     self.king_p = i
                     print(i,self.beach[i].p,self.king_p,self.beach[i])
                     break
-        for i in (63, 64, 65, 73, 74, 74, 83, 84, 85):
+        for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):
             if not self.beach[i] == None:
                 if self.beach[i].typ == 6:
                     self.shuai_p = i
