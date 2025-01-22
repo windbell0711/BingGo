@@ -47,7 +47,6 @@ class Beach:
         self.beach[p] = qizi
         if qizi is None:
             return None
-        self.pieces.append(qizi)
 
     def valid(self, x: int) -> bool:  # 合法
         """检测当前位置合法"""
