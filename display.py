@@ -88,9 +88,8 @@ class War(FloatLayout):
 
     def add_label(self,text):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
-                               size=("200dp", "200dp"), pos_hint={'center_x': 0.86, 'center_y': 0.2}))
+                               size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.4}))
         self.add_widget(self.hints[-1])
-        Clock.schedule_once(lambda dt: self.remove_label(), 1)
 
     def remove_label(self):
         for i in self.hints:
@@ -314,7 +313,9 @@ class War(FloatLayout):
         self.active_qizi = None
         self.log.append((7, 0, 0))  # 回合结束
         print(self.log)
+        self.remove_label()
         self.check()
+
 
     def save(self):
         pass
@@ -388,6 +389,7 @@ class War(FloatLayout):
                 self.board(x, y)
             elif 750 < y < 848 and 1268 < x < 1536:
                 self.remove_path()
+                self.remove_label()
                 if not self.regret_mode:
                     self.change_regret_mode()
                 if 1268 < x < 1332:
