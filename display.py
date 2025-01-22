@@ -150,6 +150,8 @@ class War(FloatLayout):
         animation.start(self.imgs[idt])
 
     def _castling(self, p):  # 王车易位
+        if self.king_is_checkmate():
+            return
         if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
                 self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
             self._move_force(pfrom=0, pto=2)
