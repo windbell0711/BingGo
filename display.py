@@ -7,7 +7,6 @@
 @License : Apache 2.0
 @File    : diaplay.py
 """
-
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
@@ -23,6 +22,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 
 from beach import *
+from intelligence import Intelligence
 
 M = Metrics.density / 2
 
@@ -40,10 +40,13 @@ class War(FloatLayout):
         self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
         self.active_qizi = None  # 当前棋子
         self.mycamp = False  # 我的阵营  False: 中象; True: 国象
-        self.log: List[Tuple[int, int, int]] = [(7, 0, 0)]  # 走子日志  0: move; 1: place; 2: kill; 7: 分割符
+        self.log:       List[Tuple[int, int, int]]  = []  # 该回合走子日志  0: move; 1: place; 2: kill
+        self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
+        self.turn = 0  # 所在回合
         self.regret_mode = False
-        self.regret_pointer = 0
         self.imgs = []
+
+        self.ai = Intelligence(self.beach, self)
 
         # 窗口及背景图设置
         Window.size = (800, 600)
@@ -63,30 +66,29 @@ class War(FloatLayout):
             ))
             self.add_widget(self.imgs[-1])
 
-    hints=[]
+    hints = []
 
-    def add_label_sound(self,text,sound):
+    def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
-        self.sound = SoundLoader.load(f'./music/{sound}.wav')
+        self.sound = SoundLoader.load(f'./music/{sound}.wav')  # TODO: 多次使用self.sound存在潜在风险
         if self.sound:
             self.sound.volume = 1.0
             self.sound.loop = True
             self.sound.play()
 
-
-    def add_label(self,text):
+    def add_label(self, text):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
-                               size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.4}))
+                                size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.4}))
         self.add_widget(self.hints[-1])
 
     def remove_label(self):
         for i in self.hints:
             self.remove_widget(i)
 
-    dots=[]
+    dots = []
 
     def show_path(self):
         for p in self.active_qizi.get_ma():
@@ -97,7 +99,7 @@ class War(FloatLayout):
                 self.add_widget(self.dots[-1])
             else:
                 self.dots.append(Image(source='./img/small_dot.png', size_hint=(None, None),
-                                  size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                 size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -105,7 +107,7 @@ class War(FloatLayout):
         for i in self.dots:
             self.remove_widget(i)
 
-    def place_piece(self, qizi: Qizi, p: int, log=True):  # TODO: 可以占死人位
+    def place_piece(self, qizi: Qizi, p: int, log=True):  # TODO: 优化：可以占死人位
         idt = self.beach.set_son(qizi, p)
         self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
@@ -141,7 +143,7 @@ class War(FloatLayout):
         animation.start(self.imgs[idt])
 
     def _castling(self, p):  # 王车易位
-        if self.king_is_checkmate():
+        if self.ai.king_is_checkmate():
             return
         if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
                 self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
@@ -166,112 +168,30 @@ class War(FloatLayout):
             return True
         return False
 
-    Chn = []
-    Intl = []
-    king_p=90
-    shuai_p=90
-
-    def get_attack_pose(self):
-        self.reset_attack_pose()
-        print(self.beach[3])
-        for i in range(0,89):
-            if not self.beach[i] == None:
-                print(self.beach[i].typ)
-                if self.beach[i].typ == 12:
-                    self.king_p = i
-                    print(i,self.beach[i].p,self.king_p,self.beach[i])
-                    break
-        for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):
-            if not self.beach[i] == None:
-                if self.beach[i].typ == 6:
-                    self.shuai_p = i
-                    print(self.beach[i].p)
-                    break
-        for i in self.beach:
-            if not i == None:
-                if i.camp_intl==True:#遍历国际象棋棋子
-                    self.Intl += i.get_ma()
-                else:
-                    self.Chn += i.get_ma()
-
-    def reset_attack_pose(self):
-        self.Chn = []
-        self.Intl = []
-        self.king_p = 90
-        self.shuai_p = 90
-
-    def end(self):
-        self.beach.virtual_move(self.i, self.i.p)
-        self.beach.virtual_move(self.k, self.j)
-
-    def bgn(self):
-        self.beach.virtual_move(self.i, self.j)
-        self.beach.virtual_move(None, self.i.p)
-        print(self.beach[3])
-        self.get_attack_pose()
-
-    def king_is_checkmate(self):
-        for self.i in self.beach:
-            if not self.i == None:
-                if self.i.camp_intl==True:
-                    for self.j in self.i.get_ma():
-                        if not self.j == None:
-                            self.k=self.beach[self.j]
-                        else:
-                            self.k=None
-                        self.bgn()
-                        if self.mycamp==True:
-                            if not self.king_p in self.Chn:
-                                print(self.i.p,self.j)
-                                self.end()
-                                return False
-                        self.end()
-        return True
-
-    def shuai_is_checkmate(self):
-        for self.i in self.beach:
-            if not self.i == None:
-                if self.i.camp_intl==False:
-                    for self.j in self.i.get_ma():
-                        if not self.j == None:
-                            self.k=self.beach[self.j]
-                        else:
-                            self.k=None
-                        self.bgn()
-                        if self.mycamp==False:
-                            if not self.shuai_p in self.Intl:
-                                print(self.i.p, self.j)
-                                self.end()
-                                return False
-                        self.end()
-        return True
-
-
     def check(self):
-        self.get_attack_pose()
+        self.ai.get_attack_pose()
         if self.mycamp == True:
-            if self.shuai_p in self.Intl:
+            if self.ai.shuai_p in self.ai.Intl:
                 self.add_label(text="check")
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
                 Clock.schedule_once(lambda dt: self.regret(), 0.2)
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-            elif self.king_p in self.Chn:
-                if self.king_is_checkmate():
+            elif self.ai.king_p in self.ai.Chn:
+                if self.ai.king_is_checkmate():
                     self.add_label(text="red_wins")
                     return
                 self.add_label(text="check")
         else:
-            if self.king_p in self.Chn:
+            if self.ai.king_p in self.ai.Chn:
                 self.add_label(text="wangbeijj")
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
                 Clock.schedule_once(lambda dt: self.regret(), 0.2)
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-            elif self.shuai_p in self.Intl:
-                if self.shuai_is_checkmate():
+            elif self.ai.shuai_p in self.ai.Intl:
+                if self.ai.shuai_is_checkmate():
                     self.add_label(text="black_wins")
                     return
                 self.add_label(text="jiangjun")
-
 
     def board(self, x, y):
         """点按棋盘"""
@@ -302,13 +222,16 @@ class War(FloatLayout):
         return
 
     def ラウンドを終える(self):
+        self.turn += 1
+        print("self.turn:", self.turn)
+        # print(self.beach)
         self.mycamp = not self.mycamp
         self.active_qizi = None
-        self.log.append((7, 0, 0))  # 回合结束
-        print(self.log)
+        self.logs.append(self.log)  # 回合结束
+        self.log = []
+        print(self.logs)
         self.remove_label()
         self.check()
-
 
     def save(self):
         pass
@@ -319,13 +242,9 @@ class War(FloatLayout):
     def change_regret_mode(self):
         """打开或关闭悔棋模式"""
         if not self.regret_mode:  # 打开悔棋模式
-            if self.log[-1][0] != 7:  # log最后一项必是(7, 0, 0)
-                print("!log损坏")
-                return
-            self.regret_pointer = len(self.log) - 1  # 指向最后一项
             self.regret_mode = True
         else:  # 关闭悔棋模式
-            self.log = self.log[:self.regret_pointer + 1]
+            self.logs = self.logs[:self.turn]
             self.active_qizi = None
             self.regret_mode = False
 
@@ -348,27 +267,25 @@ class War(FloatLayout):
         return oper
 
     def regret(self):
-        if self.regret_pointer == 0:
+        if self.turn == 0:
             print("!无法回退")
             return
-        self.regret_pointer -= 1
-        while self.log[self.regret_pointer][0] != 7:
-            self.reproduce_operation(self.reverse_operation(self.log[self.regret_pointer]))
-            self.regret_pointer -= 1
-        self.mycamp=not self.mycamp
-        self.reset_attack_pose()
+        self.turn -= 1  # 先下一回合再操作
+        for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
+            self.reproduce_operation(self.reverse_operation(self.logs[self.turn][i]))
+        self.mycamp = not self.mycamp
+        self.ai.reset_attack_pose()
         print("已回退一步")
 
     def gret(self):
-        if self.regret_pointer == len(self.log) - 1:
+        if self.turn == len(self.logs):
             print("!无法前进")
             return
-        self.regret_pointer += 1
-        while self.log[self.regret_pointer][0] != 7:
-            self.reproduce_operation(self.log[self.regret_pointer])
-            self.regret_pointer += 1
+        for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
+            self.reproduce_operation(self.logs[self.turn][i])
+        self.turn += 1  # 先操作再下一回合
         self.mycamp = not self.mycamp
-        self.reset_attack_pose()
+        self.ai.reset_attack_pose()
         print("已前进一步")
 
     def handle_button_press(self, window, touch):
@@ -391,12 +308,12 @@ class War(FloatLayout):
                     pass
                 elif 1476 < x < 1536:
                     self.gret()
-            elif 1458<x<1542 and 70<y<152:
+            elif 1458 < x < 1542 and 70 < y < 152:
                 self.__init__()
-            elif 174<y<262:
-                if 1266<x<1440:
+            elif 174 < y < 262:
+                if 1266 < x < 1440:
                     print("save")
-                elif 1418<x<1548:
+                elif 1418 < x < 1548:
                     print("load")
 
 
