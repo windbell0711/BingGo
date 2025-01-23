@@ -7,8 +7,8 @@
 @File    : intelligence.py
 """
 
-def compare(x, y):
-    return y - x
+def compare(x,y):
+    return y-x
 
 class Intelligence:
     def __init__(self, beach, war):
@@ -16,31 +16,33 @@ class Intelligence:
         self.war = war
         self.mycamp = war.mycamp
 
-        self.Chn = []
-        self.Intl = []
-        self.king_p = 90
-        self.shuai_p = 90
+    Chn = []
+    Intl = []
+    king_p = 90
+    shuai_p = 90
 
     def get_attack_pose(self):
         self.reset_attack_pose()
+        print(self.beach[3])
         for i in range(0, 89):
             if not self.beach[i] is None:
+                print(self.beach[i].typ)
                 if self.beach[i].typ == 12:
                     self.king_p = i
+                    print(i, self.beach[i].p, self.king_p, self.beach[i])
                     break
-        # print("self.king_p", self.king_p)
-        for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):  # 找shuai
+        for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):
             if not self.beach[i] is None:
                 if self.beach[i].typ == 6:
                     self.shuai_p = i
+                    print(self.beach[i].p)
                     break
         for i in self.beach:
             if i is not None:
-                if i.camp_intl == True:
+                if i.camp_intl == True:  # 遍历国际象棋棋子
                     self.Intl += i.get_ma()
                 else:
                     self.Chn += i.get_ma()
-        pass
 
     def reset_attack_pose(self):
         self.Chn = []
@@ -48,98 +50,95 @@ class Intelligence:
         self.king_p = 90
         self.shuai_p = 90
 
-    def end(self, i, j, k):
-        self.beach.virtual_move(i, i.p)
-        self.beach.virtual_move(k, j)
+    def end(self):
+        self.beach.virtual_move(self.i, self.i.p)
+        self.beach.virtual_move(self.k, self.j)
 
-    def bgn(self, i, j):
-        self.beach.virtual_move(i, j)
-        self.beach.virtual_move(None, i.p)
+    def bgn(self):
+        self.beach.virtual_move(self.i, self.j)
+        self.beach.virtual_move(None, self.i.p)
+        print(self.beach[3])
         self.get_attack_pose()
 
     def king_is_checkmate(self):
-        for i in self.beach:
-            if i is not None:
-                if i.camp_intl:
-                    for j in i.get_ma():
-                        if j is not None:
-                            k = self.beach[j]
+        for self.i in self.beach:
+            if not self.i is None:
+                if self.i.camp_intl == True:
+                    for self.j in self.i.get_ma():
+                        if self.j is not None:
+                            self.k = self.beach[self.j]
                         else:
-                            k = None
-                        self.bgn(i, j)
+                            self.k = None
+                        self.bgn()
                         if self.mycamp == False:
                             if not self.king_p in self.Chn:
-                                print(i.p, j)
-                                self.end(i, j, k)
+                                print(self.i.p, self.j)
+                                self.end()
                                 return False
-                        self.end(i, j, k)
+                        self.end()
         return True
 
     def shuai_is_checkmate(self):
-        for i in self.beach:
-            if i is not None:
-                if not i.camp_intl:
-                    for j in i.get_ma():
-                        if j is not None:
-                            k = self.beach[j]
+        for self.i in self.beach:
+            if not self.i is None:
+                if self.i.camp_intl == False:
+                    for self.j in self.i.get_ma():
+                        if self.j is not None:
+                            self.k = self.beach[self.j]
                         else:
-                            k = None
-                        self.bgn(i, j)
-                        if self.mycamp == True:
+                            self.k = None
+                        self.bgn()
+                        if self.mycamp == False:
                             if not self.shuai_p in self.Intl:
-                                print(i.p, j)
-                                self.end(i, j, k)
+                                print(self.i.p, self.j)
+                                self.end()
                                 return False
-                        self.end(i, j, k)
+                        self.end()
         return True
 
     ptC = []
     ptI = []
-    pms = []  # possible moves
-
+    pms=[]#possible moves
     def get_protected_pose(self):
         self.reset_protected_pose()
         for i in self.beach:
             if i is not None:
-                if i.camp_intl:  # 遍历国际象棋棋子
+                if i.camp_intl == True:  # 遍历国际象棋棋子
                     self.ptC += i.get_protect()
                 else:
                     self.ptI += i.get_protect()
-
     def reset_protected_pose(self):
         self.ptC = []
         self.ptI = []
-
     def estimate_value(self):
         self.value = [0] * 90
         self.get_protected_pose()
         for i in self.ptI:
-            self.value[i] -= 1
+            self.value[i]-=1
         for i in self.ptC:
-            self.value[i] += 1
+            self.value[i]+=1
         for i in self.beach:
-            if not i is None:
-                self.value[i.p] += i.value()
+            if not i == None:
+                self.value[i.p]+=i.value()
         print(self.value)
         return self.value
-
     def get_possible_moves_Chn(self):
         self.pms=[]
         self.best_move = None
-        for i in self.beach:
-            if not i is None:
-                if not i.camp_intl:
-                    for j in i.get_ma():
-                        if j is not None:
-                            k = self.beach[j]
+        for self.i in self.beach:
+            if not self.i is None:
+                if self.i.camp_intl == False:
+                    for self.j in self.i.get_ma():
+                        if self.j is not None:
+                            self.k = self.beach[self.j]
                         else:
-                            k = None
-                        self.bgn(i, j)
+                            self.k = None
+                        self.bgn()
                         if not self.shuai_p in self.Intl:
-                            self.end(i, j, k)
-                            self.pms.append((i.p, j))
+                            self.end()
+                            self.pms.append((self.i.p, self.j))
                         else:
-                            self.end(i, j, k)
+                            self.end()
         A = 10000
         for i in self.pms:
             B = compare(*i)
@@ -149,21 +148,21 @@ class Intelligence:
 
     def get_possible_moves_Intl(self):
         self.pms = []
-        self.best_move = None
-        for i in self.beach:
-            if not i is None:
-                if i.camp_intl:
-                    for j in i.get_ma():
-                        if self.beach[j] is not None:
-                            k = self.beach[j]
+        self.best_move=None
+        for self.i in self.beach:
+            if not self.i is None:
+                if self.i.camp_intl == True:
+                    for self.j in self.i.get_ma():
+                        if self.beach[self.j] is not None:
+                            self.k = self.beach[self.j]
                         else:
-                            k = None
-                        self.bgn(i, j)
+                            self.k = None
+                        self.bgn()
                         if not self.king_p in self.Chn:
-                            self.end(i, j, k)
-                            self.pms.append((i.p, j))
+                            self.end()
+                            self.pms.append((self.i.p, self.j))
                         else:
-                            self.end(i, j, k)
+                            self.end()
         A = -10000
         for i in self.pms:
             B = compare(*i)
