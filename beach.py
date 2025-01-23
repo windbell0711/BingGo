@@ -15,6 +15,17 @@ class Beach:
         self.beach: List[Qizi]  = [None] * 90  # 沙场，每行末尾无子
         self.pieces: List[Qizi] = []  # 全体士兵，index为id，死后不移除
 
+    def __str__(self):
+        res = "  0 1 2 3 4 5 6 7 8\n0 "
+        for i in range(len(self.beach)):
+            if i % 10 == 9:
+                res += "\n%d " % (i // 10 + 1)
+            elif self.beach[i] is None:
+                res += "  "
+            else:
+                res += config.typ_num2str[self.beach[i].typ]
+        return res
+
     def __getitem__(self, item):
         """返回该位置棋子或None"""
         return self.beach[item]
