@@ -7,16 +7,23 @@
 @License : Apache 2.0
 @File    : diaplay.py
 """
+import json
+import os
+
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
 from kivy.app import App
-# from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.popup import Popup
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
+# from kivy.core.text import LabelBase
+# LabelBase.register(name="Roboto", fn_regular=r"D:\Documents\Jetbrains\PycharmProjects\BingGo\dist\BingGo 0.1\_internal\kivy_install\data\fonts\Roboto-Regular.ttf")
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -53,6 +60,9 @@ class War(FloatLayout):
         image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(image)
+        self.turn_label = Label(text="0", size_hint=(None, None), size=("200dp", "100dp"), bold=True,
+                                pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20', color=[0, 0, 0, 1])
+        self.add_widget(self.turn_label)
 
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
@@ -70,7 +80,7 @@ class War(FloatLayout):
 
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
-                               size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
+                                size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
         self.sound = SoundLoader.load(f'./music/{sound}.wav')  # TODO: 多次使用self.sound存在潜在风险
@@ -232,12 +242,16 @@ class War(FloatLayout):
         print(self.logs)
         self.remove_label()
         self.check()
+        self.turn_label.text = str(self.turn)
 
     def save(self):
-        pass
+        with open(file=os.getcwd() + r"\save.json", mode='w', encoding='utf-8') as f:
+            json.dump(self.logs, f)
 
     def load(self):
-        pass
+        with open(file=os.getcwd() + r"\save.json", mode='r', encoding='utf-8') as f:
+            ret = json.load(f)
+        self.logs = ret
 
     def change_regret_mode(self):
         """打开或关闭悔棋模式"""
@@ -269,8 +283,10 @@ class War(FloatLayout):
     def regret(self):
         if self.turn == 0:
             print("!无法回退")
+            self.turn_label_twinkle()
             return
         self.turn -= 1  # 先下一回合再操作
+        self.turn_label.text = str(self.turn)
         for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
             self.reproduce_operation(self.reverse_operation(self.logs[self.turn][i]))
         self.mycamp = not self.mycamp
@@ -280,13 +296,25 @@ class War(FloatLayout):
     def gret(self):
         if self.turn == len(self.logs):
             print("!无法前进")
+            self.turn_label_twinkle()
             return
         for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
             self.reproduce_operation(self.logs[self.turn][i])
         self.turn += 1  # 先操作再下一回合
+        self.turn_label.text = str(self.turn)
         self.mycamp = not self.mycamp
         self.ai.reset_attack_pose()
         print("已前进一步")
+
+    def turn_label_twinkle(self):
+        """显示当前回合的label闪红"""
+        self._change_color_turn_label((0.9, 0, 0, 1))
+        Clock.schedule_once(lambda dt: self._change_color_turn_label((0, 0, 0, 1)), timeout=0.08)
+        Clock.schedule_once(lambda dt: self._change_color_turn_label((0.9, 0, 0, 1)), timeout=0.16)
+        Clock.schedule_once(lambda dt: self._change_color_turn_label((0, 0, 0, 1)), timeout=0.24)
+
+    def _change_color_turn_label(self, color):
+        self.turn_label.color = color
 
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
@@ -312,9 +340,9 @@ class War(FloatLayout):
                 self.__init__()
             elif 174 < y < 262:
                 if 1266 < x < 1440:
-                    print("save")
+                    self.save()
                 elif 1418 < x < 1548:
-                    print("load")
+                    self.load()
 
 
 

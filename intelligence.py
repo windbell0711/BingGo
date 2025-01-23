@@ -20,10 +20,16 @@ class Intelligence:
 
     def get_attack_pose(self):
         self.reset_attack_pose()
-        for i in self.beach.pieces:  # 找king
-            if i.typ == 12:
-                self.king_p = i.p
-                break
+        # for i in self.beach.pieces:  # 找king
+        #     if i.typ == 12:
+        #         self.king_p = i.p
+        #         break
+        for i in range(0, 89):
+            if not self.beach[i] is None:
+                if self.beach[i].typ == 12:
+                    self.king_p = i
+                    break
+        # print("self.king_p", self.king_p)
         for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):  # 找shuai
             if not self.beach[i] is None:
                 if self.beach[i].typ == 6:
