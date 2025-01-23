@@ -7,10 +7,13 @@
 @File    : intelligence.py
 """
 
+def compare(x, y):
+    return y - x
+
 class Intelligence:
     def __init__(self, beach, war):
         self.beach = beach
-        self.war = war  # 尽量别用self.war哦
+        self.war = war
         self.mycamp = war.mycamp
 
         self.Chn = []
@@ -92,3 +95,83 @@ class Intelligence:
                                 return False
                         self.end(i, j, k)
         return True
+
+    ptC = []
+    ptI = []
+    pms = []  # possible moves
+
+    def get_protected_pose(self):
+        self.reset_protected_pose()
+        for i in self.beach:
+            if i is not None:
+                if i.camp_intl:  # 遍历国际象棋棋子
+                    self.ptC += i.get_protect()
+                else:
+                    self.ptI += i.get_protect()
+
+    def reset_protected_pose(self):
+        self.ptC = []
+        self.ptI = []
+
+    def estimate_value(self):
+        self.value = [0] * 90
+        self.get_protected_pose()
+        for i in self.ptI:
+            self.value[i] -= 1
+        for i in self.ptC:
+            self.value[i] += 1
+        for i in self.beach:
+            if not i is None:
+                self.value[i.p] += i.value()
+        print(self.value)
+        return self.value
+
+    def get_possible_moves_Chn(self):
+        self.pms=[]
+        self.best_move = None
+        for i in self.beach:
+            if not i is None:
+                if not i.camp_intl:
+                    for j in i.get_ma():
+                        if j is not None:
+                            k = self.beach[j]
+                        else:
+                            k = None
+                        self.bgn(i, j)
+                        if not self.shuai_p in self.Intl:
+                            self.end(i, j, k)
+                            self.pms.append((i.p, j))
+                        else:
+                            self.end(i, j, k)
+        A = 10000
+        for i in self.pms:
+            B = compare(*i)
+            if B < A:
+                A = B
+                self.best_move = i
+
+    def get_possible_moves_Intl(self):
+        self.pms = []
+        self.best_move = None
+        for i in self.beach:
+            if not i is None:
+                if i.camp_intl:
+                    for j in i.get_ma():
+                        if self.beach[j] is not None:
+                            k = self.beach[j]
+                        else:
+                            k = None
+                        self.bgn(i, j)
+                        if not self.king_p in self.Chn:
+                            self.end(i, j, k)
+                            self.pms.append((i.p, j))
+                        else:
+                            self.end(i, j, k)
+        A = -10000
+        for i in self.pms:
+            B = compare(*i)
+            if B > A:
+                A = B
+                self.best_move = i
+
+        print(self.pms)

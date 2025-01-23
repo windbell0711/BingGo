@@ -333,7 +333,13 @@ class War(FloatLayout):
                 if 1268 < x < 1332:
                     self.regret()
                 elif 1342 < x < 1462:
-                    pass
+                    if self.mycamp==False:
+                       self.ai.get_possible_moves_Chn()
+                    else:
+                        self.ai.get_possible_moves_Intl()
+                    self._move_force(*self.ai.best_move)
+                    self.ラウンドを終える()
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.mycamp)
                 elif 1476 < x < 1536:
                     self.gret()
             elif 1458 < x < 1542 and 70 < y < 152:
