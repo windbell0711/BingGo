@@ -7,7 +7,6 @@
 @License : Apache 2.0
 @File    : diaplay.py
 """
-
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
@@ -23,6 +22,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 
 from beach import *
+from intelligence import Intelligence
 
 M = Metrics.density / 2
 
@@ -45,6 +45,8 @@ class War(FloatLayout):
         self.turn = 0  # 所在回合
         self.regret_mode = False
         self.imgs = []
+
+        self.ai = Intelligence(self.beach, self)
 
         # 窗口及背景图设置
         Window.size = (800, 600)
@@ -97,7 +99,7 @@ class War(FloatLayout):
                 self.add_widget(self.dots[-1])
             else:
                 self.dots.append(Image(source='./img/small_dot.png', size_hint=(None, None),
-                                  size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                 size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -141,7 +143,7 @@ class War(FloatLayout):
         animation.start(self.imgs[idt])
 
     def _castling(self, p):  # 王车易位
-        if self.king_is_checkmate():
+        if self.ai.king_is_checkmate():
             return
         if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
                 self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
@@ -166,108 +168,27 @@ class War(FloatLayout):
             return True
         return False
 
-    Chn = []
-    Intl = []
-    king_p = 90
-    shuai_p = 90
-
-    def get_attack_pose(self):
-        self.reset_attack_pose()
-        print(self.beach[3])
-        for i in range(0,89):
-            if not self.beach[i] is None:
-                print(self.beach[i].typ)
-                if self.beach[i].typ == 12:
-                    self.king_p = i
-                    print(i,self.beach[i].p,self.king_p,self.beach[i])
-                    break
-        for i in (63, 64, 65, 73, 74, 75, 83, 84, 85):
-            if not self.beach[i] is None:
-                if self.beach[i].typ == 6:
-                    self.shuai_p = i
-                    print(self.beach[i].p)
-                    break
-        for i in self.beach:
-            if i is not None:
-                if i.camp_intl == True:  # 遍历国际象棋棋子
-                    self.Intl += i.get_ma()
-                else:
-                    self.Chn += i.get_ma()
-
-    def reset_attack_pose(self):
-        self.Chn = []
-        self.Intl = []
-        self.king_p = 90
-        self.shuai_p = 90
-
-    def end(self):
-        self.beach.virtual_move(self.i, self.i.p)
-        self.beach.virtual_move(self.k, self.j)
-
-    def bgn(self):
-        self.beach.virtual_move(self.i, self.j)
-        self.beach.virtual_move(None, self.i.p)
-        print(self.beach[3])
-        self.get_attack_pose()
-
-    def king_is_checkmate(self):
-        for self.i in self.beach:
-            if not self.i is None:
-                if self.i.camp_intl == True:
-                    for self.j in self.i.get_ma():
-                        if self.j is not None:
-                            self.k = self.beach[self.j]
-                        else:
-                            self.k = None
-                        self.bgn()
-                        if self.mycamp == True:
-                            if not self.king_p in self.Chn:
-                                print(self.i.p,self.j)
-                                self.end()
-                                return False
-                        self.end()
-        return True
-
-    def shuai_is_checkmate(self):
-        for self.i in self.beach:
-            if not self.i is None:
-                if self.i.camp_intl == False:
-                    for self.j in self.i.get_ma():
-                        if self.j is not None:
-                            self.k = self.beach[self.j]
-                        else:
-                            self.k = None
-                        self.bgn()
-                        if self.mycamp == False:
-                            if not self.shuai_p in self.Intl:
-                                print(self.i.p, self.j)
-                                self.end()
-                                return False
-                        self.end()
-        return True
-
-
     def check(self):
-        self.get_attack_pose()
+        self.ai.get_attack_pose()
         if self.mycamp == True:
-            if self.shuai_p in self.Intl:
+            if self.ai.shuai_p in self.ai.Intl:
                 self.add_label(text="check")
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
                 Clock.schedule_once(lambda dt: self.regret(), 0.2)
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-            elif self.king_p in self.Chn:
-                if self.king_is_checkmate():
+            elif self.ai.king_p in self.ai.Chn:
+                if self.ai.king_is_checkmate():
                     self.add_label(text="red_wins")
                     return
                 self.add_label(text="check")
         else:
-            if self.king_p in self.Chn:
+            if self.ai.king_p in self.ai.Chn:
                 self.add_label(text="wangbeijj")
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
                 Clock.schedule_once(lambda dt: self.regret(), 0.2)
                 Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-            elif self.shuai_p in self.Intl:
-                if self.shuai_is_checkmate():
+            elif self.ai.shuai_p in self.ai.Intl:
+                if self.ai.shuai_is_checkmate():
                     self.add_label(text="black_wins")
                     return
                 self.add_label(text="jiangjun")
@@ -353,7 +274,7 @@ class War(FloatLayout):
         for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
             self.reproduce_operation(self.reverse_operation(self.logs[self.turn][i]))
         self.mycamp = not self.mycamp
-        self.reset_attack_pose()
+        self.ai.reset_attack_pose()
         print("已回退一步")
 
     def gret(self):
@@ -364,7 +285,7 @@ class War(FloatLayout):
             self.reproduce_operation(self.logs[self.turn][i])
         self.turn += 1  # 先操作再下一回合
         self.mycamp = not self.mycamp
-        self.reset_attack_pose()
+        self.ai.reset_attack_pose()
         print("已前进一步")
 
     def handle_button_press(self, window, touch):
