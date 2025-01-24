@@ -12,7 +12,7 @@ from qizi import *
 
 class Beach:
     def __init__(self):
-        self.beach: List[Qizi]  = [None] * 90  # 沙场，每行末尾无子
+        self.beach: List[Qizi | None]  = [None] * 90  # 沙场，无子为None，每行末尾无子
         self.pieces: List[Qizi] = []  # 全体士兵，index为id，死后不移除
 
     def __str__(self):

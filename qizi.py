@@ -37,26 +37,26 @@ class Qizi:
         return False
 
     def value(self):
-        if self.typ ==1:
+        if self.typ == 1:
             return 18
         if self.typ in (5,9,10):
             return 12
-        if self.typ ==2:
+        if self.typ == 2:
             return 9
         if self.typ in (3,4,7):
             return 4
-        if self.typ ==8:
+        if self.typ == 8:
             return 18
-        if self.typ ==11:
+        if self.typ == 11:
             return 40
         if self.typ == 13:
             return 3
-        if self.typ ==0:
+        if self.typ == 0:
             return 40
-        if self.typ==6:
-            return 100
-        if self.typ==12:
-            return 100
+        if self.typ == 6:
+            return 1
+        if self.typ == 12:
+            return 1
 
 
 

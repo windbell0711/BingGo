@@ -29,7 +29,9 @@
   <a href="https://github.com/windbell0711/BingGo/issues">提出新特性</a>
 </p>
 
-[<p align="center">ENGLISH</p>](README_en.md)
+<p align="center">
+  <a href="https://github.com/windbell0711/BingGo/README_en.md">ENGLISH</a>
+</p>
  
 
 ## 目录
