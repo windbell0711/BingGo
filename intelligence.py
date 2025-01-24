@@ -282,6 +282,7 @@ class Intelligence:
     def estimate_value(self):
         self.value= [0] * 90
         self.get_protected_pose()
+        self.get_attack_pose()
         for i in self.beach:
             if not i == None:
                 self.value[i.p]=i.value()
@@ -329,7 +330,6 @@ class Intelligence:
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-
             if fro(*i) in self.Intl:
                 B+= self.value[fro(*i)]
             B += random.random()*0.5

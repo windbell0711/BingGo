@@ -438,14 +438,10 @@ class Qizi:
                 protect.append(p - 10)
         if self.typ == 13:  # pawn
             p = self.p
-            if test(p + 10):
-                protect.append(p + 10)
             if test2(p + 11):
                 protect.append(p + 11)
             if test2(p + 9):
                 protect.append(p + 9)
-            if p // 10 == 1 and test(p + 10) and test(p + 20):  # 兵的第一步
-                protect.append(p + 20)
         if self.typ in (0, 5):  # pao
             p = self.p + 1
             while test(p):
