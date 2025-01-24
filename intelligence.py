@@ -238,9 +238,9 @@ class Intelligence:
                3, 3, 3, 4, 5, 4, 3, 3, 3, 3,
                4, 5, 6, 7, 8, 7, 6, 5, 4, 4,
                5, 6, 7, 8, 9, 8, 7, 6, 5, 5,
-               6, 7, 8, 9, 10, 9, 8, 7, 6, 6,
-               0, 0, 10, 20, 30, 20, 10, 0, 0, 0,
-               0, 0, 10, 20, 30, 20, 10, 0, 0, 0,]
+               6, 7, 8, 20, 20, 20, 8, 7, 6, 6,
+               0, 0, 10, 20, 20, 20, 10, 0, 0, 0,
+               0, 0, 10, 20, 20, 20, 10, 0, 0, 0,]
     value_13 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, -3, 0, 0, 0, 0, 0,
                2, 0, 2, 0, 2, 0, 2, 0, 2, 0,
@@ -323,15 +323,15 @@ class Intelligence:
                 self.beach.virtual_move(None, fro(*i))
                 self.get_attack_pose2()
                 if self.king_p in self.Chn:
-                    B += 5
+                    B += 10
                 for x in self.Iattackable:
                     if x in self.Chn:
                         B+=1
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-
-            if fro(*i) in self.Intl:
+                B += 1
+            if fro(*i) in self.ptI:
                 B+= self.value[fro(*i)]
             B += random.random()*0.5
             if B>A:
@@ -381,7 +381,8 @@ class Intelligence:
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-            if fro(*i) in self.Chn and fro(*i)!=1:
+                B+=2
+            if fro(*i) in self.ptC and fro(*i)!=1 and fro(*i)!=7:
                 B+= self.value[fro(*i)]
             B+=random.random()*0.5
             if B > A:

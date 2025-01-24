@@ -9,6 +9,7 @@
 """
 import json
 import os
+import time
 
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
@@ -18,12 +19,9 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
-# from kivy.core.text import LabelBase
-# LabelBase.register(name="Roboto", fn_regular=r"D:\Documents\Jetbrains\PycharmProjects\BingGo\dist\BingGo 0.1\_internal\kivy_install\data\fonts\Roboto-Regular.ttf")
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -39,7 +37,7 @@ def fx(p):
 def fy(p):
     return (8.5 - p // 10) / 9
 
-def target(x,y):
+def target(x, y):
     return y
 
 
@@ -55,6 +53,7 @@ class War(FloatLayout):
         self.turn = 0  # 所在回合
         self.regret_mode = False
         self.imgs = []
+        self.click_time = time.time()
 
         self.auto_intl = False
         self.auto_chn = False
@@ -74,6 +73,8 @@ class War(FloatLayout):
                                 pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20', color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
 
+        self.hints = []
+        self.dots = []
         # self.add_widget(self.auto_intl_img)
         # self.add_widget(self.auto_chn_img)
 
@@ -89,14 +90,12 @@ class War(FloatLayout):
             ))
             self.add_widget(self.imgs[-1])
 
-    hints = []
-
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
                                 size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
-        self.sound = SoundLoader.load(f'./music/{sound}.wav')  # TODO: 多次使用self.sound存在潜在风险
+        self.sound = SoundLoader.load(f'./music/{sound}.wav')
         if self.sound:
             self.sound.volume = 1.0
             self.sound.loop = True
@@ -110,8 +109,6 @@ class War(FloatLayout):
     def remove_label(self):
         for i in self.hints:
             self.remove_widget(i)
-
-    dots = []
 
     def show_path(self):
         for p in self.active_qizi.get_ma():
@@ -253,17 +250,17 @@ class War(FloatLayout):
         self.log = []
         print(self.logs)
         self.remove_label()
-        self.check()
         self.turn_label.text = str(self.turn)
+        self.check()
         # 如果设置了人机对弈，则自动完成下一步
         if self.mycamp:
-            if self.auto_intl:
+            if self.auto_intl and not self.ai.king_is_checkmate():
                 self.ai.get_possible_moves_Intl()
                 self._move_force(*self.ai.best_move)
                 self._promotion(target(*self.ai.best_move))
                 Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
         else:
-            if self.auto_chn:
+            if self.auto_chn and not self.ai.shuai_is_checkmate():
                 self.ai.get_possible_moves_Chn()
                 self._move_force(*self.ai.best_move)
                 self._promotion(target(*self.ai.best_move))
@@ -295,7 +292,8 @@ class War(FloatLayout):
         elif oper[0] == 2:
             self.kill_piece(self.beach[oper[2]], log=False)
 
-    def reverse_operation(self, oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    @staticmethod
+    def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
         if oper[0] == 0:
             return (oper[0], oper[2], oper[1])
         elif oper[0] == 1:
@@ -343,9 +341,15 @@ class War(FloatLayout):
 
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
+            if time.time() - self.click_time < 0.2:  # 点按频率限制
+                print("!请按慢一点")
+                return
+            self.click_time = time.time()
+
             x, y = touch.pos
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
+
             # 下棋
             if x < 1250:
                 if self.regret_mode:
@@ -362,14 +366,17 @@ class War(FloatLayout):
                     self.regret()
                 # 自动提示
                 elif 1342 < x < 1462:
-                        if self.mycamp==False:
-                            self.ai.get_possible_moves_Chn()
-                        else:
-                            self.ai.get_possible_moves_Intl()
-                        self._move_force(*self.ai.best_move)
-                        self._promotion(target(*self.ai.best_move))
-                        self.ラウンドを終える()
-                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
+                    if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
+                        print("!游戏已结束")
+                        return
+                    if self.mycamp:
+                        self.ai.get_possible_moves_Intl()
+                    else:
+                        self.ai.get_possible_moves_Chn()
+                    self._move_force(*self.ai.best_move)
+                    self._promotion(target(*self.ai.best_move))
+                    self.ラウンドを終える()
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()
