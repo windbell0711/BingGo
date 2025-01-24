@@ -56,6 +56,13 @@ class War(FloatLayout):
         self.regret_mode = False
         self.imgs = []
 
+        self.auto_intl = False
+        self.auto_chn = False
+        self.auto_intl_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+                                   pos_hint={'center_x': 0.803, 'center_y': 0.270})
+        self.auto_chn_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+                                  pos_hint={'center_x': 0.803, 'center_y': 0.328})
+
         self.ai = Intelligence(self.beach, self)
 
         # 窗口及背景图设置
@@ -66,6 +73,9 @@ class War(FloatLayout):
         self.turn_label = Label(text="0", size_hint=(None, None), size=("200dp", "100dp"), bold=True,
                                 pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20', color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
+
+        # self.add_widget(self.auto_intl_img)
+        # self.add_widget(self.auto_chn_img)
 
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
@@ -170,7 +180,7 @@ class War(FloatLayout):
             return True
         return False
 
-    def _promotion(self, p):  # 升变
+    def _promotion(self, p):  # 升变 ♟->♛
         if self.beach[p].typ == 13 and 79 < p < 89:
             Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
             Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
@@ -228,7 +238,6 @@ class War(FloatLayout):
             print("已移动")
             self._promotion(p)
             self.remove_path()
-
             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.15)
         else:
             print("无法抵达或无法选中")
@@ -246,6 +255,19 @@ class War(FloatLayout):
         self.remove_label()
         self.check()
         self.turn_label.text = str(self.turn)
+        # 如果设置了人机对弈，则自动完成下一步
+        if self.mycamp:
+            if self.auto_intl:
+                self.ai.get_possible_moves_Intl()
+                self._move_force(*self.ai.best_move)
+                self._promotion(target(*self.ai.best_move))
+                Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
+        else:
+            if self.auto_chn:
+                self.ai.get_possible_moves_Chn()
+                self._move_force(*self.ai.best_move)
+                self._promotion(target(*self.ai.best_move))
+                Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
 
     def save(self):
         with open(file=os.getcwd() + r"\save.json", mode='w', encoding='utf-8') as f:
@@ -324,36 +346,60 @@ class War(FloatLayout):
             x, y = touch.pos
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
+            # 下棋
             if x < 1250:
                 if self.regret_mode:
                     self.change_regret_mode()
                 self.board(x, y)
+            # 右上三个
             elif 750 < y < 848 and 1268 < x < 1536:
                 self.remove_path()
                 self.remove_label()
                 if not self.regret_mode:
                     self.change_regret_mode()
+                # 撤回
                 if 1268 < x < 1332:
                     self.regret()
+                # 自动提示
                 elif 1342 < x < 1462:
                         if self.mycamp==False:
-                           self.ai.get_possible_moves_Chn()
+                            self.ai.get_possible_moves_Chn()
                         else:
                             self.ai.get_possible_moves_Intl()
                         self._move_force(*self.ai.best_move)
                         self._promotion(target(*self.ai.best_move))
                         self.ラウンドを終える()
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
+                # 重做
                 elif 1476 < x < 1536:
                     self.gret()
+            # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
                 self.__init__()
+            # 保存、载入
             elif 174 < y < 262:
                 if 1266 < x < 1440:
                     self.save()
                 elif 1418 < x < 1548:
                     self.load()
-
+            # 勾选自动方
+            elif 147*2 < y < 207*2:
+                # 国象自动
+                if y < 177*2:
+                    if self.auto_intl:
+                        self.auto_intl = False
+                        self.remove_widget(self.auto_intl_img)
+                    else:
+                        self.auto_intl = True
+                        self.add_widget(self.auto_intl_img)
+                # 中象自动
+                else:
+                    if self.auto_chn:
+                        self.auto_chn = False
+                        self.remove_widget(self.auto_chn_img)
+                    else:
+                        self.auto_chn = True
+                        self.add_widget(self.auto_chn_img)
 
 
 class BingGo(App):

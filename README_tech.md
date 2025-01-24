@@ -114,7 +114,11 @@ git clone https://github.com/windbell0711/BingGo.git
 1.17 环境配置，基础学习；GitHub代码库配置；走子逻辑实现(Qizi类)；游戏名称及贴图。
 1.18 修复bug；战场实现(Beach类)；修改mycamp判断方式；用kivy实现可视化，检测光标所在格。
 1.19 修复bug；撰写README；更新display.py；部分重构。
-1.20 修复bug；实现走子、吃子、
+1.20 修复bug；实现走子、吃子、……。
+1.21 忘了。
+1.22 修复bug；实现check智能判断。
+1.23 修复bug；实现人工智障、保存载入。
+1.24
 ```
 
 <br/>

@@ -280,12 +280,12 @@ class Intelligence:
         self.ptC = []
         self.ptI = []
     def estimate_value(self):
-        self.value= [0] * 90
+        self.value = [0] * 90
         self.get_protected_pose()
         self.get_attack_pose()
         for i in self.beach:
             if not i == None:
-                self.value[i.p]=i.value()
+                self.value[i.p] = i.value()
         return self.value
     def get_possible_moves_Chn(self):
         self.pms=[]
