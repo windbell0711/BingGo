@@ -38,23 +38,23 @@ class Qizi:
 
     def value(self):
         if self.typ ==1:
-            return -9
-        if self.typ in (9,10):
-            return 6
-        if self.typ in (2, 5):
-            return -4.5
-        if self.typ in (3,4,7):
-            return -2
-        if self.typ ==8:
+            return 18
+        if self.typ in (5,9,10):
+            return 12
+        if self.typ ==2:
             return 9
+        if self.typ in (3,4,7):
+            return 4
+        if self.typ ==8:
+            return 18
         if self.typ ==11:
-            return 20
+            return 40
         if self.typ == 13:
-            return 1.5
+            return 3
         if self.typ ==0:
-            return -20
+            return 40
         if self.typ==6:
-            return -100
+            return 100
         if self.typ==12:
             return 100
 
@@ -451,9 +451,9 @@ class Qizi:
             while test(p):
                 p += 1
             if test2(p):
-                protect.append(p)
                 p += 1
                 while test(p):
+                    protect.append(p)
                     p += 1
                 if test2(p):
                     protect.append(p)
@@ -461,9 +461,9 @@ class Qizi:
             while test(p):
                 p += 10
             if test2(p):
-                protect.append(p)
                 p += 10
                 while test(p):
+                    protect.append(p)
                     p += 10
                 if test2(p):
                     protect.append(p)
@@ -471,9 +471,9 @@ class Qizi:
             while test(p):
                 p += -1
             if test2(p):
-                protect.append(p)
                 p += -1
                 while test(p):
+                    protect.append(p)
                     p += -1
                 if test2(p):
                     protect.append(p)
@@ -481,9 +481,9 @@ class Qizi:
             while test(p):
                 p += -10
             if test2(p):
-                protect.append(p)
                 p += -10
                 while test(p):
+                    protect.append(p)
                     p += -10
                 if test2(p):
                     protect.append(p)

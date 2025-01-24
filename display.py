@@ -39,6 +39,9 @@ def fx(p):
 def fy(p):
     return (8.5 - p // 10) / 9
 
+def target(x,y):
+    return y
+
 
 class War(FloatLayout):
     def __init__(self, **kwargs):
@@ -52,6 +55,7 @@ class War(FloatLayout):
         self.turn = 0  # 所在回合
         self.regret_mode = False
         self.imgs = []
+        self.gameover = False
 
         self.ai = Intelligence(self.beach, self)
 
@@ -189,6 +193,7 @@ class War(FloatLayout):
             elif self.ai.king_p in self.ai.Chn:
                 if self.ai.king_is_checkmate():
                     self.add_label(text="red_wins")
+                    self.gameover = True
                     return
                 self.add_label(text="check")
         else:
@@ -200,6 +205,7 @@ class War(FloatLayout):
             elif self.ai.shuai_p in self.ai.Intl:
                 if self.ai.shuai_is_checkmate():
                     self.add_label(text="black_wins")
+                    self.gameover=True
                     return
                 self.add_label(text="jiangjun")
 
@@ -296,6 +302,7 @@ class War(FloatLayout):
     def gret(self):
         if self.turn == len(self.logs):
             print("!无法前进")
+            self.gameover = True
             self.turn_label_twinkle()
             return
         for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
@@ -331,15 +338,18 @@ class War(FloatLayout):
                 if not self.regret_mode:
                     self.change_regret_mode()
                 if 1268 < x < 1332:
+                    self.gameover = False
                     self.regret()
                 elif 1342 < x < 1462:
-                    if self.mycamp==False:
-                       self.ai.get_possible_moves_Chn()
-                    else:
-                        self.ai.get_possible_moves_Intl()
-                    self._move_force(*self.ai.best_move)
-                    self.ラウンドを終える()
-                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.mycamp)
+                    if self.gameover==False:
+                        if self.mycamp==False:
+                           self.ai.get_possible_moves_Chn()
+                        else:
+                            self.ai.get_possible_moves_Intl()
+                        self._move_force(*self.ai.best_move)
+                        self._promotion(target(*self.ai.best_move))
+                        self.ラウンドを終える()
+                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
                 elif 1476 < x < 1536:
                     self.gret()
             elif 1458 < x < 1542 and 70 < y < 152:
