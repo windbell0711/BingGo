@@ -54,9 +54,9 @@ class Qizi:
         if self.typ ==0:
             return 40
         if self.typ==6:
-            return 100
+            return 1
         if self.typ==12:
-            return 100
+            return 1
 
 
 
