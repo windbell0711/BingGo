@@ -59,7 +59,6 @@ class Qizi:
             return 1
 
 
-
     def get_ma(self):
         test2 = self.beach.valid
         test = self.beach.not_occupied

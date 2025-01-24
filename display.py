@@ -55,7 +55,6 @@ class War(FloatLayout):
         self.turn = 0  # 所在回合
         self.regret_mode = False
         self.imgs = []
-        self.gameover = False
 
         self.auto_intl = False
         self.auto_chn = False
@@ -360,11 +359,9 @@ class War(FloatLayout):
                     self.change_regret_mode()
                 # 撤回
                 if 1268 < x < 1332:
-                    self.gameover = False
                     self.regret()
                 # 自动提示
                 elif 1342 < x < 1462:
-                    if self.gameover==False:
                         if self.mycamp==False:
                             self.ai.get_possible_moves_Chn()
                         else:

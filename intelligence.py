@@ -176,7 +176,7 @@ class Intelligence:
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, -1, -1, 2, 0, -10, 0, 0,
-               0, 0, 0, -1, -1, -1, 0, 0, 0, 0,
+               0, 0, 0, -1, -1, -1, 0, -10, 0, 0,
                0, 0, 0, -1, -1, -1, 0, 0, 0, 0, ]
     value_6 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -205,16 +205,16 @@ class Intelligence:
                2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ]
-    value_9 = [0, -1, 0, 0, 0, 0, 0, -20, 0, 0,
+    value_9 = [0, -1, 0, 0, 0, 0, 0, -1, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-               0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+               0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]
-    value_10 = [0, 0, -1, 0, 0, 0, -1, 0, 0, 0,
+    value_10 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -223,7 +223,7 @@ class Intelligence:
                0, 0, 0, 0, 3, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]
-    value_11 = [0, 0, 0, 0, -100, 0, 0, 0, 0, 0,
+    value_11 = [0, 0, 0, 0, -100, -10, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -232,7 +232,7 @@ class Intelligence:
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]
-    value_12 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    value_12 = [-10, -10, -10, -10, 0, 0, -10, -10, -10, 0,
                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                3, 3, 3, 4, 5, 4, 3, 3, 3, 3,
@@ -242,7 +242,7 @@ class Intelligence:
                0, 0, 10, 20, 30, 20, 10, 0, 0, 0,
                0, 0, 10, 20, 30, 20, 10, 0, 0, 0,]
     value_13 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-               0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+               0, 0, 0, 0, -3, 0, 0, 0, 0, 0,
                2, 0, 2, 0, 2, 0, 2, 0, 2, 0,
                2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -280,11 +280,12 @@ class Intelligence:
         self.ptC = []
         self.ptI = []
     def estimate_value(self):
-        self.value= [0] * 90
+        self.value = [0] * 90
         self.get_protected_pose()
+        self.get_attack_pose()
         for i in self.beach:
             if not i == None:
-                self.value[i.p]=i.value()
+                self.value[i.p] = i.value()
         return self.value
     def get_possible_moves_Chn(self):
         self.pms=[]
@@ -330,7 +331,7 @@ class Intelligence:
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
 
-            if fro(*i) in self.ptI:
+            if fro(*i) in self.Intl:
                 B+= self.value[fro(*i)]
             B += random.random()*0.5
             if B>A:
@@ -376,11 +377,11 @@ class Intelligence:
                     B += 10
                 for x in self.Cattackable:
                     if x in self.Intl:
-                        B+=1
+                        B+=4
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-            if fro(*i) in self.ptC and fro(*i)!=1:
+            if fro(*i) in self.Chn and fro(*i)!=1:
                 B+= self.value[fro(*i)]
             B+=random.random()*0.5
             if B > A:
