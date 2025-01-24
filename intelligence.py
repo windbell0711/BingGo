@@ -330,7 +330,7 @@ class Intelligence:
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-                B += 1
+                # B += 1
             if fro(*i) in self.ptI:
                 B+= self.value[fro(*i)]
             B += random.random()*0.5
@@ -381,7 +381,7 @@ class Intelligence:
                 o.p = fro(*i)
                 self.beach.virtual_move(o, fro(*i))
                 self.beach.virtual_move(k, target(*i))
-                B+=2
+                # B+=2
             if fro(*i) in self.ptC and fro(*i)!=1 and fro(*i)!=7:
                 B+= self.value[fro(*i)]
             B+=random.random()*0.5
