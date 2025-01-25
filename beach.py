@@ -13,7 +13,8 @@ from qizi import *
 class Beach:
     def __init__(self):
         self.beach: List[Qizi | None]  = [None] * 90  # 沙场，无子为None，每行末尾无子
-        self.pieces: List[Qizi] = []  # 全体士兵，index为id，死后不移除
+        # self.pieces: List[Qizi] = []  # 全体士兵，index为id，死后不移除
+        # 于1.25弃用，改为display中WarScreen的属性
 
     def __str__(self):
         res = "  0 1 2 3 4 5 6 7 8\n0 "
@@ -33,11 +34,11 @@ class Beach:
     def set_son(self, qizi, p: int) -> int | None:
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
-        if qizi is None:
-            return None
-        self.pieces.append(qizi)
-        qizi.idt = len(self.pieces) - 1
-        return qizi.idt
+        # if qizi is None:
+        #     return None
+        # self.pieces.append(qizi)
+        # qizi.idt = len(self.pieces) - 1
+        # return qizi.idt
 
     def quick_set(self, qizis: dict):
         for key, value in qizis.items():
@@ -48,11 +49,24 @@ class Beach:
         return True
 
     def move_son(self, pfrom: int, pto: int) -> int:
-        """移动棋子，包括吃子"""
+        """移动棋子，会覆盖"""
+        if self.beach[pfrom] is not None:
+            self.beach[pfrom].alive = False
         self.beach[pto] = self.beach[pfrom]  # 移动到新位置
         self.beach[pfrom] = None  # 从原位置移除
-        self[pto].p = pto
-        return self[pto].idt
+        self.beach[pto].p = pto
+        return self.beach[pto].idt
+
+    def place_son(self, typ: int, p: int):
+        """新增棋子，会覆盖"""
+        if self.beach[p] is not None:
+            self.beach[p].alive = False
+        self.beach[p] = Qizi(p=p, typ=typ, beach=self)
+
+    def kill_son(self, p: int):
+        """删除棋子"""
+        self.beach[p].alive = False
+        self.beach[p] = None
         
     def virtual_move(self, qizi, p: int):
         """虚拟移动，用于将死判断"""

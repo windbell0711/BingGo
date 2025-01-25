@@ -43,8 +43,9 @@ class WarScreen(FloatLayout):
         self.war = War()
         self.beach = self.war.beach
         self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
+        self.pieces = []
         # self.active_qizi = None  # 当前棋子
-        self.mycamp_intl = False  # 我的阵营  False: 中象; True: 国象
+        # self.mycamp_intl = False  # 我的阵营  False: 中象; True: 国象
         self.log:       List[Tuple[int, int, int]]  = []  # 该回合走子日志  0: move; 1: place; 2: kill
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
         self.turn = 0  # 所在回合
@@ -80,7 +81,7 @@ class WarScreen(FloatLayout):
 
         # 棋子贴图  TODO: 统一化未完成，应将quick_set()从Beach搬至War
         self.imgs = []
-        for qizi in self.beach.pieces:
+        for qizi in self.pieces:
             self.imgs.append(Image(
                 source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
                 pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
@@ -124,34 +125,24 @@ class WarScreen(FloatLayout):
         for i in self.dots:
             self.remove_widget(i)
 
-    def place_piece(self, qizi: Qizi, p: int, log=True):  # TODO: 优化：可以占死人位
-        idt = self.beach.set_son(qizi, p)
-        self.imgs.append(Image(source='./img/%d.png' % qizi.typ, size_hint=(None, None),
-                               size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
-        self.add_widget(self.imgs[idt])
-        if log:
-            self.log.append((1, qizi.typ, p))
+    def move_piece(self, pfrom: int, pto: int):
+        # def move_piece(self, pfrom: int, pto: int, log=True):
+        """走子动画"""
+        # # 判断是否吃子，顺便写个日志
+        # yummy = self.beach.occupied(pto)
+        # if yummy:
+        #     cuisine = self.beach[pto].idt
+        #     if log:
+        #         self.log.append((2, self.beach.pieces[cuisine].typ, pto))
+        #     self.beach.pieces[cuisine].alive = False
+        #     Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)  # 吃子消失动画
+        # # 更新数据并获取棋子id，顺便写个日志
+        # idt = self.beach.move_son(pfrom, pto)
+        # if log:
+        #     self.log.append((0, pfrom, pto))
 
-    def kill_piece(self, qizi: Qizi, log=True):
-        self.beach.set_son(None, qizi.p)
-        qizi.alive = False
-        self.remove_widget(self.imgs[qizi.idt])
-        if log:
-            self.log.append((2, qizi.typ, qizi.p))
-
-    def move_piece(self, pfrom: int, pto: int, log=True):
-        # 判断是否吃子，顺便写个日志
-        yummy = self.beach.occupied(pto)
-        if yummy:
-            cuisine = self.beach[pto].idt
-            if log:
-                self.log.append((2, self.beach.pieces[cuisine].typ, pto))
-            self.beach.pieces[cuisine].alive = False
-            Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)  # 吃子消失动画
-        # 更新数据并获取棋子id，顺便写个日志
-        idt = self.beach.move_son(pfrom, pto)
-        if log:
-            self.log.append((0, pfrom, pto))
+        # 获取子编号
+        idt = self.beach[pfrom].idt
         # 确保图片置于顶层
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
@@ -159,56 +150,27 @@ class WarScreen(FloatLayout):
         animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
         animation.start(self.imgs[idt])
 
-    # def _castling(self, p):  # 王车易位
-    #     if self.ai.king_is_checkmate():
-    #         return
-    #     if (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
-    #             self.beach[1] == self.beach[2] is None and p == 0 and self.beach[p].typ == 8):
-    #         self.move_piece(pfrom=0, pto=2)
-    #         self.move_piece(pfrom=3, pto=1)
-    #         return True
-    #     elif (self.active_qizi.typ == 12 and self.beach[3].typ == 12 and
-    #           self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and p == 8 and self.beach[p].typ == 8):
-    #         self.move_piece(pfrom=8, pto=4)
-    #         self.move_piece(pfrom=3, pto=5)
-    #         return True
-    #     return False
-    #
-    # def _promotion(self, p):  # 升变 ♟->♛
-    #     if self.beach[p].typ == 13 and 79 < p < 89:
-    #         Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
-    #         Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p),0.1)
-    #         return True
-    #     if self.beach[p].typ == 7 and 0 <= p < 9:
-    #         Clock.schedule_once(lambda dt: self.kill_piece(self.beach[p]),0.1)
-    #         Clock.schedule_once(lambda dt: self.place_piece(Qizi(p=p, typ=0, beach=self.beach), p=p),0.1)
-    #         return True
-    #     return False
-    #
-    # def check(self):
-    #     self.ai.get_attack_pose()
-    #     if self.mycamp_intl == True:
-    #         if self.ai.shuai_p in self.ai.Intl:
-    #             self.add_label(text="check")
-    #             Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-    #             Clock.schedule_once(lambda dt: self.regret(), 0.2)
-    #             Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-    #         elif self.ai.king_p in self.ai.Chn:
-    #             if self.ai.king_is_checkmate():
-    #                 self.add_label(text="red_wins")
-    #                 return
-    #             self.add_label(text="check")
-    #     else:
-    #         if self.ai.king_p in self.ai.Chn:
-    #             self.add_label(text="wangbeijj")
-    #             Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-    #             Clock.schedule_once(lambda dt: self.regret(), 0.2)
-    #             Clock.schedule_once(lambda dt: self.change_regret_mode(), 0.2)
-    #         elif self.ai.shuai_p in self.ai.Intl:
-    #             if self.ai.shuai_is_checkmate():
-    #                 self.add_label(text="black_wins")
-    #                 return
-    #             self.add_label(text="jiangjun")
+    def place_piece(self, typ: int, p: int):  # TODO: 优化：可以占死人位
+        # def place_piece(self, qizi: Qizi, p: int, log=True):
+        # idt = self.beach.set_son(qizi, p)
+
+        # 获取子编号
+        idt = len(self.pieces)
+        # 添加贴图
+        self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
+        self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
+                               size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+        self.add_widget(self.imgs[idt])
+        # if log:
+        #     self.log.append((1, qizi.typ, p))
+
+    def kill_piece(self, p: int):
+        # def kill_piece(self, qizi: Qizi, log=True):
+        # self.beach.set_son(None, qizi.p)
+        self.beach[p].alive = False
+        self.remove_widget(self.imgs[self.beach[p].idt])
+        # if log:
+        #     self.log.append((2, qizi.typ, qizi.p))
 
     def click_board(self, x, y):
         """点按棋盘"""
@@ -218,20 +180,21 @@ class WarScreen(FloatLayout):
         if not self.beach.valid(p):
             print("!位置不合法  p:", p)
             return
-        self.war.solve_board_press(p)
 
-        for move in self.war.moves:
-            self.reproduce_operation(move)
+        moves, label, next_turn = self.war.solve_board_press(p)
+
+        for move in moves:
+            self.display_operation(move)
 
         self.remove_label()
-        if not self.war.label == "":
-            self.add_label(text=self.war.label)
+        if not label == "":
+            self.add_label(text=label)
 
         self.remove_path()
         if not self.war.active_qizi is None:
             self.show_path()
 
-        if self.war.你的回合:
+        if next_turn:
             self.ラウンドを終える()
 
     def ラウンドを終える(self):
@@ -273,16 +236,16 @@ class WarScreen(FloatLayout):
             self.regret_mode = True
         else:  # 关闭悔棋模式
             self.logs = self.logs[:self.turn]
-            self.active_qizi = None
+            self.war.active_qizi = None
             self.regret_mode = False
 
-    def reproduce_operation(self, oper: Tuple[int, int, int]) -> None:
+    def display_operation(self, oper: Tuple[int, int, int]):
         if oper[0] == 0:
-            self.move_piece(pfrom=oper[1], pto=oper[2], log=False)
+            self.move_piece(pfrom=oper[1], pto=oper[2])
         elif oper[0] == 1:
-            self.place_piece(qizi=Qizi(p=oper[2], typ=oper[1], beach=self.beach), p=oper[2], log=False)
+            self.place_piece(typ=oper[1], p=oper[2])
         elif oper[0] == 2:
-            self.kill_piece(self.beach[oper[2]], log=False)
+            self.kill_piece(p=oper[2])
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
@@ -303,7 +266,7 @@ class WarScreen(FloatLayout):
         self.turn -= 1  # 先下一回合再操作
         self.turn_label.text = str(self.turn)
         for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
-            self.reproduce_operation(self.reverse_operation(self.logs[self.turn][i]))
+            self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
         self.mycamp_intl = not self.mycamp_intl
         self.ai.reset_attack_pose()
         print("已回退一步")
@@ -314,7 +277,7 @@ class WarScreen(FloatLayout):
             self.turn_label_twinkle()
             return
         for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
-            self.reproduce_operation(self.logs[self.turn][i])
+            self.display_operation(self.logs[self.turn][i])
         self.turn += 1  # 先操作再下一回合
         self.turn_label.text = str(self.turn)
         self.mycamp_intl = not self.mycamp_intl

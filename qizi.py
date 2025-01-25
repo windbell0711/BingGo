@@ -12,8 +12,8 @@ import config
 
 
 class Qizi:
-    def __init__(self, p: int, typ: int, beach):
-        self.idt = None  # 由Beach在set后任命
+    def __init__(self, p: int, typ: int, beach, idt=None):
+        self.idt = idt  # 由Beach在set后任命
         self.alive = True  # 是否存活
         self.p = p  # 位置代码
         self.typ = typ  # 种类
