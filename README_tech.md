@@ -26,7 +26,7 @@ qizi.py
 beach.py
 └── Beach
    *├── beach: list[Qizi|None] (len=90)
-   *├── pieces: list[Qizi] (corresponding with War.imgs)
+   *├── pieces: list[Qizi] (corresponding with WarScreen.imgs)
     │
    *├── __getitem__(item) (get) -> Qizi|None
    *├── set_son(qizi, p: int) (set)
@@ -41,7 +41,7 @@ beach.py
 display.py
 ├── fx(p)
 ├── fy(p)
-├── War(FloatLayout)
+├── WarScreen(FloatLayout)
 │   ├── beach
 │   ├── active_qizi
 │   ├── mycamp

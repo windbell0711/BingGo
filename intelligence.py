@@ -6,19 +6,17 @@
 @License : Apache 2.0
 @File    : intelligence.py
 """
-
-def fro(x,y):
-    return x
-def target(x,y):
-    return y
 import random
 
+def fro(x, y):
+    return x
+def target(x, y):
+    return y
 
 class Intelligence:
-    def __init__(self, beach, war):
+    def __init__(self, beach, mycamp):
         self.beach = beach
-        self.war = war
-        self.mycamp = war.mycamp
+        self.mycamp = mycamp
 
     Chn = []
     Intl = []

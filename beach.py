@@ -2,7 +2,7 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-19
 @Github  : windbell0711/BingGo
-@Author  : TheWindbell07
+@Author  : windbell0711
 @License : Apache 2.0
 @File    : beach.py
 """

@@ -3,7 +3,7 @@
 @Time    : 2025-01-17
 @Github  : windbell0711/BingGo
 @Author  : Lilold333
-@Coauthor: TheWindbell07
+@Coauthor: windbell0711
 @License : Apache 2.0
 @File    : qizi.py
 """
