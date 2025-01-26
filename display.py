@@ -40,16 +40,10 @@ def fy(p):
 class WarScreen(FloatLayout):
     def __init__(self, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
-        self.war = War()
+        self.war = War(self)
         self.beach = self.war.beach
-        # self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
-        # self.active_qizi = None  # 当前棋子
-        # self.mycamp_intl = False  # 我的阵营  False: 中象; True: 国象
-        self.log:       List[Tuple[int, int, int]]  = []  # 该回合走子日志  0: move; 1: place; 2: kill
-        self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
+
         self.turn = 0  # 所在回合
-        self.regret_mode = False
-        self.imgs = []
         self.click_time = time.time()
 
         self.auto_intl = False
@@ -58,8 +52,6 @@ class WarScreen(FloatLayout):
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
         self.auto_chn_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
-
-        # self.ai = Intelligence(self.beach, self)
 
         # 窗口及背景图设置
         Window.size = (800, 600)
@@ -78,7 +70,7 @@ class WarScreen(FloatLayout):
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
 
-        # 棋子贴图
+        # 棋盘初始化
         self.pieces = []
         self.imgs = []
         for p in range(90):
@@ -133,23 +125,8 @@ class WarScreen(FloatLayout):
             self.remove_widget(i)
 
     def move_piece(self, pfrom: int, pto: int):
-        # def move_piece(self, pfrom: int, pto: int, log=True):
-        """走子动画"""
-        # # 判断是否吃子，顺便写个日志
-        # yummy = self.beach.occupied(pto)
-        # if yummy:
-        #     cuisine = self.beach[pto].idt
-        #     if log:
-        #         self.log.append((2, self.beach.pieces[cuisine].typ, pto))
-        #     self.beach.pieces[cuisine].alive = False
-        #     Clock.schedule_once(lambda dt: self.remove_widget(self.imgs[cuisine]), 0.1)  # 吃子消失动画
-        # # 更新数据并获取棋子id，顺便写个日志
-        # idt = self.beach.move_son(pfrom, pto)
-        # if log:
-        #     self.log.append((0, pfrom, pto))
-
         # 获取子编号
-        idt = self.beach[pfrom].idt
+        idt = self.beach[pto].idt
         # 确保图片置于顶层
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
@@ -158,9 +135,6 @@ class WarScreen(FloatLayout):
         animation.start(self.imgs[idt])
 
     def place_piece(self, typ: int, p: int):  # TODO: 优化：可以占死人位
-        # def place_piece(self, qizi: Qizi, p: int, log=True):
-        # idt = self.beach.set_son(qizi, p)
-
         # 获取子编号
         idt = len(self.pieces)
         # 添加贴图
@@ -168,16 +142,10 @@ class WarScreen(FloatLayout):
         self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
         self.add_widget(self.imgs[idt])
-        # if log:
-        #     self.log.append((1, qizi.typ, p))
 
     def kill_piece(self, p: int):
-        # def kill_piece(self, qizi: Qizi, log=True):
-        # self.beach.set_son(None, qizi.p)
         self.beach[p].alive = False
         self.remove_widget(self.imgs[self.beach[p].idt])
-        # if log:
-        #     self.log.append((2, qizi.typ, qizi.p))
 
     def click_board(self, x, y):
         """点按棋盘"""
@@ -188,45 +156,46 @@ class WarScreen(FloatLayout):
             print("!位置不合法  p:", p)
             return
 
-        moves, label, next_turn = self.war.solve_board_press(p)
+        # moves, label, next_turn = self.war.solve_board_press(p)
+        moves = self.war.solve_board_press(p)
 
         for move in moves:
             self.display_operation(move)
 
-        self.remove_label()
-        if not label == "":
-            self.add_label(text=label)
+        # self.remove_label()
+        # if not label == "":
+        #     self.add_label(text=label)
 
         self.remove_path()
         if not self.war.active_qizi is None:
             self.show_path()
 
-        if next_turn:
-            self.ラウンドを終える()
+        # if next_turn:
+        #     self.ラウンドを終える()
 
     def ラウンドを終える(self):
         self.turn += 1
         print("self.turn:", self.turn)
         print(self.beach)
-        self.logs.append(self.log)  # 回合结束
-        self.log = []
-        print(self.logs)
+        # self.logs.append(self.log)  # 回合结束
+        # self.log = []
+        # print(self.logs)
         self.remove_label()
         self.turn_label.text = str(self.turn)
         # self.check()
         # 如果设置了人机对弈，则自动完成下一步
-        if self.mycamp_intl:
-            if self.auto_intl and not self.ai.king_is_checkmate():
-                self.ai.get_possible_moves_Intl()
-                # self.move_piece(,
-                self._promotion(target(*self.ai.best_move))
-                Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
-        else:
-            if self.auto_chn and not self.ai.shuai_is_checkmate():
-                self.ai.get_possible_moves_Chn()
-                # self.move_piece(,
-                self._promotion(target(*self.ai.best_move))
-                Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
+        # if self.mycamp_intl:
+        #     if self.auto_intl and not self.ai.king_is_checkmate():
+        #         self.ai.get_possible_moves_Intl()
+        #         # self.move_piece(,
+        #         self._promotion(target(*self.ai.best_move))
+        #         Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
+        # else:
+        #     if self.auto_chn and not self.ai.shuai_is_checkmate():
+        #         self.ai.get_possible_moves_Chn()
+        #         # self.move_piece(,
+        #         self._promotion(target(*self.ai.best_move))
+        #         Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
 
     def save(self):
         with open(file=os.getcwd() + r"\save.json", mode='w', encoding='utf-8') as f:
@@ -314,8 +283,8 @@ class WarScreen(FloatLayout):
 
             # 下棋
             if x < 1250:
-                if self.regret_mode:
-                    self.change_regret_mode()
+                # if self.regret_mode:
+                #     self.change_regret_mode()
                 self.click_board(x, y)
             # 右上三个
             elif 750 < y < 848 and 1268 < x < 1536:
