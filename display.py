@@ -41,7 +41,7 @@ class WarScreen(FloatLayout):
     def __init__(self, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
         self.war = War(self)
-        self.beach = self.war.beach
+        self.beach = Beach()
 
         self.turn = 0  # 所在回合
         self.click_time = time.time()
@@ -126,7 +126,7 @@ class WarScreen(FloatLayout):
 
     def move_piece(self, pfrom: int, pto: int):
         # 获取子编号
-        idt = self.beach[pto].idt
+        idt = self.beach[pfrom].idt
         # 确保图片置于顶层
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
@@ -162,16 +162,9 @@ class WarScreen(FloatLayout):
         for move in moves:
             self.display_operation(move)
 
-        # self.remove_label()
-        # if not label == "":
-        #     self.add_label(text=label)
-
         self.remove_path()
         if not self.war.active_qizi is None:
             self.show_path()
-
-        # if next_turn:
-        #     self.ラウンドを終える()
 
     def ラウンドを終える(self):
         self.turn += 1
@@ -218,10 +211,13 @@ class WarScreen(FloatLayout):
     def display_operation(self, oper: Tuple[int, int, int]):
         if oper[0] == 0:
             self.move_piece(pfrom=oper[1], pto=oper[2])
+            self.beach.move_son(pfrom=oper[1], pto=oper[2])
         elif oper[0] == 1:
             self.place_piece(typ=oper[1], p=oper[2])
+            self.beach.place_son(typ=oper[1], p=oper[2])
         elif oper[0] == 2:
             self.kill_piece(p=oper[2])
+            self.beach.kill_son(p=oper[2])
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
@@ -235,20 +231,25 @@ class WarScreen(FloatLayout):
         return oper
 
     def regret(self):
-        if self.turn == 0:
+        if self.war.turn == 0:
             print("!无法回退")
             self.turn_label_twinkle()
             return
-        self.turn -= 1  # 先下一回合再操作
-        self.turn_label.text = str(self.turn)
-        for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
-            self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
-        self.mycamp_intl = not self.mycamp_intl
-        self.ai.reset_attack_pose()
+        ms = self.war.regret()
+
+        for move in ms:
+            self.display_operation(move)
+
+        # self.turn -= 1  # 先下一回合再操作
+        # self.turn_label.text = str(self.war.turn)
+        # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
+        #     self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
+        # self.mycamp_intl = not self.mycamp_intl
+        # self.ai.reset_attack_pose()
         print("已回退一步")
 
     def gret(self):
-        if self.turn == len(self.logs):
+        if self.war.turn == len(self.logs):
             print("!无法前进")
             self.turn_label_twinkle()
             return
@@ -290,24 +291,27 @@ class WarScreen(FloatLayout):
             elif 750 < y < 848 and 1268 < x < 1536:
                 self.remove_path()
                 self.remove_label()
-                if not self.regret_mode:
-                    self.change_regret_mode()
+                # if not self.regret_mode:
+                #     self.change_regret_mode()
                 # 撤回
                 if 1268 < x < 1332:
                     self.regret()
                 # 自动提示
                 elif 1342 < x < 1462:
-                    if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
+                    if self.war.ai.shuai_is_checkmate() or self.war.ai.king_is_checkmate():
                         print("!游戏已结束")
                         return
-                    if self.mycamp_intl:
-                        self.ai.get_possible_moves_Intl()
-                    else:
-                        self.ai.get_possible_moves_Chn()
+                    moves = self.war.ai_move()
+                    for move in moves:
+                        self.display_operation(move)
+                    # if self.mycamp_intl:
+                    #     self.ai.get_possible_moves_Intl()
+                    # else:
+                    #     self.ai.get_possible_moves_Chn()
                     # self.move_piece(,
-                    self._promotion(target(*self.ai.best_move))
-                    self.ラウンドを終える()
-                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
+                    # self._promotion(target(*self.ai.best_move))
+                    # self.ラウンドを終える()
+                    # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()

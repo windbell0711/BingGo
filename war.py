@@ -10,15 +10,22 @@
 from beach import *
 from intelligence import target, Intelligence
 
+
 class War:
     def __init__(self, display):
-        self.beach = Beach()
         self.mycamp_intl = False
-        self.ai = Intelligence(self.beach, self.mycamp_intl)
         self.display = display
+        self.beach = Beach()
+        for p in range(90):  # 初始化，注意此处只是和self.display按照一样的规则设置了棋盘，其beach和qizi的地址都不一样，所以无法通过idt或地址交流
+            name = config.init_lineup[p]
+            if name == " " or name == "":
+                continue
+            self.beach.set_son(Qizi(p=p, typ=config.typ_dict[name], beach=self.beach), p)
+        self.ai = Intelligence(self.beach, self.mycamp_intl)
 
         self.active_qizi = None
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
+        self.turn = 0
 
     def main(self, p: int, castle=False) -> List[Tuple[int, int, int]]:
         """将当前棋子移向位置p"""
@@ -40,28 +47,50 @@ class War:
             moves.append((2, self.active_qizi.typ, p))
             moves.append((1, 0, p))
 
+        self.display.remove_path()
+        # self.display.show_path()
         self.conduct_operations(opers=moves)
         label = self._check()
         self.display.remove_label()
         if not label == "":
             self.display.add_label(label)
-        if label in ("check", "jiangjun", "wangbeijj"):
-            self.conduct_operations(opers=reversed(moves))
-            moves.extend(reversed(moves))
-        else:
-            self.logs.append(moves)
+        if label == "checked" or label == "jiangjun":
+            ms = [self.reverse_operation(m) for m in reversed(moves)]
+            moves.extend(ms)
+            self.conduct_operations(opers=ms)
+            return moves
+        self.logs.append(moves)
+        self.turn += 1
         self.display.turn_label.text = str(self.turn)
-        self.display.remove_path()
-        self.display.show_path()
 
         self.mycamp_intl = not self.mycamp_intl
         self.active_qizi = None
-
         return moves
 
-    @property
-    def turn(self):
-        return len(self.logs)
+    def ai_move(self):
+        if self.mycamp_intl:
+            self.ai.get_possible_moves_Intl()
+        else:
+            self.ai.get_possible_moves_Chn()
+        pf, pt = self.ai.best_move
+        self.active_qizi = self.beach[pf]
+        ms = self.main(p=pt)
+        return ms
+
+    def regret(self):
+        self.turn -= 1  # 先下一回合再操作
+        ms = [self.reverse_operation(m) for m in reversed(self.logs[self.turn])]
+        self.conduct_operations(ms)
+        # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
+        #     self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
+        self.mycamp_intl = not self.mycamp_intl
+        self.ai.reset_attack_pose()
+        self.display.turn_label.text = str(self.turn)
+        return ms
+
+    # @property
+    # def turn(self):
+    #     return len(self.logs)
 
     def solve_board_press(self, p: int):
         """用户点按棋盘上一点"""
@@ -146,7 +175,7 @@ class War:
             elif self.ai.king_p in self.ai.Chn:
                 if self.ai.king_is_checkmate():
                     return "red_wins"
-                return "check"
+                return "checked"
             return ""
         else:
             if self.ai.king_p in self.ai.Chn:
