@@ -31,7 +31,7 @@ class Beach:
         """返回该位置棋子或None"""
         return self.beach[item]
 
-    def set_son(self, qizi, p: int) -> int | None:
+    def set_son(self, qizi, p: int):
         """将指定位置设定为棋子或None"""
         self.beach[p] = qizi
         # if qizi is None:
@@ -40,13 +40,13 @@ class Beach:
         # qizi.idt = len(self.pieces) - 1
         # return qizi.idt
 
-    def quick_set(self, qizis: dict):
-        for key, value in qizis.items():
-            if isinstance(value, str):
-                value = config.typ_dict[value]
-            qizi = Qizi(p=key, typ=value, beach=self)
-            self.set_son(qizi, key)
-        return True
+    # def quick_set(self, qizis: dict):
+    #     for key, value in qizis.items():
+    #         if isinstance(value, str):
+    #             value = config.typ_dict[value]
+    #         qizi = Qizi(p=key, typ=value, beach=self)
+    #         self.set_son(qizi, key)
+    #     return True
 
     def move_son(self, pfrom: int, pto: int) -> int:
         """移动棋子，会覆盖"""

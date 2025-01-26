@@ -42,8 +42,7 @@ class WarScreen(FloatLayout):
         super(WarScreen, self).__init__(**kwargs)
         self.war = War()
         self.beach = self.war.beach
-        self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
-        self.pieces = []
+        # self.beach.quick_set(qizis=config.init_lineup)  # 初始化布局
         # self.active_qizi = None  # 当前棋子
         # self.mycamp_intl = False  # 我的阵营  False: 中象; True: 国象
         self.log:       List[Tuple[int, int, int]]  = []  # 该回合走子日志  0: move; 1: place; 2: kill
@@ -79,12 +78,20 @@ class WarScreen(FloatLayout):
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
 
-        # 棋子贴图  TODO: 统一化未完成，应将quick_set()从Beach搬至War
+        # 棋子贴图
+        self.pieces = []
         self.imgs = []
-        for qizi in self.pieces:
+        for p in range(90):
+            name = config.init_lineup[p]
+            if name == " " or name == "":
+                continue
+            typ = config.typ_dict[name]
+            qizi = Qizi(p=p, typ=typ, beach=self.beach, idt=len(self.pieces))
+            self.beach.set_son(qizi, p)
+            self.pieces.append(qizi)
             self.imgs.append(Image(
-                source=f'./img/{qizi.typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
-                pos_hint={'center_x': fx(qizi.p), 'center_y': fy(qizi.p)}
+                source=f'./img/{typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
+                pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
 

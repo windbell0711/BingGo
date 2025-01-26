@@ -13,7 +13,7 @@ from intelligence import target, Intelligence
 class War:
     def __init__(self):
         self.beach = Beach()
-        self.mycamp_intl = False  # 我的阵营  False: 中象; True: 国象
+        self.mycamp_intl = False
         self.ai = Intelligence(self.beach, self.mycamp_intl)
 
         self.active_qizi = None
