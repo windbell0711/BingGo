@@ -3,7 +3,7 @@
 @Time    : 2025-01-17
 @Github  : windbell0711/BingGo
 @Author  : Lilold333
-@Coauthor: windbell0711
+@Coauthor: TheWindbell07
 @License : Apache 2.0
 @File    : qizi.py
 """
@@ -43,14 +43,24 @@ class Qizi:
             return 12
         if self.typ == 2:
             return 9
-        if self.typ in (3,4,7):
-            return 4
+        if self.typ ==4:
+            return 1
+        if self.typ ==3:
+            return 5
+        if self.typ == 7:
+            if self.p // 10 == 1:
+                return 20
+            else:
+                return 4
         if self.typ == 8:
             return 18
         if self.typ == 11:
             return 40
         if self.typ == 13:
-            return 3
+            if self.p//10==7:
+                return 20
+            else:
+                return 3
         if self.typ == 0:
             return 40
         if self.typ == 6:
@@ -174,7 +184,7 @@ class Qizi:
             if test(p - 9):
                 if eat(p - 18):
                     ma.append(p - 18)
-        if self.typ in (0, 4, 12):  # shi king
+        if self.typ in (0, 4, 12,3):  # shi king
             p = self.p
             if eat(p - 11):
                 ma.append(p - 11)
@@ -185,6 +195,7 @@ class Qizi:
             if eat(p + 9):
                 ma.append(p + 9)
         if self.typ == 6:  # shuai
+
             p = self.p
             if not p % 10 == 3 and eat(p - 1):
                 ma.append(p - 1)
@@ -203,9 +214,9 @@ class Qizi:
                         ma.append(p)
         if self.typ == 7:  # bingo
             p = self.p
-            if not p % 10 == 0 and eat(p - 1) and not p // 10 == 5:
+            if not p % 10 == 0 and eat(p - 1) :
                 ma.append(p - 1)
-            if not p % 10 == 8 and eat(p + 1) and not p // 10 == 5:
+            if not p % 10 == 8 and eat(p + 1) :
                 ma.append(p + 1)
             if not p // 10 == 0 and eat(p - 10):
                 ma.append(p - 10)
@@ -390,7 +401,7 @@ class Qizi:
             if test(p - 9):
                 if test2(p - 18):
                     protect.append(p - 18)
-        if self.typ in (0, 4, 12):  # shi king
+        if self.typ in (0, 4, 12,3):  # shi king
             p = self.p
             if test2(p - 11):
                 protect.append(p - 11)
@@ -419,9 +430,9 @@ class Qizi:
                         protect.append(p)
         if self.typ == 7:  # bingo
             p = self.p
-            if not p % 10 == 0 and test2(p - 1) and not p // 10 == 5:
+            if not p % 10 == 0 and test2(p - 1) :
                 protect.append(p - 1)
-            if not p % 10 == 8 and test2(p + 1) and not p // 10 == 5:
+            if not p % 10 == 8 and test2(p + 1) :
                 protect.append(p + 1)
             if not p // 10 == 0 and test2(p - 10):
                 protect.append(p - 10)

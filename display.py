@@ -43,11 +43,11 @@ class WarScreen(FloatLayout):
         self.war = War(self)
         self.beach = Beach()
 
-        self.turn = 0  # 所在回合
+        # self.turn = 0  # 所在回合
         self.click_time = time.time()
 
-        self.auto_intl = False
-        self.auto_chn = False
+        # self.auto_intl = False
+        # self.auto_chn = False
         self.auto_intl_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
         self.auto_chn_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
@@ -142,6 +142,7 @@ class WarScreen(FloatLayout):
         self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
                                size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
         self.add_widget(self.imgs[idt])
+        return idt
 
     def kill_piece(self, p: int):
         self.beach[p].alive = False
@@ -159,65 +160,74 @@ class WarScreen(FloatLayout):
         # moves, label, next_turn = self.war.solve_board_press(p)
         moves = self.war.solve_board_press(p)
 
-        for move in moves:
-            self.display_operation(move)
+        self.display_operation(moves)
 
         self.remove_path()
         if not self.war.active_qizi is None:
             self.show_path()
 
-    def ラウンドを終える(self):
-        self.turn += 1
-        print("self.turn:", self.turn)
-        print(self.beach)
-        # self.logs.append(self.log)  # 回合结束
-        # self.log = []
-        # print(self.logs)
-        self.remove_label()
-        self.turn_label.text = str(self.turn)
-        # self.check()
-        # 如果设置了人机对弈，则自动完成下一步
-        # if self.mycamp_intl:
-        #     if self.auto_intl and not self.ai.king_is_checkmate():
-        #         self.ai.get_possible_moves_Intl()
-        #         # self.move_piece(,
-        #         self._promotion(target(*self.ai.best_move))
-        #         Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
-        # else:
-        #     if self.auto_chn and not self.ai.shuai_is_checkmate():
-        #         self.ai.get_possible_moves_Chn()
-        #         # self.move_piece(,
-        #         self._promotion(target(*self.ai.best_move))
-        #         Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
+    # def ラウンドを終える(self):
+    #     self.turn += 1
+    #     print("self.turn:", self.turn)
+    #     print(self.beach)
+    #     self.logs.append(self.log)  # 回合结束
+    #     self.log = []
+    #     print(self.logs)
+    #     self.remove_label()
+    #     self.turn_label.text = str(self.turn)
+    #     self.check()
+    #     如果设置了人机对弈，则自动完成下一步
+    #     if self.mycamp_intl:
+    #         if self.auto_intl and not self.ai.king_is_checkmate():
+    #             self.ai.get_possible_moves_Intl()
+    #             # self.move_piece(,
+    #             self._promotion(target(*self.ai.best_move))
+    #             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
+    #     else:
+    #         if self.auto_chn and not self.ai.shuai_is_checkmate():
+    #             self.ai.get_possible_moves_Chn()
+    #             # self.move_piece(,
+    #             self._promotion(target(*self.ai.best_move))
+    #             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
 
     def save(self):
         with open(file=os.getcwd() + r"\save.json", mode='w', encoding='utf-8') as f:
-            json.dump(self.logs, f)
+            json.dump(self.war.logs, f)
+        print("已保存")
 
     def load(self):
+        if self.war.turn != 0:
+            print("!请先新局")
+            return
         with open(file=os.getcwd() + r"\save.json", mode='r', encoding='utf-8') as f:
             ret = json.load(f)
-        self.logs = ret
+        self.war.logs = ret
+        print("已载入")
 
-    def change_regret_mode(self):
-        """打开或关闭悔棋模式"""
-        if not self.regret_mode:  # 打开悔棋模式
-            self.regret_mode = True
-        else:  # 关闭悔棋模式
-            self.logs = self.logs[:self.turn]
-            self.war.active_qizi = None
-            self.regret_mode = False
+    def new(self):
+        self.__init__()
+        print("已新局")
 
-    def display_operation(self, oper: Tuple[int, int, int]):
-        if oper[0] == 0:
-            self.move_piece(pfrom=oper[1], pto=oper[2])
-            self.beach.move_son(pfrom=oper[1], pto=oper[2])
-        elif oper[0] == 1:
-            self.place_piece(typ=oper[1], p=oper[2])
-            self.beach.place_son(typ=oper[1], p=oper[2])
-        elif oper[0] == 2:
-            self.kill_piece(p=oper[2])
-            self.beach.kill_son(p=oper[2])
+    # def change_regret_mode(self):
+    #     """打开或关闭悔棋模式"""
+    #     if not self.regret_mode:  # 打开悔棋模式
+    #         self.regret_mode = True
+    #     else:  # 关闭悔棋模式
+    #         self.logs = self.logs[:self.turn]
+    #         self.war.active_qizi = None
+    #         self.regret_mode = False
+
+    def display_operation(self, opers: List[Tuple[int, int, int]]):
+        for oper in opers:
+            if oper[0] == 0:
+                self.move_piece(pfrom=oper[1], pto=oper[2])
+                self.beach.move_son(pfrom=oper[1], pto=oper[2])
+            elif oper[0] == 1:
+                idt = self.place_piece(typ=oper[1], p=oper[2])
+                self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
+            elif oper[0] == 2:
+                self.kill_piece(p=oper[2])
+                self.beach.kill_son(p=oper[2])
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
@@ -236,10 +246,7 @@ class WarScreen(FloatLayout):
             self.turn_label_twinkle()
             return
         ms = self.war.regret()
-
-        for move in ms:
-            self.display_operation(move)
-
+        self.display_operation(ms)
         # self.turn -= 1  # 先下一回合再操作
         # self.turn_label.text = str(self.war.turn)
         # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
@@ -249,16 +256,18 @@ class WarScreen(FloatLayout):
         print("已回退一步")
 
     def gret(self):
-        if self.war.turn == len(self.logs):
+        if self.war.turn == len(self.war.logs):
             print("!无法前进")
             self.turn_label_twinkle()
             return
-        for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
-            self.display_operation(self.logs[self.turn][i])
-        self.turn += 1  # 先操作再下一回合
-        self.turn_label.text = str(self.turn)
-        self.mycamp_intl = not self.mycamp_intl
-        self.ai.reset_attack_pose()
+        ms = self.war.gret()
+        self.display_operation(ms)
+        # for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
+        #     self.display_operation(self.logs[self.turn][i])
+        # self.turn += 1  # 先操作再下一回合
+        # self.turn_label.text = str(self.turn)
+        # self.mycamp_intl = not self.mycamp_intl
+        # self.ai.reset_attack_pose()
         print("已前进一步")
 
     def turn_label_twinkle(self):
@@ -302,13 +311,11 @@ class WarScreen(FloatLayout):
                         print("!游戏已结束")
                         return
                     moves = self.war.ai_move()
-                    for move in moves:
-                        self.display_operation(move)
+                    self.display_operation(moves)
                     # if self.mycamp_intl:
                     #     self.ai.get_possible_moves_Intl()
                     # else:
                     #     self.ai.get_possible_moves_Chn()
-                    # self.move_piece(,
                     # self._promotion(target(*self.ai.best_move))
                     # self.ラウンドを終える()
                     # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
@@ -317,7 +324,7 @@ class WarScreen(FloatLayout):
                     self.gret()
             # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
-                self.__init__()
+                self.new()
             # 保存、载入
             elif 174 < y < 262:
                 if 1266 < x < 1440:
@@ -328,19 +335,19 @@ class WarScreen(FloatLayout):
             elif 147*2 < y < 207*2:
                 # 国象自动
                 if y < 177*2:
-                    if self.auto_intl:
-                        self.auto_intl = False
+                    if self.war.auto_intl:
+                        self.war.auto_intl = False
                         self.remove_widget(self.auto_intl_img)
                     else:
-                        self.auto_intl = True
+                        self.war.auto_intl = True
                         self.add_widget(self.auto_intl_img)
                 # 中象自动
                 else:
-                    if self.auto_chn:
-                        self.auto_chn = False
+                    if self.war.auto_chn:
+                        self.war.auto_chn = False
                         self.remove_widget(self.auto_chn_img)
                     else:
-                        self.auto_chn = True
+                        self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
 
 

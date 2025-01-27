@@ -8,7 +8,7 @@
 @File    : war.py
 """
 from beach import *
-from intelligence import target, Intelligence
+from intelligence import Intelligence
 
 
 class War:
@@ -26,6 +26,9 @@ class War:
         self.active_qizi = None
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
         self.turn = 0
+
+        self.auto_intl = False
+        self.auto_chn = False
 
     def main(self, p: int, castle=False) -> List[Tuple[int, int, int]]:
         """将当前棋子移向位置p"""
@@ -54,11 +57,13 @@ class War:
         self.display.remove_label()
         if not label == "":
             self.display.add_label(label)
-        if label == "checked" or label == "jiangjun":
+        if label == "check" or label == "wangbeijj":
             ms = [self.reverse_operation(m) for m in reversed(moves)]
             moves.extend(ms)
             self.conduct_operations(opers=ms)
             return moves
+        if self.turn != len(self.logs):
+            self.logs = self.logs[:self.turn]
         self.logs.append(moves)
         self.turn += 1
         self.display.turn_label.text = str(self.turn)
@@ -88,6 +93,15 @@ class War:
         self.display.turn_label.text = str(self.turn)
         return ms
 
+    def gret(self):
+        ms = self.logs[self.turn]
+        self.conduct_operations(ms)
+        self.turn += 1  # 先操作再下一回合
+        self.mycamp_intl = not self.mycamp_intl
+        self.ai.reset_attack_pose()
+        self.display.turn_label.text = str(self.turn)
+        return ms
+
     # @property
     # def turn(self):
     #     return len(self.logs)
@@ -109,14 +123,12 @@ class War:
                 ((p == 0 and self.beach[1] == self.beach[2] is None) or
                  (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None))):
                 moves = self.main(p=p, castle=True)
-                # next_turn = True
             # 重选棋子
             else:
                 self.active_qizi = self.beach[p]
         # 点选位置self.active_qizi能走到
         elif self.active_qizi is not None and p in self.active_qizi.get_ma():
             moves = self.main(p=p)
-            # next_turn = True
         else:
             print("无法抵达或无法选中", p)
 
@@ -169,7 +181,7 @@ class War:
 
     def _check(self):  # 是否将军
         self.ai.get_attack_pose()
-        if self.mycamp_intl:
+        if not self.mycamp_intl:
             if self.ai.shuai_p in self.ai.Intl:
                 return "check"
             elif self.ai.king_p in self.ai.Chn:
@@ -186,12 +198,12 @@ class War:
                 return "jiangjun"
             return ""
 
-    def ラウンドを終える(self):
-        self._check()
-
-        self.你的回合 = True
-        self.mycamp_intl = not self.mycamp_intl
-        self.active_qizi = None
+    # def ラウンドを終える(self):
+    #     self._check()
+    #
+    #     self.你的回合 = True
+    #     self.mycamp_intl = not self.mycamp_intl
+    #     self.active_qizi = None
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:

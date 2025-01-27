@@ -48,18 +48,19 @@ class Beach:
 
     def move_son(self, pfrom: int, pto: int) -> int:
         """移动棋子，会覆盖"""
-        if self.beach[pfrom] is not None:
-            self.beach[pfrom].alive = False
+        if self.beach[pto] is not None:
+            self.beach[pto].alive = False
+            raise Exception("已弃用")
         self.beach[pto] = self.beach[pfrom]  # 移动到新位置
         self.beach[pfrom] = None  # 从原位置移除
         self.beach[pto].p = pto
         return self.beach[pto].idt
 
-    def place_son(self, typ: int, p: int):
+    def place_son(self, typ: int, p: int, idt=None):
         """新增棋子，会覆盖"""
         if self.beach[p] is not None:
             self.beach[p].alive = False
-        self.beach[p] = Qizi(p=p, typ=typ, beach=self)
+        self.beach[p] = Qizi(p=p, typ=typ, beach=self, idt=idt)
 
     def kill_son(self, p: int):
         """删除棋子"""
