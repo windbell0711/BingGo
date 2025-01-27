@@ -134,9 +134,9 @@ class WarScreen(FloatLayout):
         animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
         animation.start(self.imgs[idt])
 
-    def place_piece(self, typ: int, p: int):  # TODO: 优化：可以占死人位
+    def place_piece(self, typ: int, p: int, idt=None):  # TODO: 优化：可以占死人位
         # 获取子编号
-        idt = len(self.pieces)
+        idt = len(self.pieces) if idt is None else idt
         # 添加贴图
         self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
         self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
@@ -144,9 +144,9 @@ class WarScreen(FloatLayout):
         self.add_widget(self.imgs[idt])
         return idt
 
-    def kill_piece(self, p: int):
-        self.beach[p].alive = False
-        self.remove_widget(self.imgs[self.beach[p].idt])
+    def kill_piece(self, idt: int):
+        # self.beach[p].alive = False
+        self.remove_widget(self.imgs[idt])
 
     def click_board(self, x, y):
         """点按棋盘"""
@@ -160,7 +160,7 @@ class WarScreen(FloatLayout):
         # moves, label, next_turn = self.war.solve_board_press(p)
         moves = self.war.solve_board_press(p)
 
-        self.display_operation(moves)
+        # self.display_operation(moves)
 
         self.remove_path()
         if not self.war.active_qizi is None:
@@ -204,7 +204,7 @@ class WarScreen(FloatLayout):
         self.war.logs = ret
         print("已载入")
 
-    def new(self):
+    def new(self):  # TODO: bug 多按了会卡
         self.__init__()
         print("已新局")
 
@@ -217,17 +217,33 @@ class WarScreen(FloatLayout):
     #         self.war.active_qizi = None
     #         self.regret_mode = False
 
-    def display_operation(self, opers: List[Tuple[int, int, int]]):
-        for oper in opers:
+    def display_operation(self, opers: List[Tuple[int, int, int]]) -> float:
+        """
+        接收一个回合内的多次操作，计算所需时间并返回，在WarScreen().beach上进行修改，同时运行相关动画。
+        :param opers: 操作
+        :return: 动画所需时间
+        """
+        for i in range(len(opers)):
+            oper = opers[i]
             if oper[0] == 0:
                 self.move_piece(pfrom=oper[1], pto=oper[2])
                 self.beach.move_son(pfrom=oper[1], pto=oper[2])
             elif oper[0] == 1:
-                idt = self.place_piece(typ=oper[1], p=oper[2])
+                idt = len(self.pieces)
+                # if i == 1:
+                #     Clock.schedule_once(lambda dt: self.place_piece(typ=oper[1], p=oper[2], idt=idt), 0.1)
+                # else:
+                #     self.place_piece(typ=oper[1], p=oper[2], idt=idt)
+                self.place_piece(typ=oper[1], p=oper[2], idt=idt)
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
-                self.kill_piece(p=oper[2])
+                idt = self.beach[oper[2]].idt
+                if i == 0:
+                    Clock.schedule_once(lambda dt: self.kill_piece(idt), 0.1)
+                else:
+                    self.kill_piece(idt)
                 self.beach.kill_son(p=oper[2])
+        return 2  # TODO
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
@@ -246,7 +262,8 @@ class WarScreen(FloatLayout):
             self.turn_label_twinkle()
             return
         ms = self.war.regret()
-        self.display_operation(ms)
+        # self.display_operation(ms)
+
         # self.turn -= 1  # 先下一回合再操作
         # self.turn_label.text = str(self.war.turn)
         # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
@@ -261,7 +278,8 @@ class WarScreen(FloatLayout):
             self.turn_label_twinkle()
             return
         ms = self.war.gret()
-        self.display_operation(ms)
+        # self.display_operation(ms)
+
         # for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
         #     self.display_operation(self.logs[self.turn][i])
         # self.turn += 1  # 先操作再下一回合
@@ -307,11 +325,9 @@ class WarScreen(FloatLayout):
                     self.regret()
                 # 自动提示
                 elif 1342 < x < 1462:
-                    if self.war.ai.shuai_is_checkmate() or self.war.ai.king_is_checkmate():
-                        print("!游戏已结束")
-                        return
                     moves = self.war.ai_move()
-                    self.display_operation(moves)
+                    # self.display_operation(moves)
+
                     # if self.mycamp_intl:
                     #     self.ai.get_possible_moves_Intl()
                     # else:

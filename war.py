@@ -7,6 +7,8 @@
 @License : Apache 2.0
 @File    : war.py
 """
+from kivy.clock import Clock
+
 from beach import *
 from intelligence import Intelligence
 
@@ -32,7 +34,7 @@ class War:
 
     def main(self, p: int, castle=False) -> List[Tuple[int, int, int]]:
         """将当前棋子移向位置p"""
-        if castle:
+        if castle:  # TODO
             if p == 0:
                 return [(0, 0, 2), (0, 3, 1)]
             elif p == 8:
@@ -70,9 +72,16 @@ class War:
 
         self.mycamp_intl = not self.mycamp_intl
         self.active_qizi = None
-        return moves
+
+        an_duration = self.display.display_operation(moves)
+        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=an_duration)
+
+        return moves  # 弃用
 
     def ai_move(self):
+        if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
+            print("!游戏已结束")
+            return []
         if self.mycamp_intl:
             self.ai.get_possible_moves_Intl()
         else:
@@ -80,7 +89,7 @@ class War:
         pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
         ms = self.main(p=pt)
-        return ms
+        return ms  # 弃用
 
     def regret(self):
         self.turn -= 1  # 先下一回合再操作
@@ -91,7 +100,8 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
-        return ms
+        self.display.display_operation(ms)
+        return ms  # 弃用
 
     def gret(self):
         ms = self.logs[self.turn]
@@ -100,7 +110,8 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
-        return ms
+        self.display.display_operation(ms)
+        return ms  # 弃用
 
     # @property
     # def turn(self):
@@ -204,6 +215,13 @@ class War:
     #     self.你的回合 = True
     #     self.mycamp_intl = not self.mycamp_intl
     #     self.active_qizi = None
+
+    def ai_continue(self):
+        """如果设置了人机对弈，则自动完成下一步"""
+        if (self.mycamp_intl and self.auto_intl) or (not self.mycamp_intl and self.auto_chn):
+            self.ai_move()
+            return True
+        return False
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
