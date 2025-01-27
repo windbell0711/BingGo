@@ -150,7 +150,7 @@ class War:
 
     def conduct_operations(self, opers):
         for oper in opers:
-            if oper[0] == 0:
+            if oper[0] == 0 or oper[0] == 4:
                 self.beach.move_son(pfrom=oper[1], pto=oper[2])
             elif oper[0] == 1:
                 self.beach.place_son(typ=oper[1], p=oper[2])
@@ -222,7 +222,7 @@ class War:
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
-        if oper[0] == 0:
+        if oper[0] == 0 or oper[0] == 4:
             return (oper[0], oper[2], oper[1])
         elif oper[0] == 1:
             return (2, oper[1], oper[2])

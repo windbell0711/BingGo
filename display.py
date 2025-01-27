@@ -12,6 +12,10 @@ import os
 import time
 
 from kivy.config import Config
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.dropdown import DropDown
+
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -43,11 +47,9 @@ class WarScreen(FloatLayout):
         self.war = War(self)
         self.beach = Beach()
 
-        # self.turn = 0  # 所在回合
         self.click_time = time.time()
+        self.style = 0
 
-        # self.auto_intl = False
-        # self.auto_chn = False
         self.auto_intl_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
         self.auto_chn_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
@@ -86,6 +88,29 @@ class WarScreen(FloatLayout):
                 pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
+
+    #         # 创建一个下拉框
+    #         self.dropdown = DropDown()
+    #         for fruit in ['Apple', 'Banana', 'Orange']:
+    #             btn = Button(text=fruit, size_hint_y=None, height=44)
+    #             btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
+    #             self.dropdown.add_widget(btn)
+    #
+    #         # 创建一个按钮，点击时弹出下拉框
+    #         self.fruit_button = Button(text='Choose Fruit', size_hint=(None, None), size=(200, 50))
+    #         self.fruit_button.bind(on_release=self.dropdown.open)
+    #         self.dropdown.bind(on_select=lambda instance, x: setattr(self.fruit_button, 'text', x))
+    #         self.add_widget(self.fruit_button)
+    #
+    #         # 创建一个按钮，点击时弹出下拉框的 Popup
+    #         popup_button = Button(text='Show Fruit Popup', size_hint=(None, None), size=(200, 50))
+    #         popup_button.bind(on_release=lambda a: self.choose_style_popup())
+    #         self.add_widget(popup_button)
+    #
+    # def choose_style_popup(self):
+    #     # 创建一个弹出窗口
+    #     self.popup = Popup(title='Choose a Fruit', content=self.fruit_button, size_hint=(None, None), size=(300, 200))
+    #     self.popup.open()
 
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
@@ -260,7 +285,14 @@ class WarScreen(FloatLayout):
                 else:
                     self._move_animation(idt=a[1], p=a[2])
             elif a[0] == 4:
-                self._move_animation(idt=a[1], p=a[2])
+                if i == 2:  # 非法王车易位回退动画延迟1
+                    k40 = a[:]
+                    Clock.schedule_once(lambda dt: self._move_animation(idt=k40[1], p=k40[2]), 0.175)
+                elif i == 3:  # 非法王车易位回退动画延迟2
+                    k41 = a[:]
+                    Clock.schedule_once(lambda dt: self._move_animation(idt=k41[1], p=k41[2]), 0.175)
+                else:
+                    self._move_animation(idt=a[1], p=a[2])
             elif a[0] == 1:
                 if i == 2 or i == 3:  # 升变动画延迟
                     k10 = self.imgs[a[1]]
@@ -277,16 +309,16 @@ class WarScreen(FloatLayout):
                 else:
                     raise
 
-    @staticmethod
-    def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
-        if oper[0] == 0:
-            return (oper[0], oper[2], oper[1])
-        elif oper[0] == 1:
-            return (2, oper[1], oper[2])
-        elif oper[0] == 2:
-            return (1, oper[1], oper[2])
-        print("!无法逆向操作")
-        return oper
+    # @staticmethod
+    # def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    #     if oper[0] == 0 or oper[0] == 4:
+    #         return (oper[0], oper[2], oper[1])
+    #     elif oper[0] == 1:
+    #         return (2, oper[1], oper[2])
+    #     elif oper[0] == 2:
+    #         return (1, oper[1], oper[2])
+    #     print("!无法逆向操作")
+    #     return oper
 
     def regret(self):
         if self.war.turn == 0:
@@ -358,8 +390,15 @@ class WarScreen(FloatLayout):
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()
-            elif 705*2 < x < 770*2 and 230*2 < y < 270*2:
-                self.war.ai_move()
+            elif 230*2 < y < 270*2:
+                # 设置材质包  TODO
+                if 1266 < x < 1440:
+                    pass
+                    # self.new()
+                    # self.myChooseStylePopup.open()
+                # 提示走法
+                elif 1418 < x < 1548:
+                    self.war.ai_move()
             # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
                 self.new()
@@ -388,6 +427,40 @@ class WarScreen(FloatLayout):
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
+
+
+class ChooseStylePopup(Popup):
+    def __init__(self, current_style: str, **kwargs):
+        super(ChooseStylePopup, self).__init__(**kwargs)
+        self.title = "选择材质包"
+        self.size_hint = (None, None)
+        self.size = (300, 200)
+
+        # 创建布局
+        layout = BoxLayout(orientation='vertical')
+
+        # 创建下拉框
+        self.dropdown = DropDown()
+        for fruit in ["中国象棋风格", "国际象棋风格"]:
+            btn = Button(text=fruit, size_hint_y=None, height=44)
+            btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
+            self.dropdown.add_widget(btn)
+
+        # 创建主按钮，点击时展开下拉框
+        self.main_button = Button(text=current_style, size_hint=(None, None), size=(200, 50))
+        self.main_button.bind(on_release=self.dropdown.open)
+        self.dropdown.bind(on_select=lambda instance, x: setattr(self.main_button, 'text', x))
+
+        # 添加主按钮到布局
+        layout.add_widget(self.main_button)
+
+        # 添加关闭按钮
+        close_button = Button(text='Close', size_hint_y=None, height=50)
+        close_button.bind(on_press=self.dismiss)
+        layout.add_widget(close_button)
+
+        # 设置弹出窗口的内容
+        self.content = layout
 
 
 class BingGo(App):
