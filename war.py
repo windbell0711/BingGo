@@ -32,7 +32,7 @@ class War:
         self.auto_intl = False
         self.auto_chn = False
 
-    def main(self, p: int, castle=False) -> List[Tuple[int, int, int]]:
+    def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
         if castle:  # TODO
             if p == 0:
@@ -63,20 +63,17 @@ class War:
             ms = [self.reverse_operation(m) for m in reversed(moves)]
             moves.extend(ms)
             self.conduct_operations(opers=ms)
-            return moves
-        if self.turn != len(self.logs):
-            self.logs = self.logs[:self.turn]
-        self.logs.append(moves)
-        self.turn += 1
-        self.display.turn_label.text = str(self.turn)
+        else:
+            if self.turn != len(self.logs):
+                self.logs = self.logs[:self.turn]
+            self.logs.append(moves)
+            self.turn += 1
+            self.display.turn_label.text = str(self.turn)
+            self.mycamp_intl = not self.mycamp_intl
+            self.active_qizi = None
 
-        self.mycamp_intl = not self.mycamp_intl
-        self.active_qizi = None
-
-        an_duration = self.display.display_operation(moves)
-        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=an_duration)
-
-        return moves  # 弃用
+        self.display.generate_animation(moves)
+        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.1)
 
     def ai_move(self):
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
@@ -88,11 +85,10 @@ class War:
             self.ai.get_possible_moves_Chn()
         pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
-        ms = self.main(p=pt)
-        return ms  # 弃用
+        self.main(p=pt)
 
     def regret(self):
-        self.turn -= 1  # 先下一回合再操作
+        self.turn -= 1  # 先上一回合再操作
         ms = [self.reverse_operation(m) for m in reversed(self.logs[self.turn])]
         self.conduct_operations(ms)
         # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
@@ -100,8 +96,7 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
-        self.display.display_operation(ms)
-        return ms  # 弃用
+        self.display.generate_animation(ms)
 
     def gret(self):
         ms = self.logs[self.turn]
@@ -110,8 +105,7 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
-        self.display.display_operation(ms)
-        return ms  # 弃用
+        self.display.generate_animation(ms)
 
     # @property
     # def turn(self):

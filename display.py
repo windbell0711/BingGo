@@ -124,29 +124,29 @@ class WarScreen(FloatLayout):
         for i in self.dots:
             self.remove_widget(i)
 
-    def move_piece(self, pfrom: int, pto: int):
-        # 获取子编号
-        idt = self.beach[pfrom].idt
-        # 确保图片置于顶层
-        self.remove_widget(self.imgs[idt])
-        self.add_widget(self.imgs[idt])
-        # 走子平移动画
-        animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
-        animation.start(self.imgs[idt])
-
-    def place_piece(self, typ: int, p: int, idt=None):  # TODO: 优化：可以占死人位
-        # 获取子编号
-        idt = len(self.pieces) if idt is None else idt
-        # 添加贴图
-        self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
-        self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
-                               size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
-        self.add_widget(self.imgs[idt])
-        return idt
-
-    def kill_piece(self, idt: int):
-        # self.beach[p].alive = False
-        self.remove_widget(self.imgs[idt])
+    # def move_piece(self, pfrom: int, pto: int, idt=None):
+    #     # 获取子编号
+    #     idt = self.beach[pfrom].idt if idt is None else idt
+    #     # 确保图片置于顶层
+    #     # self.remove_widget(self.imgs[idt])
+    #     # self.add_widget(self.imgs[idt])
+    #     # 走子平移动画
+    #     # animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
+    #     # animation.start(self.imgs[idt])
+    #
+    # def place_piece(self, typ: int, p: int, idt=None):  # TODO: 优化：可以占死人位
+    #     # 获取子编号
+    #     idt = len(self.pieces) if idt is None else idt
+    #     # 添加贴图
+    #     self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
+    #     self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
+    #                            size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+    #     # self.add_widget(self.imgs[idt])
+    #     # return idt
+    #
+    # def kill_piece(self, idt: int):
+    #     # self.beach[p].alive = False
+    #     self.remove_widget(self.imgs[idt])
 
     def click_board(self, x, y):
         """点按棋盘"""
@@ -217,33 +217,63 @@ class WarScreen(FloatLayout):
     #         self.war.active_qizi = None
     #         self.regret_mode = False
 
-    def display_operation(self, opers: List[Tuple[int, int, int]]) -> float:
+    def _move_animation(self, idt, p):
+        # 确保图片置于顶层
+        self.remove_widget(self.imgs[idt])
+        self.add_widget(self.imgs[idt])
+        # 走子平移动画
+        animation = Animation(pos_hint={'center_x': fx(p), 'center_y': fy(p)}, duration=0.1)
+        animation.start(self.imgs[idt])
+
+    def generate_animation(self, opers: List[Tuple[int, int, int]]):
         """
-        接收一个回合内的多次操作，计算所需时间并返回，在WarScreen().beach上进行修改，同时运行相关动画。
+        接收一个回合内的多次操作，在WarScreen().beach上进行修改，同时运行相关动画。
         :param opers: 操作
-        :return: 动画所需时间
         """
+        an = []
+        # prepare
         for i in range(len(opers)):
             oper = opers[i]
             if oper[0] == 0:
-                self.move_piece(pfrom=oper[1], pto=oper[2])
+                an.append((0, self.beach[oper[1]].idt, oper[2]))
                 self.beach.move_son(pfrom=oper[1], pto=oper[2])
             elif oper[0] == 1:
                 idt = len(self.pieces)
-                # if i == 1:
-                #     Clock.schedule_once(lambda dt: self.place_piece(typ=oper[1], p=oper[2], idt=idt), 0.1)
-                # else:
-                #     self.place_piece(typ=oper[1], p=oper[2], idt=idt)
-                self.place_piece(typ=oper[1], p=oper[2], idt=idt)
+                an.append((1, idt))
+                self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
+                self.imgs.append(Image(source='./img/%d.png' % oper[1], size_hint=(None, None),
+                                       size=("65dp", "65dp"), pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
-                idt = self.beach[oper[2]].idt
-                if i == 0:
-                    Clock.schedule_once(lambda dt: self.kill_piece(idt), 0.1)
-                else:
-                    self.kill_piece(idt)
+                an.append((2, self.beach[oper[2]].idt))
                 self.beach.kill_son(p=oper[2])
-        return 2  # TODO
+        # display
+        for i in range(len(an)):
+            a = an[i]
+            if a[0] == 0:
+                if i == 1 and an[0][0] == 0:  # 非法操作回退动画延迟
+                    k00 = a[:]
+                    Clock.schedule_once(lambda dt:self._move_animation(idt=k00[1], p=k00[2]), 0.175)
+                elif i == 2:  # 逆升变动画延迟
+                    k01 = a[:]
+                    Clock.schedule_once(lambda dt:self._move_animation(idt=k01[1], p=k01[2]), 0.1)
+                else:
+                    self._move_animation(idt=a[1], p=a[2])
+            elif a[0] == 1:
+                if i == 2 or i == 3:  # 升变动画延迟
+                    k10 = self.imgs[a[1]]
+                    Clock.schedule_once(lambda dt: self.add_widget(k10), 0.1)
+                else:
+                    self.add_widget(self.imgs[a[1]])
+            elif a[0] == 2:
+                if i == 0:  # 吃子动画延迟
+                    k20 = self.imgs[a[1]]
+                    Clock.schedule_once(lambda dt: self.remove_widget(k20), 0.1)
+                elif i == 1 or i == 2:  # 升变动画延迟
+                    k21 = self.imgs[a[1]]
+                    Clock.schedule_once(lambda dt: self.remove_widget(k21), 0.1)
+                else:
+                    raise
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
