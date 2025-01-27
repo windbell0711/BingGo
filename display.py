@@ -100,7 +100,7 @@ class WarScreen(FloatLayout):
 
     def add_label(self, text):
         self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
-                                size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.4}))
+                                size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
 
     def remove_label(self):
@@ -234,8 +234,8 @@ class WarScreen(FloatLayout):
         # prepare
         for i in range(len(opers)):
             oper = opers[i]
-            if oper[0] == 0:
-                an.append((0, self.beach[oper[1]].idt, oper[2]))
+            if oper[0] == 0 or oper[0] == 4:
+                an.append((oper[0], self.beach[oper[1]].idt, oper[2]))
                 self.beach.move_son(pfrom=oper[1], pto=oper[2])
             elif oper[0] == 1:
                 idt = len(self.pieces)
@@ -253,12 +253,14 @@ class WarScreen(FloatLayout):
             if a[0] == 0:
                 if i == 1 and an[0][0] == 0:  # 非法操作回退动画延迟
                     k00 = a[:]
-                    Clock.schedule_once(lambda dt:self._move_animation(idt=k00[1], p=k00[2]), 0.175)
+                    Clock.schedule_once(lambda dt: self._move_animation(idt=k00[1], p=k00[2]), 0.15)
                 elif i == 2:  # 逆升变动画延迟
                     k01 = a[:]
-                    Clock.schedule_once(lambda dt:self._move_animation(idt=k01[1], p=k01[2]), 0.1)
+                    Clock.schedule_once(lambda dt: self._move_animation(idt=k01[1], p=k01[2]), 0.1)
                 else:
                     self._move_animation(idt=a[1], p=a[2])
+            elif a[0] == 4:
+                self._move_animation(idt=a[1], p=a[2])
             elif a[0] == 1:
                 if i == 2 or i == 3:  # 升变动画延迟
                     k10 = self.imgs[a[1]]
@@ -353,21 +355,11 @@ class WarScreen(FloatLayout):
                 # 撤回
                 if 1268 < x < 1332:
                     self.regret()
-                # 自动提示
-                elif 1342 < x < 1462:
-                    moves = self.war.ai_move()
-                    # self.display_operation(moves)
-
-                    # if self.mycamp_intl:
-                    #     self.ai.get_possible_moves_Intl()
-                    # else:
-                    #     self.ai.get_possible_moves_Chn()
-                    # self._promotion(target(*self.ai.best_move))
-                    # self.ラウンドを終える()
-                    # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",self.ai.value)
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()
+            elif 705*2 < x < 770*2 and 230*2 < y < 270*2:
+                self.war.ai_move()
             # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
                 self.new()
@@ -395,6 +387,7 @@ class WarScreen(FloatLayout):
                     else:
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
+                self.war.ai_continue()
 
 
 class BingGo(App):

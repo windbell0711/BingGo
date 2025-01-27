@@ -34,23 +34,26 @@ class War:
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
-        if castle:  # TODO
+        moves = []
+        if castle:
             if p == 0:
-                return [(0, 0, 2), (0, 3, 1)]
+                moves.append((4, 0, 2))
+                moves.append((4, 3, 1))
             elif p == 8:
-                return [(0, 8, 4), (0, 3, 5)]
+                moves.append((4, 8, 4))
+                moves.append((4, 3, 5))
             else:
                 raise ValueError("!Wrong p when castling. Received p: " + str(p))
-        moves = []
-        if self.beach[p] is not None:
-            moves.append((2, self.beach[p].typ, p))
-        moves.append((0, self.active_qizi.p, p))
-        if self.active_qizi.typ == 13 and 79 < p < 89:  # ♟->♛
-            moves.append((2, self.active_qizi.typ, p))
-            moves.append((1, 11, p))
-        elif self.active_qizi.typ == 7 and 0 <= p < 9:  # 兵 -> 将
-            moves.append((2, self.active_qizi.typ, p))
-            moves.append((1, 0, p))
+        else:
+            if self.beach[p] is not None:
+                moves.append((2, self.beach[p].typ, p))
+            moves.append((0, self.active_qizi.p, p))
+            if self.active_qizi.typ == 13 and 79 < p < 89:  # ♟->♛
+                moves.append((2, self.active_qizi.typ, p))
+                moves.append((1, 11, p))
+            elif self.active_qizi.typ == 7 and 0 <= p < 9:  # 兵 -> 将
+                moves.append((2, self.active_qizi.typ, p))
+                moves.append((1, 0, p))
 
         self.display.remove_path()
         # self.display.show_path()
@@ -73,7 +76,7 @@ class War:
             self.active_qizi = None
 
         self.display.generate_animation(moves)
-        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.1)
+        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
     def ai_move(self):
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
