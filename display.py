@@ -12,10 +12,6 @@ import os
 import time
 
 from kivy.config import Config
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
-
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -32,6 +28,7 @@ from kivy.clock import Clock
 
 from war import *
 import config
+import wx
 
 M = Metrics.density / 2
 
@@ -42,24 +39,28 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 class WarScreen(FloatLayout):
-    def __init__(self, **kwargs):
+    img_source = 'img2'
+
+    def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
-        self.war = War(self)
+        self.war = War(self, args)
         self.beach = Beach()
 
+        # self.turn = 0  # 所在回合
         self.click_time = time.time()
-        self.style = 0
 
-        self.auto_intl_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+        # self.auto_intl = False
+        # self.auto_chn = False
+        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
-        self.auto_chn_img = Image(source='./img/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
 
         # 窗口及背景图设置
         Window.size = (800, 600)
-        image = Image(source='./img/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
-                      pos_hint={'center_x': 0.5, 'center_y': 0.5})
-        self.add_widget(image)
+        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
+                              pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        self.add_widget(self.bg_image)
         self.turn_label = Label(text="0", size_hint=(None, None), size=("200dp", "100dp"), bold=True,
                                 pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20', color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
@@ -84,36 +85,13 @@ class WarScreen(FloatLayout):
             self.beach.set_son(qizi, p)
             self.pieces.append(qizi)
             self.imgs.append(Image(
-                source=f'./img/{typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
+                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
                 pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
 
-    #         # 创建一个下拉框
-    #         self.dropdown = DropDown()
-    #         for fruit in ['Apple', 'Banana', 'Orange']:
-    #             btn = Button(text=fruit, size_hint_y=None, height=44)
-    #             btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
-    #             self.dropdown.add_widget(btn)
-    #
-    #         # 创建一个按钮，点击时弹出下拉框
-    #         self.fruit_button = Button(text='Choose Fruit', size_hint=(None, None), size=(200, 50))
-    #         self.fruit_button.bind(on_release=self.dropdown.open)
-    #         self.dropdown.bind(on_select=lambda instance, x: setattr(self.fruit_button, 'text', x))
-    #         self.add_widget(self.fruit_button)
-    #
-    #         # 创建一个按钮，点击时弹出下拉框的 Popup
-    #         popup_button = Button(text='Show Fruit Popup', size_hint=(None, None), size=(200, 50))
-    #         popup_button.bind(on_release=lambda a: self.choose_style_popup())
-    #         self.add_widget(popup_button)
-    #
-    # def choose_style_popup(self):
-    #     # 创建一个弹出窗口
-    #     self.popup = Popup(title='Choose a Fruit', content=self.fruit_button, size_hint=(None, None), size=(300, 200))
-    #     self.popup.open()
-
     def add_label_sound(self, text, sound):
-        self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
+        self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
                                 size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
@@ -124,7 +102,7 @@ class WarScreen(FloatLayout):
             self.sound.play()
 
     def add_label(self, text):
-        self.hints.append(Image(source=f'./img/{text}.png', size_hint=(None, None),
+        self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
                                 size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
 
@@ -135,12 +113,12 @@ class WarScreen(FloatLayout):
     def show_path(self):
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
-                self.dots.append(Image(source='./img/big_dot.png', size_hint=(None, None),
+                self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
                                        size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
             else:
-                self.dots.append(Image(source='./img/small_dot.png', size_hint=(None, None),
+                self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
                                  size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
@@ -183,9 +161,7 @@ class WarScreen(FloatLayout):
             return
 
         # moves, label, next_turn = self.war.solve_board_press(p)
-        moves = self.war.solve_board_press(p)
-
-        # self.display_operation(moves)
+        self.war.solve_board_press(p)
 
         self.remove_path()
         if not self.war.active_qizi is None:
@@ -233,15 +209,6 @@ class WarScreen(FloatLayout):
         self.__init__()
         print("已新局")
 
-    # def change_regret_mode(self):
-    #     """打开或关闭悔棋模式"""
-    #     if not self.regret_mode:  # 打开悔棋模式
-    #         self.regret_mode = True
-    #     else:  # 关闭悔棋模式
-    #         self.logs = self.logs[:self.turn]
-    #         self.war.active_qizi = None
-    #         self.regret_mode = False
-
     def _move_animation(self, idt, p):
         # 确保图片置于顶层
         self.remove_widget(self.imgs[idt])
@@ -266,7 +233,7 @@ class WarScreen(FloatLayout):
                 idt = len(self.pieces)
                 an.append((1, idt))
                 self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
-                self.imgs.append(Image(source='./img/%d.png' % oper[1], size_hint=(None, None),
+                self.imgs.append(Image(source=f'./{self.img_source}/%d.png' % oper[1], size_hint=(None, None),
                                        size=("65dp", "65dp"), pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
@@ -309,31 +276,12 @@ class WarScreen(FloatLayout):
                 else:
                     raise
 
-    # @staticmethod
-    # def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
-    #     if oper[0] == 0 or oper[0] == 4:
-    #         return (oper[0], oper[2], oper[1])
-    #     elif oper[0] == 1:
-    #         return (2, oper[1], oper[2])
-    #     elif oper[0] == 2:
-    #         return (1, oper[1], oper[2])
-    #     print("!无法逆向操作")
-    #     return oper
-
     def regret(self):
         if self.war.turn == 0:
             print("!无法回退")
             self.turn_label_twinkle()
             return
-        ms = self.war.regret()
-        # self.display_operation(ms)
-
-        # self.turn -= 1  # 先下一回合再操作
-        # self.turn_label.text = str(self.war.turn)
-        # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
-        #     self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
-        # self.mycamp_intl = not self.mycamp_intl
-        # self.ai.reset_attack_pose()
+        self.war.regret()
         print("已回退一步")
 
     def gret(self):
@@ -341,15 +289,7 @@ class WarScreen(FloatLayout):
             print("!无法前进")
             self.turn_label_twinkle()
             return
-        ms = self.war.gret()
-        # self.display_operation(ms)
-
-        # for i in range(0, len(self.logs[self.turn]), 1):  # 正序重现
-        #     self.display_operation(self.logs[self.turn][i])
-        # self.turn += 1  # 先操作再下一回合
-        # self.turn_label.text = str(self.turn)
-        # self.mycamp_intl = not self.mycamp_intl
-        # self.ai.reset_attack_pose()
+        self.war.gret()
         print("已前进一步")
 
     def turn_label_twinkle(self):
@@ -390,15 +330,8 @@ class WarScreen(FloatLayout):
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()
-            elif 230*2 < y < 270*2:
-                # 设置材质包  TODO
-                if 1266 < x < 1440:
-                    pass
-                    # self.new()
-                    # self.myChooseStylePopup.open()
-                # 提示走法
-                elif 1418 < x < 1548:
-                    self.war.ai_move()
+            elif 705*2 < x < 770*2 and 230*2 < y < 270*2:
+                self.war.ai_move()
             # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
                 self.new()
@@ -427,43 +360,23 @@ class WarScreen(FloatLayout):
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
-
-
-class ChooseStylePopup(Popup):
-    def __init__(self, current_style: str, **kwargs):
-        super(ChooseStylePopup, self).__init__(**kwargs)
-        self.title = "选择材质包"
-        self.size_hint = (None, None)
-        self.size = (300, 200)
-
-        # 创建布局
-        layout = BoxLayout(orientation='vertical')
-
-        # 创建下拉框
-        self.dropdown = DropDown()
-        for fruit in ["中国象棋风格", "国际象棋风格"]:
-            btn = Button(text=fruit, size_hint_y=None, height=44)
-            btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
-            self.dropdown.add_widget(btn)
-
-        # 创建主按钮，点击时展开下拉框
-        self.main_button = Button(text=current_style, size_hint=(None, None), size=(200, 50))
-        self.main_button.bind(on_release=self.dropdown.open)
-        self.dropdown.bind(on_select=lambda instance, x: setattr(self.main_button, 'text', x))
-
-        # 添加主按钮到布局
-        layout.add_widget(self.main_button)
-
-        # 添加关闭按钮
-        close_button = Button(text='Close', size_hint_y=None, height=50)
-        close_button.bind(on_press=self.dismiss)
-        layout.add_widget(close_button)
-
-        # 设置弹出窗口的内容
-        self.content = layout
-
+            if 1288<x<1382 and 88<y<122:
+                if self.img_source=='img':
+                    self.img_source='img2'
+                else:
+                    self.img_source='img'
+                self.remove_widget(self.bg_image)
+                self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"),
+                                      size_hint=(None, None),
+                                      pos_hint={'center_x': 0.5, 'center_y': 0.5})
+                self.add_widget(self.bg_image)
+                self.new()
 
 class BingGo(App):
+    def __init__(self, args):
+        super().__init__()
+        self.args = args
+
     def build(self):
         # bgm设置
         # self.sound = SoundLoader.load('./music/main.wav')
@@ -473,7 +386,7 @@ class BingGo(App):
         #     self.sound.play()
         # else:
         #     print("!声音播放出错", self.sound)
-        return WarScreen()
+        return WarScreen(self.args)
 
 
 def reset():
@@ -488,5 +401,11 @@ def reset():
 
 
 if __name__ == '__main__':
+    input("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入两个位置，准备好请在终端内按Enter...")
+    print("录入聊天输入框位置...")
+    SCREEN_POS_x, SCREEN_POS_y = wx.set_wx()
+    print("录入对方最新聊天消息位置...")
+    SCREEN_POS_a, SCREEN_POS_b = wx.set_wx()
+
     reset()
-    BingGo().run()
+    BingGo(args=(SCREEN_POS_x, SCREEN_POS_y, SCREEN_POS_a, SCREEN_POS_b)).run()

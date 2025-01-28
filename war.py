@@ -11,10 +11,11 @@ from kivy.clock import Clock
 
 from beach import *
 from intelligence import Intelligence
+import wx
 
 
 class War:
-    def __init__(self, display):
+    def __init__(self, display, args: Tuple):
         self.mycamp_intl = False
         self.display = display
         self.beach = Beach()
@@ -31,6 +32,12 @@ class War:
 
         self.auto_intl = False
         self.auto_chn = False
+        self.friend_fight: bool = config.friend_fight
+
+        self.SCREEN_POS_x = args[0]
+        self.SCREEN_POS_y = args[1]
+        self.SCREEN_POS_a = args[2]
+        self.SCREEN_POS_b = args[3]
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
@@ -76,7 +83,12 @@ class War:
             self.active_qizi = None
 
         self.display.generate_animation(moves)
-        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
+
+        if not (label == "check" or label == "wangbeijj"):
+            if self.friend_fight:
+                Clock.schedule_once(lambda dt: self.friend_continue(), timeout=0.2)
+            else:
+                Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
     def ai_move(self):
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
@@ -89,6 +101,15 @@ class War:
         pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
         self.main(p=pt)
+
+    def friend_continue(self):
+        wx.send_msg(self.SCREEN_POS_x, self.SCREEN_POS_y, msg=self.logs)
+        print("开始等待对方输入，未响应为正常现象...")
+        while not wx.check_msg(self.SCREEN_POS_a, self.SCREEN_POS_b):
+            pass
+        msg = wx.copy_msg(self.SCREEN_POS_a, self.SCREEN_POS_b)
+        self.logs = msg
+        self.gret()
 
     def regret(self):
         self.turn -= 1  # 先上一回合再操作
