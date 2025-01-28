@@ -26,11 +26,15 @@ def set_wx():
 
 def send_msg(x, y, msg):
     pyautogui.click(x, y)
-    pyautogui.write(msg)
+    pyperclip.copy(str(msg))
+    pyautogui.hotkey('ctrl', 'v')
     pyautogui.press('enter')
 
-def check_msg(a, b):
-    return pyautogui.pixel(a, b) == (245, 245, 245)
+def wait_msg():
+    c = pyperclip.paste()
+    while pyperclip.paste() == c:
+        time.sleep(0.5)
+    return pyperclip.paste()
 
 def copy_msg(a, b):
     pyautogui.rightClick(a, b)

@@ -36,8 +36,8 @@ class War:
 
         self.SCREEN_POS_x = args[0]
         self.SCREEN_POS_y = args[1]
-        self.SCREEN_POS_a = args[2]
-        self.SCREEN_POS_b = args[3]
+        # self.SCREEN_POS_a = args[2]
+        # self.SCREEN_POS_b = args[3]
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
@@ -105,9 +105,7 @@ class War:
     def friend_continue(self):
         wx.send_msg(self.SCREEN_POS_x, self.SCREEN_POS_y, msg=self.logs)
         print("开始等待对方输入，未响应为正常现象...")
-        while not wx.check_msg(self.SCREEN_POS_a, self.SCREEN_POS_b):
-            pass
-        msg = wx.copy_msg(self.SCREEN_POS_a, self.SCREEN_POS_b)
+        msg = wx.wait_msg()
         self.logs = msg
         self.gret()
 

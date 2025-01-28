@@ -401,11 +401,13 @@ def reset():
 
 
 if __name__ == '__main__':
-    input("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入两个位置，准备好请在终端内按Enter...")
+    print("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入鼠标位置...")
     print("录入聊天输入框位置...")
     SCREEN_POS_x, SCREEN_POS_y = wx.set_wx()
-    print("录入对方最新聊天消息位置...")
-    SCREEN_POS_a, SCREEN_POS_b = wx.set_wx()
+    print(SCREEN_POS_x, SCREEN_POS_y)
+    # print("录入对方最新聊天消息位置...")
+    # SCREEN_POS_a, SCREEN_POS_b = wx.set_wx()
+    # print(SCREEN_POS_a, SCREEN_POS_b)
 
     reset()
-    BingGo(args=(SCREEN_POS_x, SCREEN_POS_y, SCREEN_POS_a, SCREEN_POS_b)).run()
+    BingGo(args=(SCREEN_POS_x, SCREEN_POS_y)).run()
