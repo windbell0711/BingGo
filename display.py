@@ -63,7 +63,7 @@ class WarScreen(FloatLayout):
                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(self.bg_image)
         self.turn_label = Label(text="0", size_hint=(None, None), size=("200dp", "100dp"), bold=True,
-                                pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20', color=[0, 0, 0, 1])
+                                pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20dp', color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
 
         self.hints = []
@@ -207,7 +207,7 @@ class WarScreen(FloatLayout):
         print("已载入")
 
     def new(self):  # TODO: bug 多按了会卡
-        self.__init__()
+        self.__init__((-1,-1))
         print("已新局")
 
     def _move_animation(self, idt, p):
@@ -367,17 +367,20 @@ class WarScreen(FloatLayout):
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
-            if 1288 < x < 1382 and 88 < y < 122:
-                if self.img_source == 'img':
-                    self.img_source = 'img2'
-                else:
-                    self.img_source = 'img'
-                self.remove_widget(self.bg_image)
-                self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"),
-                                      size_hint=(None, None),
-                                      pos_hint={'center_x': 0.5, 'center_y': 0.5})
-                self.add_widget(self.bg_image)
-                self.new()
+# <<<<<<< HEAD
+#             if 1288 < x < 1382 and 88 < y < 122:
+#                 if self.img_source == 'img':
+#                     self.img_source = 'img2'
+#                 else:
+#                     self.img_source = 'img'
+#                 self.remove_widget(self.bg_image)
+#                 self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"),
+#                                       size_hint=(None, None),
+#                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
+#                 self.add_widget(self.bg_image)
+#                 self.new()
+# =======
+# >>>>>>> 6b77d769a5d0d31e5552c2e2e404bd621bc20d2d
         elif touch.button == 'right':
             if len(self.picture_image):
                 self.remove_widget(self.picture_image[-1])
@@ -408,7 +411,7 @@ class WarScreen(FloatLayout):
 
 
 class BingGo(App):
-    def __init__(self, args):
+    def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
 
@@ -421,7 +424,8 @@ class BingGo(App):
         #     self.sound.play()
         # else:
         #     print("!声音播放出错", self.sound)
-        return WarScreen(self.args)
+        self.war_screen = WarScreen(self.args)
+        return self.war_screen
 
 
 def reset():
@@ -445,4 +449,4 @@ if __name__ == '__main__':
         BingGo(args=(SCREEN_POS_x, SCREEN_POS_y)).run()
     else:
         reset()
-        BingGo(args=(-1, -1)).run()
+        BingGo().run()

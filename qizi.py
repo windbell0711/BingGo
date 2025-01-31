@@ -55,7 +55,7 @@ class Qizi:
         if self.typ == 8:
             return 18
         if self.typ == 11:
-            return 40
+            return 100
         if self.typ == 13:
             if self.p//10==7:
                 return 20
