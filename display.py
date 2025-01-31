@@ -15,6 +15,7 @@ from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.image import Image
@@ -39,7 +40,7 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 class WarScreen(FloatLayout):
-    img_source = 'img2'
+    img_source = 'img'
 
     def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
@@ -302,8 +303,14 @@ class WarScreen(FloatLayout):
     def _change_color_turn_label(self, color):
         self.turn_label.color = color
 
+    picture_image = []
+
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
+            if len(self.picture_image):
+                self.remove_widget(self.picture_image[-1])
+                self.picture_image = []
+                return
             if time.time() - self.click_time < 0.2:  # 点按频率限制
                 print("!请按慢一点")
                 return
@@ -330,7 +337,7 @@ class WarScreen(FloatLayout):
                 # 重做
                 elif 1476 < x < 1536:
                     self.gret()
-            elif 705*2 < x < 770*2 and 230*2 < y < 270*2:
+            elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
                 self.war.ai_move()
             # 新局
             elif 1458 < x < 1542 and 70 < y < 152:
@@ -342,9 +349,9 @@ class WarScreen(FloatLayout):
                 elif 1418 < x < 1548:
                     self.load()
             # 勾选自动方
-            elif 147*2 < y < 207*2:
+            elif 147 * 2 < y < 207 * 2:
                 # 国象自动
-                if y < 177*2:
+                if y < 177 * 2:
                     if self.war.auto_intl:
                         self.war.auto_intl = False
                         self.remove_widget(self.auto_intl_img)
@@ -360,17 +367,45 @@ class WarScreen(FloatLayout):
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
-            if 1288<x<1382 and 88<y<122:
-                if self.img_source=='img':
-                    self.img_source='img2'
+            if 1288 < x < 1382 and 88 < y < 122:
+                if self.img_source == 'img':
+                    self.img_source = 'img2'
                 else:
-                    self.img_source='img'
+                    self.img_source = 'img'
                 self.remove_widget(self.bg_image)
                 self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"),
                                       size_hint=(None, None),
                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
                 self.add_widget(self.bg_image)
                 self.new()
+        elif touch.button == 'right':
+            if len(self.picture_image):
+                self.remove_widget(self.picture_image[-1])
+                self.picture_image = []
+            if time.time() - self.click_time < 0.2:  # 点按频率限制
+                print("!请按慢一点")
+                return
+            self.click_time = time.time()
+
+            x, y = touch.pos
+            print("touch.pos: ", x, y)
+            x, y = x / M, y / M
+            if x < 1250:
+                px = round((x - 66) / 133.3, 0)
+                py = 8 - round((y - 66) / 133.3, 0)
+                p = int(px + 10 * py)  # 点选的位置
+                if not self.beach.valid(p):
+                    print("!位置不合法  p:", p)
+                    return
+                if not self.beach[p] == None:
+                    self.show_picture(self.beach[p].typ)
+
+    def show_picture(self, typ):
+        self.picture_image.append(
+            Image(source=f'./{self.img_source}/{typ}_p.png', size=("700dp", "500dp"), size_hint=(None, None),
+                  pos_hint={'center_x': 0.5, 'center_y': 0.5}))
+        self.add_widget(self.picture_image[-1])
+
 
 class BingGo(App):
     def __init__(self, args):
@@ -401,13 +436,13 @@ def reset():
 
 
 if __name__ == '__main__':
-    print("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入鼠标位置...")
-    print("录入聊天输入框位置...")
-    SCREEN_POS_x, SCREEN_POS_y = wx.set_wx()
-    print(SCREEN_POS_x, SCREEN_POS_y)
-    # print("录入对方最新聊天消息位置...")
-    # SCREEN_POS_a, SCREEN_POS_b = wx.set_wx()
-    # print(SCREEN_POS_a, SCREEN_POS_b)
-
-    reset()
-    BingGo(args=(SCREEN_POS_x, SCREEN_POS_y)).run()
+    if config.friend_fight:
+        print("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入鼠标位置...")
+        print("录入聊天输入框位置...")
+        SCREEN_POS_x, SCREEN_POS_y = wx.set_wx()
+        print(SCREEN_POS_x, SCREEN_POS_y)
+        reset()
+        BingGo(args=(SCREEN_POS_x, SCREEN_POS_y)).run()
+    else:
+        reset()
+        BingGo(args=(-1, -1)).run()

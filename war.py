@@ -7,6 +7,8 @@
 @License : Apache 2.0
 @File    : war.py
 """
+import json
+
 from kivy.clock import Clock
 
 from beach import *
@@ -38,6 +40,17 @@ class War:
         self.SCREEN_POS_y = args[1]
         # self.SCREEN_POS_a = args[2]
         # self.SCREEN_POS_b = args[3]
+
+        if config.friend_fight and True:  # 先手
+            Clock.schedule_once(lambda dt: self.friend_first(), 1)
+
+    def friend_first(self):
+        msg = wx.wait_msg().replace('(', '[').replace(')', ']')
+        for i in json.loads(msg)[0]:
+            if i[0] == 0:
+                self.active_qizi = self.beach[i[1]]
+                self.main(p=i[2])
+                break
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
@@ -85,7 +98,7 @@ class War:
         self.display.generate_animation(moves)
 
         if not (label == "check" or label == "wangbeijj"):
-            if self.friend_fight:
+            if self.friend_fight and self.turn != 1:
                 Clock.schedule_once(lambda dt: self.friend_continue(), timeout=0.2)
             else:
                 Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
@@ -105,8 +118,8 @@ class War:
     def friend_continue(self):
         wx.send_msg(self.SCREEN_POS_x, self.SCREEN_POS_y, msg=self.logs)
         print("开始等待对方输入，未响应为正常现象...")
-        msg = wx.wait_msg()
-        self.logs = msg
+        msg = wx.wait_msg().replace('(', '[').replace(')', ']')
+        self.logs = json.loads(msg)
         self.gret()
 
     def regret(self):
