@@ -5,19 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/BingGo.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img_readme/img1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BingGo.spec" beforeDir="false" afterPath="$PROJECT_DIR$/BingGo.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_tech.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_tech.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/beach.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/beach.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/black_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/black_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/check.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/check.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/checked.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/checked.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/jiangjun.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/jiangjun.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/red_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/red_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/wangbeijj.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/wangbeijj.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_readme/war1.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save.json" beforeDir="false" afterPath="$PROJECT_DIR$/save.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,20 +54,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging master",
-    "last_opened_file_path": "D:/Documents/Jetbrains/PycharmProjects/BingGo/img_readme",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Python&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="BingGo" is-module-sdk="true">
@@ -72,21 +78,21 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
       <recent name="D:\Users\admin\PycharmProjects\BingGo\Scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.display">
     <configuration name="display" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BingGo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -108,6 +114,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="epub2mobi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BingGo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../../Desktop/epub2mobi/epub2mobi" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../../Desktop/epub2mobi/epub2mobi/epub2mobi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BingGo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -121,27 +148,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="scratch_5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="BingGo" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,11 +200,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.display" />
+        <item itemvalue="Python.epub2mobi" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.war" />
         <item itemvalue="Python.wx" />
-        <item itemvalue="Python.scratch_5" />
       </list>
     </recent_temporary>
   </component>
@@ -218,7 +224,16 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="122" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="164" />
+                  <entry key="Table.Default.Hash.ColumnIdWidth" value="120" />
+                  <entry key="Table.Space.CommitStatus.ColumnIdWidth" value="42" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

@@ -4,7 +4,6 @@
 @File    : config.py
 """
 from __future__ import annotations
-from typing import List, Dict, Tuple
 
 friend_fight = False
 

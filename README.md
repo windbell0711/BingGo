@@ -13,7 +13,7 @@
 [![](https://img.shields.io/badge/LICENSE-Apache2.0-yellow)](https://github.com/windbell0711/BingGo?tab=Apache-2.0-1-ov-file#readme)
 
 <p align="center">
-  <a href="https://github.com/windbelljianjie0711/BingGo">
+  <a href="https://github.com/windbell0711/BingGo">
     <img src="./img_readme/mahoupao.png" alt="Logo" width="160" height="160">
   </a>
 </p>
@@ -21,45 +21,46 @@
 <h3 align="center">BingGo</h3>
 <p align="center">the magical integration with Chinese chess and International chess</p>
 
-[<p align="center">**探索本项目的文档 »**</p>](#目录)
-
-<p align="center">
-  <a href="https://github.com/windbell0711/BingGo">查看Demo</a>  ·
-  <a href="https://github.com/windbell0711/BingGo/issues">报告Bug</a>  ·
-  <a href="https://github.com/windbell0711/BingGo/issues">提出新特性</a>
-</p>
+[<p align="center">**探索代码仓库 »**</p>](https://github.com/windbell0711/BingGo)
 
 <p align="center">
   <a href="https://github.com/windbell0711/BingGo/README_en.md">ENGLISH</a>
 </p>
  
+---
+
+<p align="center">
+  <img src="./img_readme/img1.png" alt="img1">
+</p>
 
 ## 目录
 - [规则介绍](#规则介绍)
   - [主要修改](#主要修改)
   - [完整规则](#完整规则)
-- [游戏安装](#游戏安装)
-- [作者](#作者)
+- [游戏介绍](#游戏介绍)
+  - [游戏安装](#游戏安装)
+  - [功能简介](#功能简介)
+- [开发者](#开发者)
 - [技术信息](#技术信息)
 - [版权说明](#版权说明)
 
+---
 
 ## 规则介绍
 ### 主要修改
 本游戏基本沿用中象或国象的走子和获胜规则，主要修改如下：
-1. 棋盘初始状态如下图所示，大小为9*9，两方分别摆放中国象棋棋子和国际象棋棋子
-![游戏开局](./img_readme/war1.png)
-2. 由于战场扩大，国际象棋增一兵
-3. 中国象棋增一中炮
-4. 取消中象中，相、士的走子范围限制
-5. 中象中，兵向前一步即可向前方、左侧或右侧移动一步
-6. 新增了中国象棋棋子 **将**
+1. 棋盘初始状态如图所示，大小为**9*9**，两方分别摆放中国象棋棋子和国际象棋棋子
+2. 由于战场扩大，**国际象棋增一兵**
+3. 中象中，取消**相、士**的走子范围限制，且相可以斜走一格
+4. 中象中，**兵**始终可以向前方、左侧或右侧移动一步。
+5. 中象中，兵到底线可**升变**为新棋子：将
 
 ### 完整规则
+游戏由中国象棋方开始，按照以下方法轮流行走一次。
 
-游戏由中国象棋方开始，按照以下方法轮流行走一次
+<details>
+<summary><strong>中象方：</strong></summary>
 
-#### 中象方：
 **帅**
 沿直线移动一格，不能离开九宫格，
 若直接面对王，并处于自己的回合开始，胜
@@ -68,7 +69,7 @@
 沿斜线移动一格
 
 **相**
-沿斜线移动两格，不能越子
+沿斜线移动一格或两格，不能越子
 
 **马**
 沿直线移动一格，然后沿此方向斜向前移动一格，沿途有子则不能通过
@@ -85,9 +86,10 @@
 
 **将**
 有以上所有棋子的走子或吃子方式
+</details>
 
-
-#### 国象方：
+<details>
+<summary><strong>国象方：</strong></summary>
 
 **国王**
 斜向或直线移动一格。若国王在与一城堡都在底线，且此城堡处于原位，国王可以向易位的城堡方向走两格，然后城堡越过国王移动至其邻格
@@ -106,17 +108,36 @@
 
 **士兵**
 向前直走一格，在初始位置可以向前走一格或两格，不能以此法吃子。敌方子在斜前方一格，可以将其吃掉。若到达底线，则可以立即变成皇后
+</details>
+
+---
+
+## 游戏介绍
+
+### 游戏安装
+当前最新版本（仅windows）：**BingGo v1.0** [https://github.com/windbell0711/BingGo/releases/tag/v1.0](https://github.com/windbell0711/BingGo/releases/tag/v1.0)
+
+1. 点开上方最新版本Release地址（可能等待时间稍长）
+2. 查看使用说明
+3. 拉到最下面点开Assets（可能等待时间稍长）
+4. 点击 **BingGo.v1.0.rar** 开始下载
+
+**备用方案**：[蓝奏云下载地址](https://wwqe.lanzouo.com/iHWAY2mgk88h)
+
+更多版本请查看[Releases](https://github.com/windbell0711/BingGo/releases)。
+
+### 功能简介
 
 
-## 游戏安装
+---
 
-## 作者
-<img src="./img_readme/Lilold.png" alt="Logo" width="60" height="60"><a href="https://github.com/windbell0711/Lilold333">@Lilold</a>
+## 开发者
+<img src="./img_readme/Lilold.png" alt="Lilold" width="60" height="60"><a href="https://github.com/Lilold333"> @Lilold</a>
 <br/>
-<img src="./img_readme/windbell0711.png" alt="Logo" width="60" height="60"><a href="https://github.com/windbell0711/windbell0711">@windbell0711</a>
+<img src="./img_readme/windbell0711.png" alt="windbell0711" width="60" height="60"><a href="https://github.com/windbell0711"> @windbell0711</a>
 
 ## 技术信息
-无论您是开发者还是用户，非常欢迎您来查看我们的[技术文档](README_tech.md)！
+本项目使用[kivy框架](https://github.com/kivy/kivy)开发，更多信息欢迎查看[技术文档](README_tech.md)！
 
 ## 版权说明
 本项目采用[Apache 2.0](LICENSE)协议

@@ -20,7 +20,6 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.popup import Popup
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.metrics import Metrics
@@ -414,6 +413,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
+        self.icon = './img_readme/mahoupao.ico'
 
     def build(self):
         # bgm设置

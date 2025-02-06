@@ -38,4 +38,4 @@ except Exception as e:
     input("We are sorry that an exception occurred. We've save your game in log_error.txt. You can send it to us and we'll assist you to kill the problems. You can also raise an issue at https://github.com/windbell0711/BingGo/issues. Sorry again.\n")
     raise e
 
-input()
+# input()

@@ -96,7 +96,7 @@ git clone https://github.com/windbell0711/BingGo.git
 1. Open the Terminal of the project  *e.g. D:/Documents/.../BingGo*
 2. Run pyinstaller: ```pyinstaller [-F] [-w] [-i ....ico] [-n ...] main.py```
 3. Modify the .spec file as below: ([example](BingGo.spec))
-   1. Add ```from kivy_deps import sdl2, glew``` at the beginning;
+   1. Add ```from kivy_deps import sdl2, glew``` to the beginning;
    2. Add datas.  *e.g.*```[('D:/Documents/.../BingGo/img/*.png', './img'), ...]```
    3. Add hiddenimports.  *e.g.*```['packaging','packaging.version','kivy','enchant']```
    4. Add ```*[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)]``` to ```COLLECT()```.
