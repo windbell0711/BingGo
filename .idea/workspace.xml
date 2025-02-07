@@ -5,25 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img_readme/img1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BingGo.spec" beforeDir="false" afterPath="$PROJECT_DIR$/BingGo.spec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_tech.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_tech.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/img/beach.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/beach.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/black_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/black_wins.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/check.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/check.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/checked.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/checked.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/jiangjun.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/jiangjun.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/red_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/red_wins.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/wangbeijj.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/wangbeijj.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img_readme/war1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/beach.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/beach.PNG" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

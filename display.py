@@ -30,7 +30,12 @@ from war import *
 import config
 import wx
 
-M = Metrics.density / 2
+try:
+    S = config.screen_scale
+except AttributeError as e:
+    print("! " + str(e))
+    S = 1
+M = Metrics.density * S / 2
 
 def fx(p):
     return (p % 10 + 0.5) / 12
@@ -51,17 +56,17 @@ class WarScreen(FloatLayout):
 
         # self.auto_intl = False
         # self.auto_chn = False
-        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=("%ddp" % (25 * S), "%ddp" % (25 * S)), size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
-        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=("25dp", "25dp"), size_hint=(None, None),
+        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=("%ddp" % (25 * S), "%ddp" % (25 * S)), size_hint=(None, None),
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
 
         # 窗口及背景图设置
-        Window.size = (800, 600)
-        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"), size_hint=(None, None),
+        Window.size = (800*S, 600*S)
+        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)), size_hint=(None, None),
                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(self.bg_image)
-        self.turn_label = Label(text="0", size_hint=(None, None), size=("200dp", "100dp"), bold=True,
+        self.turn_label = Label(text="0", size_hint=(None, None), size=("%ddp" % (200 * S), "%ddp" % (100 * S)), bold=True,
                                 pos_hint={'center_x': 0.875, 'center_y': 0.68}, font_size='20dp', color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
 
@@ -85,14 +90,14 @@ class WarScreen(FloatLayout):
             self.beach.set_son(qizi, p)
             self.pieces.append(qizi)
             self.imgs.append(Image(
-                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None), size=("65dp", "65dp"),
+                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None), size=("%ddp" % (65 * S), "%ddp" % (65 * S)),
                 pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
 
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
-                                size=("65dp", "65dp"), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
+                                size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
         self.sound = SoundLoader.load(f'./music/{sound}.wav')
@@ -103,7 +108,7 @@ class WarScreen(FloatLayout):
 
     def add_label(self, text):
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
-                                size=("200dp", "200dp"), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
+                                size=("%ddp" % (200 * S), "%ddp" % (200 * S)), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
 
     def remove_label(self):
@@ -114,12 +119,12 @@ class WarScreen(FloatLayout):
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
                 self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
-                                       size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                       size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
             else:
                 self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
-                                 size=("120dp", "120dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                 size=("%ddp" % (120 * S), "%ddp" % (120 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -143,7 +148,7 @@ class WarScreen(FloatLayout):
     #     # 添加贴图
     #     self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
     #     self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
-    #                            size=("65dp", "65dp"), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+    #                            size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
     #     # self.add_widget(self.imgs[idt])
     #     # return idt
     #
@@ -234,7 +239,7 @@ class WarScreen(FloatLayout):
                 an.append((1, idt))
                 self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
                 self.imgs.append(Image(source=f'./{self.img_source}/%d.png' % oper[1], size_hint=(None, None),
-                                       size=("65dp", "65dp"), pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
+                                       size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
                 an.append((2, self.beach[oper[2]].idt))
@@ -373,7 +378,7 @@ class WarScreen(FloatLayout):
 #                 else:
 #                     self.img_source = 'img'
 #                 self.remove_widget(self.bg_image)
-#                 self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("800dp", "600dp"),
+#                 self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)),
 #                                       size_hint=(None, None),
 #                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
 #                 self.add_widget(self.bg_image)
@@ -404,7 +409,7 @@ class WarScreen(FloatLayout):
 
     def show_picture(self, typ):
         self.picture_image.append(
-            Image(source=f'./{self.img_source}/{typ}_p.png', size=("700dp", "500dp"), size_hint=(None, None),
+            Image(source=f'./{self.img_source}/{typ}_p.png', size=("%ddp" % (700 * S), "%ddp" % (500 * S)), size_hint=(None, None),
                   pos_hint={'center_x': 0.5, 'center_y': 0.5}))
         self.add_widget(self.picture_image[-1])
 

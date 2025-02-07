@@ -7,6 +7,8 @@ from __future__ import annotations
 
 friend_fight = False
 
+screen_scale = 2
+
 typ_dict = {
     "将": 0,
     "车": 1,
