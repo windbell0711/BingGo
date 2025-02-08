@@ -22,6 +22,7 @@ from kivy.uix.image import Image
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
+from kivy.core.clipboard import Clipboard
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -53,6 +54,8 @@ class WarScreen(FloatLayout):
         self.beach = Beach()
 
         self.click_time = time.time()
+        self.quick_cmd_status = config.QUICK_CMD_STATUS
+
         self.img_source = 'img2' if config.IMG_STYLE_INTL else "img"
 
         # self.auto_intl = False
@@ -79,6 +82,7 @@ class WarScreen(FloatLayout):
 
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
+        Window.bind(on_keyboard=self.handle_keyboard)
 
         # 棋盘初始化
         self.pieces = []
@@ -315,7 +319,7 @@ class WarScreen(FloatLayout):
                 self.remove_widget(self.picture_image[-1])
                 self.picture_image = []
                 return
-            if time.time() - self.click_time < 0.2:  # 点按频率限制
+            if time.time() - self.click_time < 0.15:  # 点按频率限制
                 print("!请按慢一点")
                 return
             self.click_time = time.time()
@@ -391,7 +395,7 @@ class WarScreen(FloatLayout):
             if len(self.picture_image):
                 self.remove_widget(self.picture_image[-1])
                 self.picture_image = []
-            if time.time() - self.click_time < 0.2:  # 点按频率限制
+            if time.time() - self.click_time < 0.15:  # 点按频率限制
                 print("!请按慢一点")
                 return
             self.click_time = time.time()
@@ -408,6 +412,51 @@ class WarScreen(FloatLayout):
                     return
                 if not self.beach[p] is None:
                     self.show_picture(self.beach[p].typ)
+
+    def handle_keyboard(self, window, key, scancode, codepoint, modifier):
+        if self.quick_cmd_status == 0:  # 键盘监听关闭
+            return
+        if key == 305:  # 点到ctrl了
+            return
+        if time.time() - self.click_time < 0.15:  # 点按频率限制
+            return
+        self.click_time = time.time()
+        print(key, modifier)
+        # <-
+        if key == 276:
+            self.regret()
+        # ->
+        elif key == 275:
+            self.gret()
+        # Ctrl + C
+        elif 'ctrl' in modifier and key == 99:
+            print("load " + json.dumps(self.war.logs))
+            Clipboard.copy("load " + json.dumps(self.war.logs))
+        # Ctrl + V
+        elif 'ctrl' in modifier and key == 118:
+            p = Clipboard.paste().strip().lower()
+            print("Running " + p)
+            if p.find(" ") == -1:  # 不需要参数
+                cmd = p
+                pass
+            else:
+                cmd, argu = p[:p.find(" ")], p[p.find(" ")+1:]  # 需要参数
+                if cmd == "load":
+                    try:
+                        l = json.loads(argu)
+                        self.new()
+                        self.war.logs = l
+                    except json.decoder.JSONDecodeError:
+                        print("!Invalid log: " + argu)
+                elif cmd == "quick_cmd":
+                    if argu == "on":
+                        self.quick_cmd_status = 1
+                        config.write_preference(key="quick_cmd_status", value="on")
+                    elif argu == "off":
+                        self.quick_cmd_status = 0
+                        config.write_preference(key="quick_cmd_status", value="off")
+                    else:
+                        print("!Invalid argu: " + argu)
 
     def show_picture(self, typ):
         self.picture_image.append(

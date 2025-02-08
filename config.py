@@ -118,7 +118,7 @@ def write_preference(key, value) -> None:
     lines = []
     key_found = False
     try:
-        with open("preference.csv", mode='r', encoding='utf-8') as file:
+        with open("preference.csv", mode='r', newline='', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
                 if len(row) == 2 and row[0].strip() == key:
@@ -133,8 +133,9 @@ def write_preference(key, value) -> None:
     if not key_found:
         lines.append([key, value])
     # 写回文件
-    with open("preference.csv", mode='w', encoding='utf-8') as file:
+    with open("preference.csv", mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerows(lines)
 
-IMG_STYLE_INTL = True if read_preference("img_style").lower() == "intl" else False
+IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
+QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status")]
