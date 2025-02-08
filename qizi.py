@@ -37,34 +37,35 @@ class Qizi:
         return False
 
     def value(self):
+        c=2
         if self.typ == 1:
-            return 18
+            return 18*c
         if self.typ in (5,9,10):
-            return 12
+            return 12*c
         if self.typ == 2:
-            return 9
+            return 9*c
         if self.typ ==4:
-            return 1
+            return 1*c
         if self.typ ==3:
-            return 5
+            return 5*c
         if self.typ == 7:
             if self.p // 10 == 1:
-                return 20
+                return 20*c
             else:
-                return 4
+                return 4*c
         if self.typ == 8:
-            return 18
+            return 18*c
         if self.typ == 11:
-            return 100
+            return 100*c
         if self.typ == 13:
             if self.p//10==7:
-                return 20
+                return 20*c
             else:
-                return 3
+                return 3*c
         if self.typ == 0:
-            return 40
+            return 40*c
         if self.typ == 6:
-            return 1
+            return -10
         if self.typ == 12:
             return 1
 
@@ -220,7 +221,7 @@ class Qizi:
                 ma.append(p + 1)
             if not p // 10 == 0 and eat(p - 10):
                 ma.append(p - 10)
-        if self.typ == 12:  # king
+        if self.typ in (12,4):  # king
             p = self.p
             if not p // 10 == 8 and eat(p + 10):
                 ma.append(p + 10)

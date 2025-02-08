@@ -7,8 +7,11 @@
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/0.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/0.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/6.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/6.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" afterPath="$PROJECT_DIR$/preference.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,14 +73,14 @@
       <recent name="D:\Users\admin\PycharmProjects\BingGo\Scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.display">
+  <component name="RunManager" selected="Python.main">
     <configuration name="display" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BingGo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -185,9 +188,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.display" />
         <item itemvalue="Python.scratch_8" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.epub2mobi" />
         <item itemvalue="Python.war" />
       </list>
