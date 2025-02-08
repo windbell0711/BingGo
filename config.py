@@ -5,9 +5,11 @@
 """
 from __future__ import annotations
 
+import csv
+
 friend_fight = False
 
-screen_scale = 2
+screen_scale = 1
 
 typ_dict = {
     "将": 0,
@@ -63,7 +65,6 @@ init_lineup = [
 ]
 
 
-
 # init_lineup = {
 #     80: "车",
 #     81: "马",
@@ -101,3 +102,39 @@ init_lineup = [
 #     17: "P",
 #     18: "P"
 # }
+
+
+def read_preference(key: str) -> str:
+    """从preference.csv中读入"""
+    with open(file="preference.csv", mode='r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row[0] == key:
+                return row[1].strip()
+
+def write_preference(key, value) -> None:
+    """在preference.csv中添加或覆盖"""
+    # 先读取现有内容
+    lines = []
+    key_found = False
+    try:
+        with open("preference.csv", mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if len(row) == 2 and row[0].strip() == key:
+                    lines.append([key, value])
+                    key_found = True
+                else:
+                    lines.append(row)
+    # 如果文件不存在，直接创建并写入
+    except FileNotFoundError:
+        print("!preference.csv不存在或已被移动，将新建preference.csv")
+    # 如果键不存在，追加新键值对
+    if not key_found:
+        lines.append([key, value])
+    # 写回文件
+    with open("preference.csv", mode='w', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerows(lines)
+
+IMG_STYLE_INTL = True if read_preference("img_style").lower() == "intl" else False

@@ -7,9 +7,10 @@
 @License : Apache 2.0
 @File    : main.py
 """
-import time
+from display import BieGuanWoException
 
 try:
+    import time
     import os
     import sys
     from kivy.resources import resource_add_path, resource_find
@@ -21,6 +22,9 @@ try:
 
     b = display.BingGo()
     b.run()
+
+except BieGuanWoException:
+    print("接收到BieGuanWoException，程序已退出。")
 
 except Exception as e:
     print("!!!!!!!!!!ERROR!!!!!!!!!!")

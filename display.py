@@ -30,6 +30,9 @@ from war import *
 import config
 import wx
 
+class BieGuanWoException(Exception):
+    pass
+
 try:
     S = config.screen_scale
 except AttributeError as e:
@@ -44,15 +47,13 @@ def fy(p):
     return (8.5 - p // 10) / 9
 
 class WarScreen(FloatLayout):
-    img_source = 'img'
-
     def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
         self.war = War(self, args)
         self.beach = Beach()
 
-        # self.turn = 0  # 所在回合
         self.click_time = time.time()
+        self.img_source = 'img2' if config.IMG_STYLE_INTL else "img"
 
         # self.auto_intl = False
         # self.auto_chn = False
@@ -62,7 +63,7 @@ class WarScreen(FloatLayout):
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
 
         # 窗口及背景图设置
-        Window.size = (800*S, 600*S)
+        Window.size = (800 * S, 600 * S)
         self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)), size_hint=(None, None),
                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(self.bg_image)
@@ -74,6 +75,7 @@ class WarScreen(FloatLayout):
         self.dots = []
         # self.add_widget(self.auto_intl_img)
         # self.add_widget(self.auto_chn_img)
+        self.picture_image = []
 
         # 按键绑定
         Window.bind(on_touch_down=self.handle_button_press)
@@ -210,8 +212,8 @@ class WarScreen(FloatLayout):
         self.war.logs = ret
         print("已载入")
 
-    def new(self):  # TODO: bug 多按了会卡
-        self.__init__((-1,-1))
+    def new(self):  # bug 多按了会卡，然而失去全部力气和手段
+        self.__init__((-1, -1))
         print("已新局")
 
     def _move_animation(self, idt, p):
@@ -307,8 +309,6 @@ class WarScreen(FloatLayout):
     def _change_color_turn_label(self, color):
         self.turn_label.color = color
 
-    picture_image = []
-
     def handle_button_press(self, window, touch):
         if touch.button == 'left':
             if len(self.picture_image):
@@ -371,20 +371,22 @@ class WarScreen(FloatLayout):
                         self.war.auto_chn = True
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
-# <<<<<<< HEAD
-#             if 1288 < x < 1382 and 88 < y < 122:
-#                 if self.img_source == 'img':
-#                     self.img_source = 'img2'
-#                 else:
-#                     self.img_source = 'img'
-#                 self.remove_widget(self.bg_image)
-#                 self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)),
-#                                       size_hint=(None, None),
-#                                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
-#                 self.add_widget(self.bg_image)
-#                 self.new()
-# =======
-# >>>>>>> 6b77d769a5d0d31e5552c2e2e404bd621bc20d2d
+            # 切换贴图风格
+            elif 1288 < x < 1382 and 88 < y < 122:
+                if self.img_source == 'img':
+                    self.img_source = 'img2'
+                    config.write_preference("img_style", "intl")
+                else:
+                    self.img_source = 'img'
+                    config.write_preference("img_style", "chn")
+                print("重置成功，请重启。")
+                raise BieGuanWoException
+                # self.remove_widget(self.bg_image)
+                # self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)),
+                #                       size_hint=(None, None),
+                #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
+                # self.add_widget(self.bg_image)
+                # self.new()
         elif touch.button == 'right':
             if len(self.picture_image):
                 self.remove_widget(self.picture_image[-1])
@@ -404,7 +406,7 @@ class WarScreen(FloatLayout):
                 if not self.beach.valid(p):
                     print("!位置不合法  p:", p)
                     return
-                if not self.beach[p] == None:
+                if not self.beach[p] is None:
                     self.show_picture(self.beach[p].typ)
 
     def show_picture(self, typ):
@@ -419,6 +421,7 @@ class BingGo(App):
         super().__init__()
         self.args = args
         self.icon = './img_readme/mahoupao.ico'
+        self.war_screen = None
 
     def build(self):
         # bgm设置
