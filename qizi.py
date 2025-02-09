@@ -36,6 +36,7 @@ class Qizi:
             return True
         return False
 
+    @property
     def value(self):
         c=2
         if self.typ == 1:

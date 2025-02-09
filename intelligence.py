@@ -6,12 +6,12 @@
 @License : Apache 2.0
 @File    : intelligence.py
 """
+import random
 
 def fro(x,y):
     return x
 def target(x,y):
     return y
-import random
 
 
 class Intelligence:
@@ -125,7 +125,7 @@ class Intelligence:
 
     ptC = []
     ptI = []
-    pms=[]#possible moves
+    pms = []  # possible moves
     value=[]
     Cattackable=[]
     Iattackable=[]
@@ -292,7 +292,7 @@ class Intelligence:
         self.get_attack_pose()
         for i in self.beach:
             if not i == None:
-                self.value[i.p] = i.value()
+                self.value[i.p] = i.value
         return self.value
     def get_possible_moves_Chn(self):
         self.pms=[]

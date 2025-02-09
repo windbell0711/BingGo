@@ -25,6 +25,22 @@ class Beach:
                 res += config.typ_num2str[self.beach[i].typ]
         return res
 
+    def initiate(self, li):
+        for p in range(89):
+            i = li[p]
+            if i is None:
+                self.set_son(None, p=p)
+            else:
+                self.set_son(Qizi(p=p, typ=li[p], beach=self), p=p)
+
+    def to_int(self):
+        return [None if q is None else q.typ for q in self.beach]
+
+    def clone(self):
+        b = Beach()
+        b.initiate(self.to_int())
+        return b
+
     def __getitem__(self, item):
         """返回该位置棋子或None"""
         return self.beach[item]
@@ -50,7 +66,7 @@ class Beach:
         """移动棋子，会覆盖"""
         if self.beach[pto] is not None:
             self.beach[pto].alive = False
-            raise Exception("已弃用")
+            # raise Exception("已弃用") TODO
         self.beach[pto] = self.beach[pfrom]  # 移动到新位置
         self.beach[pfrom] = None  # 从原位置移除
         self.beach[pto].p = pto
