@@ -89,7 +89,7 @@ class WarScreen(FloatLayout):
         self.imgs = []
         for p in range(90):
             name = config.init_lineup[p]
-            if name == " " or name == "":
+            if name == " " or name == "|":
                 continue
             typ = config.typ_dict[name]
             qizi = Qizi(p=p, typ=typ, beach=self.beach, idt=len(self.pieces))
@@ -434,13 +434,13 @@ class WarScreen(FloatLayout):
             Clipboard.copy("load " + json.dumps(self.war.logs))
         # Ctrl + V
         elif 'ctrl' in modifier and key == 118:
-            p = Clipboard.paste().strip().lower()
+            p = Clipboard.paste().strip().replace("\n", "")
             print("Running " + p)
             if p.find(" ") == -1:  # 不需要参数
                 cmd = p
                 pass
             else:
-                cmd, argu = p[:p.find(" ")], p[p.find(" ")+1:]  # 需要参数
+                cmd, argu = p[:p.find(" ")].lower(), p[p.find(" ")+1:]  # 需要参数
                 if cmd == "load":
                     try:
                         l = json.loads(argu)
@@ -455,6 +455,11 @@ class WarScreen(FloatLayout):
                     elif argu == "off":
                         self.quick_cmd_status = 0
                         config.write_preference(key="quick_cmd_status", value="off")
+                    else:
+                        print("!Invalid argu: " + argu)
+                elif cmd == "init_lineup":
+                    if len(argu) == 91 and argu[0] == "|":
+                        config.write_preference(key="init_lineup", value=argu)
                     else:
                         print("!Invalid argu: " + argu)
 

@@ -23,7 +23,7 @@ class War:
         self.beach = Beach()
         for p in range(90):  # 初始化，注意此处只是和self.display按照一样的规则设置了棋盘，其beach和qizi的地址都不一样，所以无法通过idt或地址交流
             name = config.init_lineup[p]
-            if name == " " or name == "":
+            if name == " " or name == "|":
                 continue
             self.beach.set_son(Qizi(p=p, typ=config.typ_dict[name], beach=self.beach), p)
         self.ai = Intelligence(self.beach, self.mycamp_intl)

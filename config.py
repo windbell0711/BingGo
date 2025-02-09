@@ -21,6 +21,15 @@ typ_dict = {
     "帅": 6,
     "兵": 7,
 
+    "j": 0,
+    "c": 1,
+    "m": 2,
+    "x": 3,
+    "s": 4,
+    "p": 5,
+    "w": 6,
+    "b": 7,
+
     "城": 8,
     "骑": 9,
     "教": 10,
@@ -52,65 +61,37 @@ typ_num2str = {
     13: "P "
 }
 
-init_lineup = [
-    "R", "N", "B", "K", " ", "Q", "N", "B", "R", "",
-    "P", "P", "P", "P", " ", "P", "P", "P", "P", "",
-    " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-    " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-    " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-    "兵", " ", "兵", " ", "兵", " ", "兵", " ", "兵", "",
-    " ", "炮", " ", " ", " ", " ", " ", "炮", " ", "",
-    " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-    "车", "马", "相", "士", "帅", "士", "相", "马", "车", ""
-]
+# init_lineup = [
+#     "R", "N", "B", "K", " ", "Q", "N", "B", "R", "",
+#     "P", "P", "P", "P", " ", "P", "P", "P", "P", "",
+#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
+#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
+#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
+#     "兵", " ", "兵", " ", "兵", " ", "兵", " ", "兵", "",
+#     " ", "炮", " ", " ", " ", " ", " ", "炮", " ", "",
+#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
+#     "车", "马", "相", "士", "帅", "士", "相", "马", "车", ""
+# ]
 
-
-# init_lineup = {
-#     80: "车",
-#     81: "马",
-#     82: "相",
-#     83: "士",
-#     84: "帅",
-#     85: "士",
-#     86: "相",
-#     87: "马",
-#     88: "车",
-#     61: "炮",
-#     64: "炮",
-#     67: "炮",
-#     50: "兵",
-#     52: "兵",
-#     54: "兵",
-#     56: "兵",
-#     58: "兵",
-#
-#     0: "R",
-#     1: "N",
-#     2: "B",
-#     3: "K",
-#     5: "Q",
-#     6: "B",
-#     7: "N",
-#     8: "R",
-#     10: "P",
-#     11: "P",
-#     12: "P",
-#     13: "P",
-#     14: "P",
-#     15: "P",
-#     16: "P",
-#     17: "P",
-#     18: "P"
-# }
-
+def reset_preference() -> None:
+    """初始化重置preference.csv"""
+    with open(file="preference.csv", mode='w', newline='', encoding='utf-8') as f:
+        f.write("img_style,intl\n"
+                "quick_cmd_status,on\n"
+                "init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|")
 
 def read_preference(key: str) -> str:
     """从preference.csv中读入"""
-    with open(file="preference.csv", mode='r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if row[0] == key:
-                return row[1].strip()
+    try:
+        with open(file="preference.csv", mode='r', newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if row[0] == key:
+                    return row[1].strip()
+    except FileNotFoundError:
+        reset_preference()
+        print("!preference.csv文件缺失，已重置。")
+        return read_preference(key)
 
 def write_preference(key, value) -> None:
     """在preference.csv中添加或覆盖"""
@@ -137,5 +118,9 @@ def write_preference(key, value) -> None:
         writer = csv.writer(file)
         writer.writerows(lines)
 
+
+# init_lineup = "|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|"
+init_lineup = read_preference("init_lineup")[1:]  # 去掉起始的“|”
+
 IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
-QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status")]
+QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
