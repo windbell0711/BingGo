@@ -115,19 +115,50 @@
 ## 游戏介绍
 
 ### 游戏安装
-当前最新版本（仅windows）：**BingGo v1.0** [https://github.com/windbell0711/BingGo/releases/tag/v1.0](https://github.com/windbell0711/BingGo/releases/tag/v1.0)
+当前最新版本（仅windows）：**BingGo v1.1** [https://github.com/windbell0711/BingGo/releases/tag/v1.1](https://github.com/windbell0711/BingGo/releases/tag/v1.0)
 
 1. 点开上方最新版本Release地址（可能等待时间稍长）
 2. 查看使用说明
 3. 拉到最下面点开Assets（可能等待时间稍长）
-4. 点击 **BingGo.v1.0.rar** 开始下载
+4. 点击 **BingGo.v1.1.rar** 开始下载
 
-**备用方案**：[蓝奏云下载地址](https://wwqe.lanzouo.com/iHWAY2mgk88h)
+**备用方案**：[蓝奏云下载地址]()
 
 更多版本请查看[Releases](https://github.com/windbell0711/BingGo/releases)。
 
-### 功能简介
+### 功能介绍
 
+<details><summary><strong>行棋校验</strong></summary>
+
+点击希望移动的棋子，系统会计算并显示可移动位置与可吃的棋子，点击目标位置可以进行移动。点击其他己方棋子可以重新选择。
+
+<img src="./img_readme/img2.png">
+
+先后点击王和车可以进行**王车易位**。
+
+系统会自动计算游戏将军状态...
+
+</details><details><summary><strong>悔棋重做</strong></summary>
+
+
+
+</details><details><summary><strong>人机</strong></summary>
+
+
+
+</details><details><summary><strong>保存导出与载入</strong></summary>
+
+
+
+</details><details><summary><strong>贴图风格切换（v1.1+）</strong></summary>
+
+
+
+</details><details><summary><strong>快捷指令与偏好设置（v1.1+）</strong></summary>
+
+
+
+</details>
 
 ---
 

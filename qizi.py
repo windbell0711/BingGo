@@ -40,7 +40,9 @@ class Qizi:
         c=2
         if self.typ == 1:
             return 18*c
-        if self.typ in (5,9,10):
+        if self.typ in (9,10):
+            return -12*c
+        if self.typ== 5:
             return 12*c
         if self.typ == 2:
             return 9*c
@@ -49,25 +51,25 @@ class Qizi:
         if self.typ ==3:
             return 5*c
         if self.typ == 7:
-            if self.p // 10 == 1:
+            if self.p // 10 <= 1:
                 return 20*c
             else:
                 return 4*c
         if self.typ == 8:
-            return 18*c
+            return -18*c
         if self.typ == 11:
-            return 100*c
+            return -100*c
         if self.typ == 13:
-            if self.p//10==7:
-                return 20*c
+            if self.p//10>=7:
+                return -20*c
             else:
-                return 3*c
+                return -3*c
         if self.typ == 0:
             return 40*c
         if self.typ == 6:
-            return -10
+            return 0
         if self.typ == 12:
-            return 1
+            return 0
 
 
     def get_ma(self):

@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/4_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/4_p.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img2/4_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/4_p.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log_error.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,9 +71,9 @@
       <recent name="D:\Users\admin\PycharmProjects\BingGo\Scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
     </key>
@@ -232,11 +229,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>22</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/war.py</url>
           <line>58</line>
           <option name="timeStamp" value="47" />
@@ -250,8 +242,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="self.pieces" />
-        <watch expression="self.beach" />
+        <watch expression="i" />
       </configuration>
     </watches-manager>
   </component>
