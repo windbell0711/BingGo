@@ -103,6 +103,19 @@ class War:
             else:
                 Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
+    def king_win(self):
+        if self.ai.shuai_is_checkmate():
+            return True
+        else:
+            return False
+
+    def shuai_win(self):
+        if self.ai.king_is_checkmate():
+            return True
+        else:
+            return False
+
+
     def ai_move(self):
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")

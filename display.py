@@ -429,7 +429,16 @@ class WarScreen(FloatLayout):
                     print("!位置不合法  p:", p)
                     return
                 if not self.beach[p] is None:
-                    self.show_picture(self.beach[p].typ)
+                    if self.beach[p].typ == 6 and self.war.king_win():
+                        self.show_picture('shuai_lose')
+                    elif self.beach[p].typ == 12 and self.war.king_win():
+                        self.show_picture('king_win')
+                    elif self.beach[p].typ == 6 and self.war.shuai_win():
+                        self.show_picture('shuai_win')
+                    elif self.beach[p].typ == 12 and self.war.shuai_win():
+                        self.show_picture('king_lose')
+                    else:
+                        self.show_picture(self.beach[p].typ)
 
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
