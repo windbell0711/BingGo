@@ -38,11 +38,11 @@ class Qizi:
 
     @property
     def value(self):
-        c=2
+        c=4
         if self.typ == 1:
-            return 18*c
+            return 40*c
         if self.typ in (9,10):
-            return -12*c
+            return 12*c
         if self.typ== 5:
             return 12*c
         if self.typ == 2:
@@ -57,20 +57,20 @@ class Qizi:
             else:
                 return 4*c
         if self.typ == 8:
-            return -18*c
+            return 18*c
         if self.typ == 11:
-            return -100*c
+            return 100*c
         if self.typ == 13:
             if self.p//10>=7:
-                return -20*c
+                return 20*c
             else:
-                return -3*c
+                return 3*c
         if self.typ == 0:
             return 40*c
         if self.typ == 6:
-            return 0
+            return -10
         if self.typ == 12:
-            return 0
+            return -10
 
 
     def get_ma(self):
@@ -215,6 +215,24 @@ class Qizi:
                 p += -10
                 if special_eat(p) and not self.beach[p]==None:
                     if self.beach[p].typ==12:
+                        ma.append(p)
+            p = self.p + 10
+            while test(p):
+                p += 10
+                if special_eat(p) and not self.beach[p] == None:
+                    if self.beach[p].typ == 12:
+                        ma.append(p)
+            p = self.p + 1
+            while test(p):
+                p += 1
+                if special_eat(p) and not self.beach[p] == None:
+                    if self.beach[p].typ == 12:
+                        ma.append(p)
+            p = self.p - 1
+            while test(p):
+                p -= 1
+                if special_eat(p) and not self.beach[p] == None:
+                    if self.beach[p].typ == 12:
                         ma.append(p)
         if self.typ == 7:  # bingo
             p = self.p
