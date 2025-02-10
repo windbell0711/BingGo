@@ -427,7 +427,7 @@ class Intelligence:
             self.get_attack_pose2()
             for x in self.rook:
                 if x in self.Chn:
-                    B -= 18
+                    B -= 80
             o.p = fro(*i)
             self.beach.virtual_move(o, fro(*i))
             self.beach.virtual_move(k, target(*i))
@@ -439,3 +439,22 @@ class Intelligence:
             if B > A:
                 A = B
                 self.best_move = i
+
+
+    def get_possible_moves(self):
+        self.pms=[]
+        for self.i in self.beach:
+            if not self.i is None:
+                if self.i.camp_intl == False:
+                    for self.j in self.i.get_ma():
+                        if self.j is not None:
+                            self.k = self.beach[self.j]
+                        else:
+                            self.k = None
+                        self.bgn()
+                        if not self.shuai_p in self.Intl:
+                            self.end()
+                            self.pms.append((self.i.p, self.j))
+                        else:
+                            self.end()
+

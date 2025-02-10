@@ -5,11 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/1_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/1_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/7.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/7.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/7_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/7_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/9_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img/9_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/0.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/0.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/1.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/1.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/10.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/10.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/11.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/11.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/12.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/12.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/13.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/13.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/1_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/1_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/2.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/2.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/4.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/4.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/5.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/5.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/6.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/6.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/7.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/7.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/8.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/8.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/9.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/9.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/9_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/9_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/beach.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/img2/beach.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/big_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/img2/big_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/small_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/img2/small_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save.json" beforeDir="false" afterPath="$PROJECT_DIR$/save.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,10 +97,10 @@
       <recent name="D:\Users\admin\PycharmProjects\BingGo\Scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
     </key>
   </component>
@@ -226,20 +252,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/war.py</url>
-          <line>58</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/wx.py</url>
-          <line>36</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="i" />

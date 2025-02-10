@@ -3,7 +3,7 @@ import beach
 
 class Heuristics:
     # The tables denote the points scored for the position of the chess pieces on the board.
-    jiang_TABLE = numpy.array([
+    jiang_TABLE = [
         [-15,-15,-15,-15,-15,-15,-15,-15,-15],
         [  0,  0,  0,  0,  0,  0,  0,  0,  0],
         [  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -13,7 +13,7 @@ class Heuristics:
         [ 10, 10, 10, 10, 10, 10, 10, 10, 10],
         [ 10, 10, 10, 10, 10, 10, 10, 10, 10],
         [  0,  0,  0,  0,  0,  0,  0,  0,  0]
-    ])
+    ]
 
     che_TABLE = numpy.array([
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -35,8 +35,8 @@ class Heuristics:
         [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
         [2, 5, 5, 5, 5, 5, 5, 5, 2, 5],
         [1, 3, 2, 3, 3, 3, 2, 3, 1, 3],
-        [0, 0,-10, 0,-10, 0,-10, 0, 0, 0],
-        [0, -3, 0, 0, 0, 0, 0, -3, 0, 0]
+        [0,0,-10,0,-10,0,-10, 0, 0, 0],
+        [0,-3, 0, 0, 0, 0, 0,-3, 0, 0]
     ])
 
     xiang_TABLE = numpy.array([
@@ -58,9 +58,9 @@ class Heuristics:
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 10, 10, 10, 0, 0, 0, 0],
-        [0, 0, 0, 10, 20, 10, 0, 0, 0, 0],
-        [0, 0, 0, 10, 10, 10, 0, 0, 0, 0]
+        [0, 0, 0,10,10,10, 0, 0, 0, 0],
+        [0, 0, 0,10,20,10, 0, 0, 0, 0],
+        [0, 0, 0,10,10,10, 0, 0, 0, 0]
     ])
 
     pao_TABLE = numpy.array([
@@ -88,15 +88,15 @@ class Heuristics:
     ])
 
     bing_TABLE = numpy.array([
-        [16, 16, 16, 16, 16, 16, 16, 16, 16, 0],
-        [8, 8, 8, 8, 8, 8, 8, 8, 8, 0],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 0],
-        [2, 2, 3, 3, 2, 3, 3, 2, 2, 0],
-        [1, 1, 2, 1,-1, 1, 2, 1, 1, 0],
-        [-2,1, 1, 1, 0, 1, 1, 1,-2, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        [16,16,16,16,16,16,16,16,16, 0],
+        [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 0],
+        [ 4, 4, 4, 4, 4, 4, 4, 4, 4, 0],
+        [ 2, 2, 3, 3, 2, 3, 3, 2, 2, 0],
+        [ 1, 1, 2, 1,-1, 1, 2, 1, 1, 0],
+        [ -2,1, 1, 1, 0, 1, 1, 1,-2, 0],
+        [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ])
 
     PAWN_TABLE = numpy.array([
@@ -113,14 +113,14 @@ class Heuristics:
 
     KNIGHT_TABLE = numpy.array([
         [-2,-2,-2,-2,-2,-2,-2,-2,-2],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [2, 2, 2, 2, 2, 2, 2, 2, 2],
-        [3, 3, 3, 2, 3, 2, 3, 3, 3],
-        [4, 4, 4, 2, 4, 2, 4, 4, 4],
-        [4, 4, 4, 2, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 2, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4],
-        [4, 4, 4, 4, 4, 4, 4, 4, 4]
+        [ 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [ 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        [ 3, 3, 3, 2, 3, 2, 3, 3, 3],
+        [ 4, 4, 4, 2, 4, 2, 4, 4, 4],
+        [ 4, 4, 4, 2, 4, 2, 4, 4, 4],
+        [ 4, 4, 4, 4, 4, 2, 4, 4, 4],
+        [ 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        [ 4, 4, 4, 4, 4, 4, 4, 4, 4]
     ])
 
     BISHOP_TABLE = numpy.array([
@@ -226,17 +226,17 @@ class AI:
         return moves
 
     @staticmethod
-    def get_ai_move(chessboard: beach.Beach, invalid_moves=[]):
+    def get_ai_move(chessboard: beach.Beach, invalid_moves=[], mycamp_intl: bool = True):
         best_move = 0
         best_score = AI.INFINITE
-        for move in AI.get_possible_moves(chessboard, camp_intl=True):
+        for move in AI.get_possible_moves(chessboard, camp_intl=mycamp_intl):
             if AI.is_invalid_move(move, invalid_moves):
                 continue
 
             copy = chessboard.clone()
             copy.move_son(move[0], move[1])
 
-            score = AI.alphabeta(copy, 3, -AI.INFINITE, AI.INFINITE, True)
+            score = AI.alphabeta(copy, 3, -AI.INFINITE, AI.INFINITE, maximizing=True)
             if score < best_score:
                 best_score = score
                 best_move = move

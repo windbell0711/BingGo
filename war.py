@@ -13,7 +13,6 @@ from kivy.clock import Clock
 
 from beach import *
 from intelligence import Intelligence
-from ai import AI
 import wx
 
 
@@ -104,14 +103,27 @@ class War:
             else:
                 Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
+    def king_win(self):
+        if self.ai.shuai_is_checkmate():
+            return True
+        else:
+            return False
+
+    def shuai_win(self):
+        if self.ai.king_is_checkmate():
+            return True
+        else:
+            return False
+
+
     def ai_move(self):
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")
             return []
         if self.mycamp_intl:
-            # self.ai.get_possible_moves_Intl()  TODO
-            # pf, pt = self.ai.best_move
-            pf, pt = AI.get_ai_move(chessboard=self.beach)
+            self.ai.get_possible_moves_Intl()  #TODO
+            pf, pt = self.ai.best_move
+            #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
             self.ai.get_possible_moves_Chn()
             pf, pt = self.ai.best_move

@@ -120,14 +120,26 @@ class WarScreen(FloatLayout):
     def remove_label(self):
         for i in self.hints:
             self.remove_widget(i)
+    idt_light=[]
+    bigidt=0
 
     def show_path(self):
+        self.bigidt=self.beach[self.war.active_qizi.p].idt
+        self.imgs[self.bigidt].size=("%ddp" % (72 * S), "%ddp" % (72 * S))
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
-                self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
-                                       size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
-                self.dots[-1].opacity = 0.5
-                self.add_widget(self.dots[-1])
+                if self.img_source=='img2':
+                    idt = self.beach[p].idt
+                    print(idt)
+                    self.idt_light.append(idt)
+                    self.imgs[idt].opacity = 0.5
+                elif self.img_source=='img':
+                    self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
+                                           size=("%ddp" % (65 * S), "%ddp" % (65 * S)),
+                                           pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                    self.dots[-1].opacity = 0.5
+                    self.add_widget(self.dots[-1])
+
             else:
                 self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
                                  size=("%ddp" % (120 * S), "%ddp" % (120 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
@@ -135,6 +147,12 @@ class WarScreen(FloatLayout):
                 self.add_widget(self.dots[-1])
 
     def remove_path(self):
+        self.imgs[self.bigidt].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+        for i in self.idt_light:
+            self.remove_widget(self.imgs[i])
+            self.imgs[i].opacity = 1
+            self.add_widget(self.imgs[i])
+        self.idt_light=[]
         for i in self.dots:
             self.remove_widget(i)
 
@@ -411,7 +429,16 @@ class WarScreen(FloatLayout):
                     print("!位置不合法  p:", p)
                     return
                 if not self.beach[p] is None:
-                    self.show_picture(self.beach[p].typ)
+                    if self.beach[p].typ == 6 and self.war.king_win():
+                        self.show_picture('shuai_lose')
+                    elif self.beach[p].typ == 12 and self.war.king_win():
+                        self.show_picture('king_win')
+                    elif self.beach[p].typ == 6 and self.war.shuai_win():
+                        self.show_picture('shuai_win')
+                    elif self.beach[p].typ == 12 and self.war.shuai_win():
+                        self.show_picture('king_lose')
+                    else:
+                        self.show_picture(self.beach[p].typ)
 
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
