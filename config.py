@@ -7,9 +7,8 @@ from __future__ import annotations
 
 import csv
 
-friend_fight = False
-
 screen_scale = 1
+active_qizi_delta_scale = 5  # 原大小：65
 
 typ_dict = {
     "将": 0,
