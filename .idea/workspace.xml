@@ -5,11 +5,100 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BingGo.spec" beforeDir="false" afterPath="$PROJECT_DIR$/BingGo.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/0.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/0.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/0_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/0_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/1.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/1.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/10.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/10.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/10_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/10_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/11.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/11.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/11_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/11_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/12.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/12.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/12_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/12_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/13.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/13.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/13_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/13_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/1_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/1_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/2.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/2.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/2_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/2_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/3.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/3.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/3_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/3_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/4.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/4.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/4_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/4_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/5.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/5.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/5_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/5_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/6.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/6.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/6_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/6_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/7.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/7.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/7_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/7_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/8.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/8.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/8_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/8_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/9.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/9.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/9_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/9_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/beach.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/beach.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/big_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/big_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/black_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/black_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/check.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/check.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/checked.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/checked.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/gou.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/gou.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/jiangjun.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/jiangjun.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/king_lose_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/king_lose_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/king_win_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/king_win_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/red_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/red_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/shuai_lose_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/shuai_lose_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/shuai_win_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/shuai_win_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/small_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/small_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/wangbeijj.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img/wangbeijj.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/0.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/0.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/0_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/0_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/1.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/1.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/10.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/10.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/10_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/10_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/11.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/11.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/11_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/11_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/12.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/12.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/12_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/12_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/13.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/13.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/13_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/13_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/1_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/1_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/2.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/2.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/2_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/2_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/3.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/3.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/3_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/3_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/4.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/4.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/4_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/4_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/5.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/5.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/5_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/5_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/6.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/6.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/6_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/6_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/7.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/7.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/7_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/7_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/8.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/8.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/8_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/8_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/9.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/9.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/9_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/9_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/beach.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/beach.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/big_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/big_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/black_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/black_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/check.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/check.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/checked.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/checked.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/gou.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/gou.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/jiangjun.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/jiangjun.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/king_lose_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/king_lose_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/king_win_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/king_win_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/red_wins.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/red_wins.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/shuai_lose_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/shuai_lose_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/shuai_win_p.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/shuai_win_p.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/small_dot.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/small_dot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img2/wangbeijj.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/wangbeijj.PNG" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +134,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -64,18 +153,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
-      <recent name="D:\Users\admin\PycharmProjects\BingGo\Scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img2" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
-      <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -226,20 +315,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/war.py</url>
-          <line>58</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/wx.py</url>
-          <line>36</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="i" />

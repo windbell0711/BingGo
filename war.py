@@ -12,8 +12,8 @@ import json
 from kivy.clock import Clock
 
 from beach import *
-from intelligence import Intelligence
-import wx
+from intelligence5 import Intelligence
+
 
 
 class War:
@@ -34,23 +34,11 @@ class War:
 
         self.auto_intl = False
         self.auto_chn = False
-        self.friend_fight: bool = config.friend_fight
 
         self.SCREEN_POS_x = args[0]
         self.SCREEN_POS_y = args[1]
         # self.SCREEN_POS_a = args[2]
         # self.SCREEN_POS_b = args[3]
-
-        if config.friend_fight and True:  # 先手
-            Clock.schedule_once(lambda dt: self.friend_first(), 1)
-
-    def friend_first(self):
-        msg = wx.wait_msg().replace('(', '[').replace(')', ']')
-        for i in json.loads(msg)[0]:
-            if i[0] == 0:
-                self.active_qizi = self.beach[i[1]]
-                self.main(p=i[2])
-                break
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
@@ -97,11 +85,7 @@ class War:
 
         self.display.generate_animation(moves)
 
-        if not (label == "check" or label == "wangbeijj"):
-            if self.friend_fight and self.turn != 1:
-                Clock.schedule_once(lambda dt: self.friend_continue(), timeout=0.2)
-            else:
-                Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
+        Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
     def king_win(self):
         if self.ai.shuai_is_checkmate():
@@ -117,25 +101,21 @@ class War:
 
 
     def ai_move(self):
+        d=3
+        self.ai.d_set=d
+        self.ai.times=0
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")
             return []
         if self.mycamp_intl:
-            self.ai.get_possible_moves_Intl()  #TODO
+            self.ai.get_possible_moves_Intl(d,100000)  #TODO
             pf, pt = self.ai.best_move
             #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
-            self.ai.get_possible_moves_Chn()
+            self.ai.get_possible_moves_Chn(d,-100000)
             pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
         self.main(p=pt)
-
-    def friend_continue(self):
-        wx.send_msg(self.SCREEN_POS_x, self.SCREEN_POS_y, msg=self.logs)
-        print("开始等待对方输入，未响应为正常现象...")
-        msg = wx.wait_msg().replace('(', '[').replace(')', ']')
-        self.logs = json.loads(msg)
-        self.gret()
 
     def regret(self):
         self.turn -= 1  # 先上一回合再操作
@@ -156,10 +136,6 @@ class War:
         self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
         self.display.generate_animation(ms)
-
-    # @property
-    # def turn(self):
-    #     return len(self.logs)
 
     def solve_board_press(self, p: int):
         """用户点按棋盘上一点"""
@@ -187,12 +163,6 @@ class War:
         else:
             print("无法抵达或无法选中", p)
 
-        # self.conduct_operations(opers=moves)
-        # if next_turn:  # 检查一下有没有啥问题
-        #     label = self._check()
-        #     if label == "check" or label == "jiangjun" or label == "wangbeijj":
-        #         self.conduct_operations(opers=reversed(moves))
-        #         moves.extend(reversed(moves))
         return moves
 
     def conduct_operations(self, opers):
@@ -203,36 +173,6 @@ class War:
                 self.beach.place_son(typ=oper[1], p=oper[2])
             elif oper[0] == 2:
                 self.beach.kill_son(p=oper[2])
-
-    # def simple_move(self, p):
-    #     """将当前棋子移往指定位置"""
-    #     moves = []
-    #     if self.beach[p] is not None:
-    #         moves.append((2, self.beach[p].typ, p))
-    #     moves.append((0, self.active_qizi.p, p))
-    #     moves.extend(self._promotion(self.active_qizi.p, p))
-    #     return moves
-
-    # def castle_move(self, p):
-    #     """王车易位"""
-    #     if :
-    #         return False, None
-    #     if
-    #         return True, [(0, 0, 2), (0, 3, 1)]
-    #     elif (self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and self.beach[p].typ == 8):
-    #         return True, [(0, 8, 4), (0, 3, 5)]
-    #     return False, None
-
-    # def _promotion(self, pf, p):  # 是否升变
-    #     if self.beach[pf].typ == 13 and 79 < p < 89:  # ♟->♛
-    #         # self.kill_piece(self.beach[p])
-    #         # self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p)
-    #         return [(2, self.beach[pf].typ, p), (1, 11, p)]
-    #     if self.beach[pf].typ == 7 and 0 <= p < 9:  # 兵 -> 将
-    #         # self.kill_piece(self.beach[p])
-    #         # self.place_piece(Qizi(p=p, typ=11, beach=self.beach), p=p)
-    #         return [(2, self.beach[pf].typ, p), (1, 0, p)]
-    #     return []
 
     def _check(self):  # 是否将军
         self.ai.get_attack_pose()

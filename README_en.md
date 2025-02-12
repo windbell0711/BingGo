@@ -45,7 +45,7 @@ The game largely follows the movement and victory rules of Chinese chess (Xiangq
 or chess, with the following primary modifications:
 1. The initial state of the board is as shown in the diagram below, measuring
 9x9 squares, with each side placing Chinese chess pieces and International chess pieces, respectively.
-![Beginning](./img_readme/war1.png)
+![Beginning](img_readme/war1.png)
 2. Due to the expanded battlefield, an additional pawn is added to the International chess set.
 3. An additional cannon is added to the Chinese chess set.
 4. The movement range restrictions for the advisors and elephants in Chinese chess are removed.

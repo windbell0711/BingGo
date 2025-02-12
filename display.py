@@ -29,7 +29,6 @@ from kivy.clock import Clock
 
 from war import *
 import config
-import wx
 
 class BieGuanWoException(Exception):
     pass
@@ -56,7 +55,7 @@ class WarScreen(FloatLayout):
         self.click_time = time.time()
         self.quick_cmd_status = config.QUICK_CMD_STATUS
 
-        self.img_source = 'img2' if config.IMG_STYLE_INTL else "img"
+        self.img_source = 'imgs/img2' if config.IMG_STYLE_INTL else "imgs/img"
 
         # self.auto_intl = False
         # self.auto_chn = False
@@ -123,17 +122,18 @@ class WarScreen(FloatLayout):
     idt_light=[]
     bigidt=0
 
+
     def show_path(self):
-        self.bigidt=self.beach[self.war.active_qizi.p].idt
-        self.imgs[self.bigidt].size=("%ddp" % (72 * S), "%ddp" % (72 * S))
+        self.bigidt = self.beach[self.war.active_qizi.p].idt
+        self.imgs[self.bigidt].size = ("%ddp" % ((65 + config.active_qizi_delta_scale) * S), "%ddp" % ((65 + config.active_qizi_delta_scale) * S))
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
-                if self.img_source=='img2':
+                if self.img_source == 'imgs/img2':
                     idt = self.beach[p].idt
                     print(idt)
                     self.idt_light.append(idt)
                     self.imgs[idt].opacity = 0.5
-                elif self.img_source=='img':
+                elif self.img_source == 'imgs/img':
                     self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
                                            size=("%ddp" % (65 * S), "%ddp" % (65 * S)),
                                            pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
@@ -156,30 +156,6 @@ class WarScreen(FloatLayout):
         for i in self.dots:
             self.remove_widget(i)
 
-    # def move_piece(self, pfrom: int, pto: int, idt=None):
-    #     # 获取子编号
-    #     idt = self.beach[pfrom].idt if idt is None else idt
-    #     # 确保图片置于顶层
-    #     # self.remove_widget(self.imgs[idt])
-    #     # self.add_widget(self.imgs[idt])
-    #     # 走子平移动画
-    #     # animation = Animation(pos_hint={'center_x': fx(pto), 'center_y': fy(pto)}, duration=0.1)
-    #     # animation.start(self.imgs[idt])
-    #
-    # def place_piece(self, typ: int, p: int, idt=None):  # TODO: 优化：可以占死人位
-    #     # 获取子编号
-    #     idt = len(self.pieces) if idt is None else idt
-    #     # 添加贴图
-    #     self.pieces.append(Qizi(p=p, typ=typ, beach=self.beach, idt=idt))
-    #     self.imgs.append(Image(source='./img/%d.png' % typ, size_hint=(None, None),
-    #                            size=("%ddp" % (65 * S), "%ddp" % (65 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
-    #     # self.add_widget(self.imgs[idt])
-    #     # return idt
-    #
-    # def kill_piece(self, idt: int):
-    #     # self.beach[p].alive = False
-    #     self.remove_widget(self.imgs[idt])
-
     def click_board(self, x, y):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
@@ -196,40 +172,16 @@ class WarScreen(FloatLayout):
         if not self.war.active_qizi is None:
             self.show_path()
 
-    # def ラウンドを終える(self):
-    #     self.turn += 1
-    #     print("self.turn:", self.turn)
-    #     print(self.beach)
-    #     self.logs.append(self.log)  # 回合结束
-    #     self.log = []
-    #     print(self.logs)
-    #     self.remove_label()
-    #     self.turn_label.text = str(self.turn)
-    #     self.check()
-    #     如果设置了人机对弈，则自动完成下一步
-    #     if self.mycamp_intl:
-    #         if self.auto_intl and not self.ai.king_is_checkmate():
-    #             self.ai.get_possible_moves_Intl()
-    #             # self.move_piece(,
-    #             self._promotion(target(*self.ai.best_move))
-    #             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
-    #     else:
-    #         if self.auto_chn and not self.ai.shuai_is_checkmate():
-    #             self.ai.get_possible_moves_Chn()
-    #             # self.move_piece(,
-    #             self._promotion(target(*self.ai.best_move))
-    #             Clock.schedule_once(lambda dt: self.ラウンドを終える(), 0.1)
-
-    def save(self):
-        with open(file=os.getcwd() + r"\save.json", mode='w', encoding='utf-8') as f:
+    def save(self, file_name="save.json"):
+        with open(file=os.getcwd() + "\\" + file_name, mode='w', encoding='utf-8') as f:
             json.dump(self.war.logs, f)
         print("已保存")
 
-    def load(self):
+    def load(self, file_name="save.json"):
         if self.war.turn != 0:
-            print("!请先新局")
-            return
-        with open(file=os.getcwd() + r"\save.json", mode='r', encoding='utf-8') as f:
+            self.save("autosave%d.json" % int(time.time()))
+            self.new()
+        with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
             ret = json.load(f)
         self.war.logs = ret
         print("已载入")
@@ -394,12 +346,12 @@ class WarScreen(FloatLayout):
                         self.add_widget(self.auto_chn_img)
                 self.war.ai_continue()
             # 切换贴图风格
-            elif 1288 < x < 1382 and 88 < y < 122:
-                if self.img_source == 'img':
-                    self.img_source = 'img2'
+            elif 641*2 < x < 690*2 and 100 < y < 146:
+                if self.img_source == 'imgs/img':
+                    self.img_source = 'imgs/img2'
                     config.write_preference("img_style", "intl")
                 else:
-                    self.img_source = 'img'
+                    self.img_source = 'imgs/img'
                     config.write_preference("img_style", "chn")
                 print("重置成功，请重启。")
                 raise BieGuanWoException
@@ -501,7 +453,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
-        self.icon = './img_readme/mahoupao.ico'
+        self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 
     def build(self):
@@ -514,7 +466,18 @@ class BingGo(App):
         # else:
         #     print("!声音播放出错", self.sound)
         self.war_screen = WarScreen(self.args)
+
+        if os.path.exists("lastsave.json"):
+            self.war_screen.load("lastsave.json")
+            os.remove("./lastsave.json")
+            print("已回复进度并删除lastsave.json")
+
         return self.war_screen
+
+    def on_stop(self):
+        if self.war_screen.war.turn != 0:
+            self.war_screen.save("lastsave.json")
+        print("正在退出")
 
 
 def reset():
@@ -529,13 +492,5 @@ def reset():
 
 
 if __name__ == '__main__':
-    if config.friend_fight:
-        print("请调整窗口位置，保证能同时看到象棋界面和微信聊天框，接下来将录入鼠标位置...")
-        print("录入聊天输入框位置...")
-        SCREEN_POS_x, SCREEN_POS_y = wx.set_wx()
-        print(SCREEN_POS_x, SCREEN_POS_y)
-        reset()
-        BingGo(args=(SCREEN_POS_x, SCREEN_POS_y)).run()
-    else:
-        reset()
-        BingGo().run()
+    reset()
+    BingGo().run()
