@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/*', 'imgs')],
+    datas=[('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img/*', 'imgs/img/'), ('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img2/*', 'imgs/img2/')],
     # hiddenimports=['pkg_resources.py2_warn','win32timezone','six','packaging','packaging.version','webbrowser','kivy','enchant'],
      hiddenimports=['packaging','packaging.version','kivy','enchant'],
     # hiddenimports=['kivy'],
@@ -43,5 +43,5 @@ coll = COLLECT(
     *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
     upx=True,
     upx_exclude=[],
-    name='BingGo v1.1',
+    name='BingGo v1.1.1',
 )

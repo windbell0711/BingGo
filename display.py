@@ -15,6 +15,7 @@ from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
+Config.set('graphics', 'multisamples', '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 from kivy.app import App
 from kivy.uix.label import Label
@@ -453,6 +454,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
+        self.title = "BingGo v1.1.1"
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 
