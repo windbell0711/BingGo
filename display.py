@@ -15,6 +15,7 @@ from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
+Config.set('graphics', 'multisamples', '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 from kivy.app import App
 from kivy.uix.label import Label
@@ -283,114 +284,204 @@ class WarScreen(FloatLayout):
     def _change_color_turn_label(self, color):
         self.turn_label.color = color
 
+
+    creative_mode=False
+    c_typ=0
     def handle_button_press(self, window, touch):
-        if touch.button == 'left':
-            if len(self.picture_image):
-                self.remove_widget(self.picture_image[-1])
-                self.picture_image = []
-                return
-            if time.time() - self.click_time < 0.15:  # 点按频率限制
-                print("!请按慢一点")
-                return
-            self.click_time = time.time()
-
+        if self.creative_mode:
             x, y = touch.pos
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
+            if 1220<x<1576 and 62<y<220:
+                shuai=0
+                king=0
+                for i in self.beach:
+                    if i!=None and i.typ==6:
+                        shuai+=1
+                    elif i != None and i.typ == 12:
+                        king+=1
+                if king!=1 or shuai!=1:
+                    print('不正确的王或帅数量')
+                    return
+                self.war.ai.get_attack_pose()
+                if self.war.ai.king_p in self.war.ai.Chn:
 
-            # 下棋
-            if x < 1250:
-                # if self.regret_mode:
-                #     self.change_regret_mode()
-                self.click_board(x, y)
-            # 右上三个
-            elif 750 < y < 848 and 1268 < x < 1536:
-                self.remove_path()
-                self.remove_label()
-                # if not self.regret_mode:
-                #     self.change_regret_mode()
-                # 撤回
-                if 1268 < x < 1332:
-                    self.regret()
-                # 重做
-                elif 1476 < x < 1536:
-                    self.gret()
-            elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
-                self.war.ai_move()
-            # 新局
-            elif 1458 < x < 1542 and 70 < y < 152:
-                self.new()
-            # 保存、载入
-            elif 174 < y < 262:
-                if 1266 < x < 1440:
-                    self.save()
-                elif 1418 < x < 1548:
-                    self.load()
-            # 勾选自动方
-            elif 147 * 2 < y < 207 * 2:
-                # 国象自动
-                if y < 177 * 2:
-                    if self.war.auto_intl:
-                        self.war.auto_intl = False
-                        self.remove_widget(self.auto_intl_img)
-                    else:
-                        self.war.auto_intl = True
-                        self.add_widget(self.auto_intl_img)
-                # 中象自动
-                else:
-                    if self.war.auto_chn:
-                        self.war.auto_chn = False
-                        self.remove_widget(self.auto_chn_img)
-                    else:
-                        self.war.auto_chn = True
-                        self.add_widget(self.auto_chn_img)
-                self.war.ai_continue()
-            # 切换贴图风格
-            elif 641*2 < x < 690*2 and 100 < y < 146:
-                if self.img_source == 'imgs/img':
-                    self.img_source = 'imgs/img2'
-                    config.write_preference("img_style", "intl")
-                else:
-                    self.img_source = 'imgs/img'
-                    config.write_preference("img_style", "chn")
-                print("重置成功，请重启。")
-                raise BieGuanWoException
-                # self.remove_widget(self.bg_image)
-                # self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)),
-                #                       size_hint=(None, None),
-                #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
-                # self.add_widget(self.bg_image)
-                # self.new()
-        elif touch.button == 'right':
-            if len(self.picture_image):
-                self.remove_widget(self.picture_image[-1])
-                self.picture_image = []
-            if time.time() - self.click_time < 0.15:  # 点按频率限制
-                print("!请按慢一点")
-                return
-            self.click_time = time.time()
 
-            x, y = touch.pos
-            print("touch.pos: ", x, y)
-            x, y = x / M, y / M
-            if x < 1250:
+                    print('游戏已经结束')
+                    return
+
+                self.creative_mode=False
+
+                self.remove_widget(self.cr_image)
+                for i in self.create_p:
+                    self.remove_widget(i)
+
+
+            elif 1220<x<1576 and 228<y<1108:
+                self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                typx=(x-1200)//180
+                typy=(y-228)//125
+                self.c_typ=int(typx+2*typy)
+                self.create_p[self.c_typ].size = ("%ddp" % (60 * S), "%ddp" % (60 * S))
+                print(self.c_typ)
+
+            elif x < 1220:
                 px = round((x - 66) / 133.3, 0)
                 py = 8 - round((y - 66) / 133.3, 0)
                 p = int(px + 10 * py)  # 点选的位置
                 if not self.beach.valid(p):
                     print("!位置不合法  p:", p)
                     return
-                if not self.beach[p] is None:
-                    if self.beach[p].typ == 6 and self.war.king_win():
-                        self.show_picture('shuai_lose')
-                    elif self.beach[p].typ == 12 and self.war.king_win():
-                        self.show_picture('king_win')
-                    elif self.beach[p].typ == 6 and self.war.shuai_win():
-                        self.show_picture('shuai_win')
-                    elif self.beach[p].typ == 12 and self.war.shuai_win():
-                        self.show_picture('king_lose')
+
+                if self.beach[p]!=None:
+                    self.generate_animation([(2, self.beach[p].typ, p)])
+                    self.war.beach.set_son(None, p=p)
+
+
+                else:
+
+                    if self.c_typ==6 and p not in (63,64,65,73,74,75,83,84,85):
+                        print('帅不能摆在这里')
+                        return
+
+
+                    self.generate_animation([(1,self.c_typ,p)])
+                    self.war.beach.set_son(Qizi(p=p,typ=self.c_typ,beach=self.war.beach),p=p)
+
+
+
+
+
+        else:
+            if touch.button == 'left':
+                if len(self.picture_image):
+                    self.remove_widget(self.picture_image[-1])
+                    self.picture_image = []
+                    return
+                if time.time() - self.click_time < 0.15:  # 点按频率限制
+                    print("!请按慢一点")
+                    return
+                self.click_time = time.time()
+
+                x, y = touch.pos
+                print("touch.pos: ", x, y)
+                x, y = x / M, y / M
+
+                if 1272<x<1384 and 456<y<534:
+                    self.creative_mode=True
+                    self.war.mycamp_intl = False
+                    self.war.logs = []  # 走子日志
+                    self.war.turn = 0
+                    self.turn_label.text = '0'
+                    self.cr_image = Image(source=f'./{self.img_source}/create.png',
+                                          size=("%ddp" % (800 * S), "%ddp" % (600 * S)), size_hint=(None, None),
+                                          pos_hint={'center_x': 0.5, 'center_y': 0.5})
+                    self.add_widget(self.cr_image)
+                    self.create_p=[]
+                    for i in range(0,14):
+                        self.create_p.append(Image(
+                            source=f'./{self.img_source}/{i}.png', size_hint=(None, None),
+                            size=("%ddp" % (55 * S), "%ddp" % (55 * S)),
+                            pos_hint={'center_x': i%2/10+0.825, 'center_y': i//2/10+0.25}
+                        ))
+                        self.add_widget(self.create_p[-1])
+
+
+                # 下棋
+                if x < 1250:
+                    # if self.regret_mode:
+                    #     self.change_regret_mode()
+                    self.click_board(x, y)
+                # 右上三个
+                elif 750 < y < 848 and 1268 < x < 1536:
+                    self.remove_path()
+                    self.remove_label()
+                    # if not self.regret_mode:
+                    #     self.change_regret_mode()
+                    # 撤回
+                    if 1268 < x < 1332:
+                        self.regret()
+                    # 重做
+                    elif 1476 < x < 1536:
+                        self.gret()
+                elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
+                    self.war.ai_move()
+                # 新局
+                elif 1458 < x < 1542 and 70 < y < 152:
+                    self.new()
+                # 保存、载入
+                elif 174 < y < 262:
+                    if 1266 < x < 1440:
+                        self.save()
+                    elif 1418 < x < 1548:
+                        self.load()
+                # 勾选自动方
+                elif 147 * 2 < y < 207 * 2:
+                    # 国象自动
+                    if y < 177 * 2:
+                        if self.war.auto_intl:
+                            self.war.auto_intl = False
+                            self.remove_widget(self.auto_intl_img)
+                        else:
+                            self.war.auto_intl = True
+                            self.add_widget(self.auto_intl_img)
+                    # 中象自动
                     else:
-                        self.show_picture(self.beach[p].typ)
+                        if self.war.auto_chn:
+                            self.war.auto_chn = False
+                            self.remove_widget(self.auto_chn_img)
+                        else:
+                            self.war.auto_chn = True
+                            self.add_widget(self.auto_chn_img)
+                    self.war.ai_continue()
+                # 切换贴图风格
+                elif 641*2 < x < 690*2 and 100 < y < 146:
+                    if self.img_source == 'imgs/img':
+                        self.img_source = 'imgs/img2'
+                        config.write_preference("img_style", "intl")
+                    else:
+                        self.img_source = 'imgs/img'
+                        config.write_preference("img_style", "chn")
+                    print("重置成功，请重启。")
+                    raise BieGuanWoException
+                    # self.remove_widget(self.bg_image)
+                    # self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=("%ddp" % (800 * S), "%ddp" % (600 * S)),
+                    #                       size_hint=(None, None),
+                    #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
+                    # self.add_widget(self.bg_image)
+                    # self.new()
+
+
+            elif touch.button == 'right':
+                if len(self.picture_image):
+                    self.remove_widget(self.picture_image[-1])
+                    self.picture_image = []
+                if time.time() - self.click_time < 0.15:  # 点按频率限制
+                    print("!请按慢一点")
+                    return
+                self.click_time = time.time()
+
+                x, y = touch.pos
+                print("touch.pos: ", x, y)
+                x, y = x / M, y / M
+                if x < 1250:
+                    px = round((x - 66) / 133.3, 0)
+                    py = 8 - round((y - 66) / 133.3, 0)
+                    p = int(px + 10 * py)  # 点选的位置
+                    if not self.beach.valid(p):
+                        print("!位置不合法  p:", p)
+                        return
+                    if not self.beach[p] is None:
+                        if self.beach[p].typ == 6 and self.war.king_win():
+                            self.show_picture('shuai_lose')
+                        elif self.beach[p].typ == 12 and self.war.king_win():
+                            self.show_picture('king_win')
+                        elif self.beach[p].typ == 6 and self.war.shuai_win():
+                            self.show_picture('shuai_win')
+                        elif self.beach[p].typ == 12 and self.war.shuai_win():
+                            self.show_picture('king_lose')
+                        else:
+                            self.show_picture(self.beach[p].typ)
 
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
@@ -453,6 +544,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
+        self.title = "BingGo v1.1.1"
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 

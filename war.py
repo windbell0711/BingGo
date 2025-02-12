@@ -12,7 +12,7 @@ import json
 from kivy.clock import Clock
 
 from beach import *
-from intelligence5 import Intelligence
+from intelligence import Intelligence
 
 
 
@@ -101,18 +101,15 @@ class War:
 
 
     def ai_move(self):
-        d=3
-        self.ai.d_set=d
-        self.ai.times=0
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")
             return []
         if self.mycamp_intl:
-            self.ai.get_possible_moves_Intl(d,100000)  #TODO
+            self.ai.get_possible_moves_Intl()  #TODO
             pf, pt = self.ai.best_move
             #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
-            self.ai.get_possible_moves_Chn(d,-100000)
+            self.ai.get_possible_moves_Chn()
             pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
         self.main(p=pt)
