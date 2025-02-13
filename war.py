@@ -101,6 +101,10 @@ class War:
 
 
     def ai_move(self):
+        self.ai.get_attack_pose()
+        if  self.ai.king_p in self.ai.Chn or self.ai.shuai_p in self.ai.Intl:
+            print("!游戏已结束")
+            return []
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")
             return []

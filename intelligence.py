@@ -198,7 +198,7 @@ class Intelligence:
                8, 8, 8, 8, 8, 8, 8, 8, 8, 0,
                4, 4, 4, 4, 4, 4, 4, 4, 4, 0,
                2, 2, 3, 3, 2, 3, 3, 2, 2, 0,
-               1, 1, 2, 1, -1, 1, 2, 1, 1, 0,
+               0, 1, 2, 1, -1, 1, 2, 1, 0, 0,
                -2, 1, 1, 1, 0, 1, 1, 1, -2, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -313,12 +313,6 @@ class Intelligence:
                         else:
                             self.end()
         A = -10000
-        if (50,51) in self.pms:
-            self.best_move=(50,51)
-            return
-        if (58,57) in self.pms:
-            self.best_move=(58,57)
-            return
         for i in self.pms:
             if not self.beach[target(*i)] == None:
                 B = self.value[target(*i)]+3
@@ -354,9 +348,12 @@ class Intelligence:
             self.beach.virtual_move(o, target(*i))
             self.beach.virtual_move(None, fro(*i))
             self.get_attack_pose2()
+            if self.king_is_checkmate():
+                B+=1000000
+
             for x in self.che:
                 if x in self.Intl:
-                    B -= 18
+                    B -= 80
             o.p = fro(*i)
             self.beach.virtual_move(o, fro(*i))
             self.beach.virtual_move(k, target(*i))
@@ -425,6 +422,8 @@ class Intelligence:
             self.beach.virtual_move(o, target(*i))
             self.beach.virtual_move(None, fro(*i))
             self.get_attack_pose2()
+            if self.shuai_is_checkmate():
+                B+=1000000
             for x in self.rook:
                 if x in self.Chn:
                     B -= 80

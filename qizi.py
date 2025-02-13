@@ -458,7 +458,7 @@ class Qizi:
                 protect.append(p + 1)
             if not p // 10 == 0 and test2(p - 10):
                 protect.append(p - 10)
-        if self.typ == 12:  # king
+        if self.typ in(4,12):  # king
             p = self.p
             if not p // 10 == 8 and test2(p + 10):
                 protect.append(p + 10)

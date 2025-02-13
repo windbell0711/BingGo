@@ -113,6 +113,7 @@ class WarScreen(FloatLayout):
             self.sound.play()
 
     def add_label(self, text):
+        self.remove_label()
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
                                 size=("%ddp" % (200 * S), "%ddp" % (200 * S)), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
@@ -304,12 +305,6 @@ class WarScreen(FloatLayout):
                     print('不正确的王或帅数量')
                     return
                 self.war.ai.get_attack_pose()
-                if self.war.ai.king_p in self.war.ai.Chn:
-
-
-                    print('游戏已经结束')
-                    return
-
                 self.creative_mode=False
 
                 self.remove_widget(self.cr_image)
@@ -369,6 +364,8 @@ class WarScreen(FloatLayout):
 
                 if 1272<x<1384 and 456<y<534:
                     self.creative_mode=True
+                    self.remove_path()
+                    self.remove_label()
                     self.war.mycamp_intl = False
                     self.war.logs = []  # 走子日志
                     self.war.turn = 0
@@ -389,6 +386,15 @@ class WarScreen(FloatLayout):
 
                 # 下棋
                 if x < 1250:
+                    self.war.ai.get_attack_pose()
+                    if self.war.ai.king_p in self.war.ai.Chn:
+                        self.add_label('red_wins')
+                        print('游戏结束')
+                        return
+                    elif self.war.ai.shuai_p in self.war.ai.Intl:
+                        self.ass_label('black_wins')
+                        print('游戏结束')
+                        return
                     # if self.regret_mode:
                     #     self.change_regret_mode()
                     self.click_board(x, y)
