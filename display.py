@@ -293,7 +293,30 @@ class WarScreen(FloatLayout):
             x, y = touch.pos
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
-            if touch.button == 'right':
+            print(touch.button)
+            if touch.button == 'scrollup':
+                self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                self.create_p[self.c_typ].opacity = 1
+                if self.c_typ>12:
+                    self.c_typ=0
+                else:
+                    self.c_typ+=1
+                self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                self.create_p[self.c_typ].opacity = 0.7
+            elif touch.button == 'scrolldown':
+                self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                self.create_p[self.c_typ].opacity = 1
+                if self.c_typ<1:
+                    self.c_typ=13
+                else:
+                    self.c_typ-=1
+                self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                self.create_p[self.c_typ].opacity = 0.7
+
+
+
+
+            elif touch.button == 'middle':
                 if x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
@@ -304,10 +327,12 @@ class WarScreen(FloatLayout):
 
                     if self.beach[p] != None:
                         self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                        self.create_p[self.c_typ].opacity = 1
                         self.c_typ = self.beach[p].typ
-                        self.create_p[self.c_typ].size = ("%ddp" % (60 * S), "%ddp" % (60 * S))
+                        self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                        self.create_p[self.c_typ].opacity = 0.7
 
-            if touch.button == 'left':
+            elif touch.button == 'left':
                 if 1220<x<1576 and 62<y<220:
                     shuai=0
                     king=0
@@ -329,10 +354,12 @@ class WarScreen(FloatLayout):
 
                 elif 1220<x<1576 and 228<y<1108:
                     self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                    self.create_p[self.c_typ].opacity = 1
                     typx=(x-1200)//180
                     typy=(y-228)//125
                     self.c_typ=int(typx+2*typy)
-                    self.create_p[self.c_typ].size = ("%ddp" % (60 * S), "%ddp" % (60 * S))
+                    self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                    self.create_p[self.c_typ].opacity = 0.7
                     print(self.c_typ)
 
                 elif x < 1220:
@@ -397,7 +424,8 @@ class WarScreen(FloatLayout):
                             pos_hint={'center_x': i%2/10+0.825, 'center_y': i//2/10+0.25}
                         ))
                         self.add_widget(self.create_p[-1])
-                    self.create_p[self.c_typ].size = ("%ddp" % (60 * S), "%ddp" % (60 * S))
+                    self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                    self.create_p[self.c_typ].opacity = 0.7
 
 
                 # 下棋
