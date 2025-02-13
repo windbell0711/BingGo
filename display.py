@@ -387,11 +387,11 @@ class WarScreen(FloatLayout):
                 # 下棋
                 if x < 1250:
                     self.war.ai.get_attack_pose()
-                    if self.war.ai.king_p in self.war.ai.Chn:
+                    if self.war.ai.king_p in self.war.ai.Chn and self.war.mycamp_intl==False:
                         self.add_label('red_wins')
                         print('游戏结束')
                         return
-                    elif self.war.ai.shuai_p in self.war.ai.Intl:
+                    elif self.war.ai.shuai_p in self.war.ai.Intl and self.war.mycamp_intl==True:
                         self.ass_label('black_wins')
                         print('游戏结束')
                         return
