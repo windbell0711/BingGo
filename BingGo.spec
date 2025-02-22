@@ -7,10 +7,9 @@ a = Analysis(
     binaries=[],
     datas=[('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img/*', 'imgs/img/'), ('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img2/*', 'imgs/img2/')],
     # hiddenimports=['pkg_resources.py2_warn','win32timezone','six','packaging','packaging.version','webbrowser','kivy','enchant'],
-     hiddenimports=['packaging','packaging.version','kivy','enchant'],
-    # hiddenimports=['kivy'],
-    hookspath=[],
-    hooksconfig={},
+    hiddenimports=['packaging','packaging.version','kivy','enchant'],  # Hidden Imports
+    hookspath=[],  # Hooks
+    hooksconfig={},  # Hooks
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
@@ -22,7 +21,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='BingGo',
+    name='BingGo v1.2.0',  # Name
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -33,7 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['img_readme\\mahoupao.ico'],
+    icon=['img_readme\\mahoupao.ico'],  # Icon
 )
 coll = COLLECT(
     exe,
@@ -43,5 +42,5 @@ coll = COLLECT(
     *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
     upx=True,
     upx_exclude=[],
-    name='BingGo v1.1.1',
+    name='BingGo v1.2.0',  # Name
 )
