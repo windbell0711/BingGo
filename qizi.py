@@ -39,10 +39,11 @@ class Qizi:
     @property
     def value(self):
         c=4
+        d=4
         if self.typ == 1:
             return 40*c
         if self.typ in (9,10):
-            return 12*c
+            return 12*d
         if self.typ== 5:
             return 12*c
         if self.typ == 2:
@@ -57,18 +58,18 @@ class Qizi:
             else:
                 return 4*c
         if self.typ == 8:
-            return 18*c
+            return 18*d
         if self.typ == 11:
-            return 100*c
+            return 100*d
         if self.typ == 13:
             if self.p//10>=7:
-                return 20*c
+                return 20*d
             else:
-                return 3*c
+                return 3*d
         if self.typ == 0:
             return 40*c
         if self.typ == 6:
-            return 0
+            return -10
         if self.typ == 12:
             return 0
 
@@ -303,6 +304,7 @@ class Qizi:
                     p += -10
                 if special_eat(p):
                     ma.append(p)
+        ma = list(set(ma))
         self.ma = ma
         return ma
     
@@ -458,7 +460,7 @@ class Qizi:
                 protect.append(p + 1)
             if not p // 10 == 0 and test2(p - 10):
                 protect.append(p - 10)
-        if self.typ == 12:  # king
+        if self.typ in(4,12):  # king
             p = self.p
             if not p // 10 == 8 and test2(p + 10):
                 protect.append(p + 10)
@@ -515,6 +517,7 @@ class Qizi:
                     p += -10
                 if test2(p):
                     protect.append(p)
+        protect=list(set(protect))
         self.protect = protect
         return protect
     

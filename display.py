@@ -113,6 +113,7 @@ class WarScreen(FloatLayout):
             self.sound.play()
 
     def add_label(self, text):
+        self.remove_label()
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
                                 size=("%ddp" % (200 * S), "%ddp" % (200 * S)), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
@@ -148,7 +149,8 @@ class WarScreen(FloatLayout):
                 self.add_widget(self.dots[-1])
 
     def remove_path(self):
-        self.imgs[self.bigidt].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+        if self.bigidt <= len(self.imgs):
+            self.imgs[self.bigidt].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
         for i in self.idt_light:
             self.remove_widget(self.imgs[i])
             self.imgs[i].opacity = 1
@@ -288,65 +290,101 @@ class WarScreen(FloatLayout):
     creative_mode=False
     c_typ=0
     def handle_button_press(self, window, touch):
-        if self.creative_mode:
+        if self.creative_mode :
             x, y = touch.pos
             print("touch.pos: ", x, y)
             x, y = x / M, y / M
-            if 1220<x<1576 and 62<y<220:
-                shuai=0
-                king=0
-                for i in self.beach:
-                    if i!=None and i.typ==6:
-                        shuai+=1
-                    elif i != None and i.typ == 12:
-                        king+=1
-                if king!=1 or shuai!=1:
-                    print('不正确的王或帅数量')
-                    return
-                self.war.ai.get_attack_pose()
-                if self.war.ai.king_p in self.war.ai.Chn:
-
-
-                    print('游戏已经结束')
-                    return
-
-                self.creative_mode=False
-
-                self.remove_widget(self.cr_image)
-                for i in self.create_p:
-                    self.remove_widget(i)
-
-
-            elif 1220<x<1576 and 228<y<1108:
+            print(touch.button)
+            if touch.button == 'scrollup':
                 self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
-                typx=(x-1200)//180
-                typy=(y-228)//125
-                self.c_typ=int(typx+2*typy)
-                self.create_p[self.c_typ].size = ("%ddp" % (60 * S), "%ddp" % (60 * S))
-                print(self.c_typ)
-
-            elif x < 1220:
-                px = round((x - 66) / 133.3, 0)
-                py = 8 - round((y - 66) / 133.3, 0)
-                p = int(px + 10 * py)  # 点选的位置
-                if not self.beach.valid(p):
-                    print("!位置不合法  p:", p)
-                    return
-
-                if self.beach[p]!=None:
-                    self.generate_animation([(2, self.beach[p].typ, p)])
-                    self.war.beach.set_son(None, p=p)
-
-
+                self.create_p[self.c_typ].opacity = 1
+                if self.c_typ>12:
+                    self.c_typ=0
                 else:
+                    self.c_typ+=1
+                self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                self.create_p[self.c_typ].opacity = 0.7
+            elif touch.button == 'scrolldown':
+                self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                self.create_p[self.c_typ].opacity = 1
+                if self.c_typ<1:
+                    self.c_typ=13
+                else:
+                    self.c_typ-=1
+                self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                self.create_p[self.c_typ].opacity = 0.7
 
-                    if self.c_typ==6 and p not in (63,64,65,73,74,75,83,84,85):
-                        print('帅不能摆在这里')
+
+
+
+            elif touch.button == 'middle':
+                if x < 1220:
+                    px = round((x - 66) / 133.3, 0)
+                    py = 8 - round((y - 66) / 133.3, 0)
+                    p = int(px + 10 * py)  # 点选的位置
+                    if not self.beach.valid(p):
+                        print("!位置不合法  p:", p)
                         return
 
+                    if self.beach[p] != None:
+                        self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                        self.create_p[self.c_typ].opacity = 1
+                        self.c_typ = self.beach[p].typ
+                        self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                        self.create_p[self.c_typ].opacity = 0.7
 
-                    self.generate_animation([(1,self.c_typ,p)])
-                    self.war.beach.set_son(Qizi(p=p,typ=self.c_typ,beach=self.war.beach),p=p)
+            elif touch.button == 'left':
+                if 1220<x<1576 and 62<y<220:
+                    shuai=0
+                    king=0
+                    for i in self.beach:
+                        if i!=None and i.typ==6:
+                            shuai+=1
+                        elif i != None and i.typ == 12:
+                            king+=1
+                    if king!=1 or shuai!=1:
+                        print('不正确的王或帅数量')
+                        return
+                    self.war.ai.get_attack_pose()
+                    self.creative_mode=False
+
+                    self.remove_widget(self.cr_image)
+                    for i in self.create_p:
+                        self.remove_widget(i)
+
+
+                elif 1220<x<1576 and 228<y<1108:
+                    self.create_p[self.c_typ].size = ("%ddp" % (55 * S), "%ddp" % (55 * S))
+                    self.create_p[self.c_typ].opacity = 1
+                    typx=(x-1200)//180
+                    typy=(y-228)//125
+                    self.c_typ=int(typx+2*typy)
+                    self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                    self.create_p[self.c_typ].opacity = 0.7
+                    print(self.c_typ)
+
+                elif x < 1220:
+                    px = round((x - 66) / 133.3, 0)
+                    py = 8 - round((y - 66) / 133.3, 0)
+                    p = int(px + 10 * py)  # 点选的位置
+                    if not self.beach.valid(p):
+                        print("!位置不合法  p:", p)
+                        return
+
+                    if self.beach[p]!=None:
+                        self.generate_animation([(2, self.beach[p].typ, p)])
+                        self.war.beach.set_son(None, p=p)
+
+
+                    else:
+
+                        if self.c_typ==6 and p not in (63,64,65,73,74,75,83,84,85):
+                            print('帅不能摆在这里')
+                            return
+
+
+                        self.generate_animation([(1,self.c_typ,p)])
+                        self.war.beach.set_son(Qizi(p=p,typ=self.c_typ,beach=self.war.beach),p=p)
 
 
 
@@ -369,6 +407,8 @@ class WarScreen(FloatLayout):
 
                 if 1272<x<1384 and 456<y<534:
                     self.creative_mode=True
+                    self.remove_path()
+                    self.remove_label()
                     self.war.mycamp_intl = False
                     self.war.logs = []  # 走子日志
                     self.war.turn = 0
@@ -385,10 +425,21 @@ class WarScreen(FloatLayout):
                             pos_hint={'center_x': i%2/10+0.825, 'center_y': i//2/10+0.25}
                         ))
                         self.add_widget(self.create_p[-1])
+                    self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+                    self.create_p[self.c_typ].opacity = 0.7
 
 
                 # 下棋
                 if x < 1250:
+                    self.war.ai.get_attack_pose()
+                    if self.war.ai.king_p in self.war.ai.Chn and self.war.mycamp_intl==False:
+                        self.add_label('red_wins')
+                        print('游戏结束')
+                        return
+                    elif self.war.ai.shuai_p in self.war.ai.Intl and self.war.mycamp_intl==True:
+                        self.ass_label('black_wins')
+                        print('游戏结束')
+                        return
                     # if self.regret_mode:
                     #     self.change_regret_mode()
                     self.click_board(x, y)
