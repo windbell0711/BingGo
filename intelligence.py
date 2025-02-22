@@ -230,7 +230,7 @@ class Intelligence:
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ]
-    value_11 = [-10, -10, -10, 0, -100000, 0, -10, -10, -10, 0,
+    value_11 = [-10, -10, -10, 0, -10, 0, -10, -10, -10, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                 3, 3, 3, 2, 3, 2, 3, 3, 3, 3,
@@ -386,7 +386,8 @@ class Intelligence:
                             self.pms.append((self.i.p, self.j))
                         else:
                             self.end()
-        A = -10000
+        print(self.pms)
+        A = -10000000000000
         for i in self.pms:
             if not self.beach[target(*i)]==None:
                 B = self.value[target(*i)]

@@ -149,7 +149,8 @@ class WarScreen(FloatLayout):
                 self.add_widget(self.dots[-1])
 
     def remove_path(self):
-        self.imgs[self.bigidt].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
+        if self.bigidt <= len(self.imgs):
+            self.imgs[self.bigidt].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
         for i in self.idt_light:
             self.remove_widget(self.imgs[i])
             self.imgs[i].opacity = 1
