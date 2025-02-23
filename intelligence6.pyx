@@ -550,33 +550,28 @@ class Intelligence:
                     pms+=ma
         return list(set(pms))
 
-
-
-
     def alpha_beta_search(self, beach, depth, alpha, beta, Maxplayer):
         self.times+=1
         beach2=beach[:]
         if 12 not in beach2:
-            return 10000
+            return 10000*depth
         if 6 not in beach2:
-            return -10000
+            return -10000*depth
         if depth == 0:
             return self.evaluate(beach2)
         else:
             beach2 = beach[:]
-
             if Maxplayer:
                 pms = self.get_possible_moves(beach2, True)[:]
                 max_value = -1000000
                 for move in pms:
                     beach2 = beach[:]
                     new_beach = self.make_move(move, beach2)[:]
-                    new_value = round(self.alpha_beta_search(new_beach, depth - 1, alpha, beta, False),1)
+                    new_value = round(self.alpha_beta_search(new_beach, depth - 1, alpha, beta, False)+random.random() / 100,2)
                     if new_value > max_value:
                         max_value = new_value
                         if depth == self.d_set:
                             print(move,new_value,self.times)
-                            self.finest_value = new_value
                             self.best_move = move
 
                     alpha = max(alpha, new_value)
@@ -589,16 +584,30 @@ class Intelligence:
                 for move in pms:
                     beach2=beach[:]
                     new_beach = self.make_move(move, beach2)[:]
-                    new_value = round(self.alpha_beta_search(new_beach, depth - 1, alpha, beta, True),1)
+                    new_value = round(self.alpha_beta_search(new_beach, depth - 1, alpha, beta, True)+random.random() / 100,2)
                     if new_value < min_value:
                         min_value = new_value
                         if depth == self.d_set:
                             print(move,new_value,self.times)
                             self.best_move = move
+
                     beta = min(beta, new_value)
                     if beta <= alpha:
                         break
                 return min_value
+
+    def analyze(self, beach):
+        pieces = 0
+        for i in beach:
+            if i != None:
+               pieces+=1
+        print(pieces)
+        if pieces < 8:
+            return 6
+        if pieces > 15:
+            return 4
+        else:
+            return 5
 
     def get_best_move_Chn(self):
         self.times=0
@@ -613,6 +622,7 @@ class Intelligence:
     def get_best_move_Intl(self):
         self.times=0
         quick_beach = self.get_quick_beach(self.beach)[:]
+
         d = 5
         self.d_set = d
         print('Intl_search started. Value now is',round(self.evaluate(quick_beach),1))
