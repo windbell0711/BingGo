@@ -77,7 +77,8 @@ def reset_preference() -> None:
     with open(file="preference.csv", mode='w', newline='', encoding='utf-8') as f:
         f.write("img_style,intl\n"
                 "quick_cmd_status,on\n"
-                "init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|")
+                "init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|\n"
+                "ai_depth,5")
 
 def read_preference(key: str) -> str:
     """从preference.csv中读入"""
@@ -123,3 +124,9 @@ init_lineup = read_preference("init_lineup")[1:]  # 去掉起始的“|”
 
 IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
 QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
+
+d = read_preference("ai_depth").strip()
+if d.isdigit() and 1 < int(d) < 9:
+    AI_DEPTH = int(d)
+else:
+    AI_DEPTH = 5

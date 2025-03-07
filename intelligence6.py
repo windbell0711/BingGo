@@ -8,6 +8,9 @@
 """
 import random
 import copy
+import config
+
+AI_DEPTH = config.AI_DEPTH
 
 def fro(x,y):
     return x
@@ -603,7 +606,7 @@ class Intelligence:
     def get_best_move_Chn(self):
         self.times=0
         quick_beach = self.get_quick_beach(self.beach)[:]
-        d = 5
+        d = AI_DEPTH
         self.d_set = d
         print('Chn_search started. Value now is',round(self.evaluate(quick_beach),1))
         print('move|value|times')
@@ -613,7 +616,7 @@ class Intelligence:
     def get_best_move_Intl(self):
         self.times=0
         quick_beach = self.get_quick_beach(self.beach)[:]
-        d = 5
+        d = AI_DEPTH
         self.d_set = d
         print('Intl_search started. Value now is',round(self.evaluate(quick_beach),1))
         print('move|value|times')
