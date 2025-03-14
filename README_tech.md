@@ -127,20 +127,21 @@ git clone https://github.com/windbell0711/BingGo.git
 ```
 
 ### Releases
-|   Time    |              Version              | Platform |                      Download                       |                                   Release                                    |
-|:---------:|:---------------------------------:|:--------:|:---------------------------------------------------:|:----------------------------------------------------------------------------:|
-| 2025.2.11 |              v1.1.1               | Windows  | [v1.1.1](https://wwqe.lanzouo.com/iDu4z2nhpbwb) (1) |                                      /                                       |
-| 2025.2.11 |               v1.1                | Windows  | [v1.1](https://wwqe.lanzouo.com/iibQm2nhazve) (39)  |                                      /                                       |
-| 2025.1.31 |        BingGo Release v1.0        | Windows  | [v1.0](https://wwqe.lanzouo.com/iHWAY2mgk88h) (94)  |       [v1.0](https://github.com/windbell0711/BingGo/releases/tag/v1.0)       |
-| 2025.1.22 | BingGo Release (Trial) v0.0-alpha | Windows  |                          /                          | [v0.0-alpha](https://github.com/windbell0711/BingGo/releases/tag/v0.0-alpha) |
+|   Time    |           Version           | Platform |                      Download                       |                                   Release                                    |
+|:---------:|:---------------------------:|:--------:|:---------------------------------------------------:|:----------------------------------------------------------------------------:|
+| 2025.3.7  |           v1.1.2            | Windows  | [v1.1.2](https://wwqe.lanzouo.com/iuP3Y2pwrj1c) (0) |                                      /                                       |
+| 2025.2.11 |           v1.1.1            | Windows  | [v1.1.1](https://wwqe.lanzouo.com/iDu4z2nhpbwb) (3) |                                      /                                       |
+| 2025.2.11 |            v1.1             | Windows  | [v1.1](https://wwqe.lanzouo.com/iibQm2nhazve) (66)  |                                      /                                       |
+| 2025.1.31 |     BingGo Release v1.0     | Windows  | [v1.0](https://wwqe.lanzouo.com/iHWAY2mgk88h) (103) |       [v1.0](https://github.com/windbell0711/BingGo/releases/tag/v1.0)       |
+| 2025.1.22 | BingGo Release (Trial) v0.0 | Windows  |                          /                          | [v0.0-alpha](https://github.com/windbell0711/BingGo/releases/tag/v0.0-alpha) |
 
 
 ### Videos
 
-|    Time     |            Title            |  Version  |                            bv id                             |   View   |   Like   | Comment  |
-|:-----------:|:---------------------------:|:---------:|:------------------------------------------------------------:|:--------:|:--------:|:--------:|
-|  2025.2.11  | 【中国象棋vs国际象棋】v1.1实机演示（附下载链接） |   v1.1    | [BV1dMNzeBExy](https://www.bilibili.com/video/BV1dMNzeBExy/) |   2029   |    50    |    22    |
-|  2025.2.6   |  【中国象棋vs国际象棋】游戏规则介绍（含下载链接）  |   v1.0    | [BV1fPNEeDEBb](https://www.bilibili.com/video/BV1fPNEeDEBb/) |   3250   | **164**  |    65    |
+|    Time     |            Title            |  Version  |                            bv id                             | View | Like | Comment |
+|:-----------:|:---------------------------:|:---------:|:------------------------------------------------------------:|:----:|:----:|:-------:|
+|  2025.2.11  | 【中国象棋vs国际象棋】v1.1实机演示（附下载链接） |   v1.1    | [BV1dMNzeBExy](https://www.bilibili.com/video/BV1dMNzeBExy/) | 4005 |  96  |   30    |
+|  2025.2.6   |  【中国象棋vs国际象棋】游戏规则介绍（含下载链接）  |   v1.0    | [BV1fPNEeDEBb](https://www.bilibili.com/video/BV1fPNEeDEBb/) | 4247 | 208  |   69    |
 
 
 
@@ -148,4 +149,4 @@ git clone https://github.com/windbell0711/BingGo.git
 
 <br/>
 
-*summarized by [@windbell0711](https://github.com/windbell0711/windbell0711)*
+*summarized by [@windbell0711](https://github.com/windbell0711/windbell0711), 2025.03.07*

@@ -7,8 +7,10 @@
 @License : Apache 2.0
 @File    : diaplay.py
 """
+import asyncio
 import json
 import os
+import threading
 import time
 
 from kivy.config import Config
@@ -100,6 +102,22 @@ class WarScreen(FloatLayout):
                 pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
+
+        self._init_async_event_loop()  # 新增异步事件循环线程
+
+    def _init_async_event_loop(self):
+        """初始化异步事件循环线程"""
+        self.loop = asyncio.new_event_loop()
+        self.async_thread = threading.Thread(
+            target=self._run_async_loop,
+            daemon=True
+        )
+        self.async_thread.start()
+
+    def _run_async_loop(self):
+        """运行异步事件循环"""
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
 
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
@@ -286,13 +304,55 @@ class WarScreen(FloatLayout):
     def _change_color_turn_label(self, color):
         self.turn_label.color = color
 
+    def ai_move_thread_start(self):
+        """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
+        self.war.move_allowed = False
+        async def _async_task():
+            try:
+                # 耗时操作（AI计算）
+                result = self.war.generate_ai_move()
+                return result
+            except Exception as e:
+                print("!AI任务异常: " + str(e))
+                return None
+        def _on_complete(task):
+            Clock.schedule_once(  # 通过Clock切换回主线程
+                lambda dt: self.war.main(task.result()) if task.result() else None)
+            self.war.move_allowed = True
+            print("AI任务完成，走子放开")
+        # 通过已初始化的异步事件循环提交任务
+        asyncio.run_coroutine_threadsafe(
+            _async_task(),
+            self.loop
+        ).add_done_callback(_on_complete)
+        print("已通过异步事件循环提交任务，限制走子")
+
+    # def ai_move_thread_start(self):
+    # """
+    # 主线程：启动子线程 → 立即返回 → 保持UI响应
+    # 子线程：执行_run_and_get_result → 得到结果 → 通过Clock调度主线程回调
+    # 主线程：执行_on_complete → 更新UI
+    # """
+    # def _run_and_get_result():
+    #     # 这里执行耗时操作
+    #     result = self.war.generate_ai_move()
+    #     return result
+    # def _on_complete(result):
+    #     # 这里处理结果（主线程）
+    #     self.war.main(result)
+    # # 创建并启动线程
+    # thread = threading.Thread(target=lambda: Clock.schedule_once(
+    #     lambda dt: _on_complete(_run_and_get_result())
+    # ))
+    # thread.start()
+    # self.click_time = 0
 
     creative_mode=False
     c_typ=0
     def handle_button_press(self, window, touch):
         if self.creative_mode :
             x, y = touch.pos
-            print("touch.pos: ", x, y)
+            # print("touch.pos: ", x, y)
             x, y = x / M, y / M
             print(touch.button)
             if touch.button == 'scrollup':
@@ -313,8 +373,6 @@ class WarScreen(FloatLayout):
                     self.c_typ-=1
                 self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
                 self.create_p[self.c_typ].opacity = 0.7
-
-
 
 
             elif touch.button == 'middle':
@@ -385,11 +443,6 @@ class WarScreen(FloatLayout):
 
                         self.generate_animation([(1,self.c_typ,p)])
                         self.war.beach.set_son(Qizi(p=p,typ=self.c_typ,beach=self.war.beach),p=p)
-
-
-
-
-
         else:
             if touch.button == 'left':
                 if len(self.picture_image):
@@ -402,10 +455,14 @@ class WarScreen(FloatLayout):
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                print("touch.pos: ", x, y)
+                # print("touch.pos: ", x, y)
                 x, y = x / M, y / M
 
-                if 1272<x<1384 and 456<y<534:
+                # 摆子
+                if 1272 < x < 1384 and 456 < y < 534:
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return
                     self.creative_mode=True
                     self.remove_path()
                     self.remove_label()
@@ -417,7 +474,7 @@ class WarScreen(FloatLayout):
                                           size=("%ddp" % (800 * S), "%ddp" % (600 * S)), size_hint=(None, None),
                                           pos_hint={'center_x': 0.5, 'center_y': 0.5})
                     self.add_widget(self.cr_image)
-                    self.create_p=[]
+                    self.create_p = []
                     for i in range(0,14):
                         self.create_p.append(Image(
                             source=f'./{self.img_source}/{i}.png', size_hint=(None, None),
@@ -427,10 +484,14 @@ class WarScreen(FloatLayout):
                         self.add_widget(self.create_p[-1])
                     self.create_p[self.c_typ].size = ("%ddp" % (65 * S), "%ddp" % (65 * S))
                     self.create_p[self.c_typ].opacity = 0.7
-
-
                 # 下棋
                 if x < 1250:
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return
+                    if not self.war.move_allowed:
+                        print("not allowed to move yet")
+                        return
                     self.war.ai.get_attack_pose()
                     if self.war.ai.king_p in self.war.ai.Chn and self.war.mycamp_intl==False:
                         self.add_label('red_wins')
@@ -445,6 +506,9 @@ class WarScreen(FloatLayout):
                     self.click_board(x, y)
                 # 右上三个
                 elif 750 < y < 848 and 1268 < x < 1536:
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return
                     self.remove_path()
                     self.remove_label()
                     # if not self.regret_mode:
@@ -456,12 +520,21 @@ class WarScreen(FloatLayout):
                     elif 1476 < x < 1536:
                         self.gret()
                 elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
-                    self.war.ai_move()
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return
+                    self.ai_move_thread_start()
                 # 新局
                 elif 1458 < x < 1542 and 70 < y < 152:
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return
                     self.new()
                 # 保存、载入
                 elif 174 < y < 262:
+                    if not self.war.move_allowed:
+                        print("!请等待走子完成")
+                        return 
                     if 1266 < x < 1440:
                         self.save()
                     elif 1418 < x < 1548:
@@ -484,7 +557,8 @@ class WarScreen(FloatLayout):
                         else:
                             self.war.auto_chn = True
                             self.add_widget(self.auto_chn_img)
-                    self.war.ai_continue()
+                    if self.war.move_allowed:
+                        self.war.ai_continue()
                 # 切换贴图风格
                 elif 641*2 < x < 690*2 and 100 < y < 146:
                     if self.img_source == 'imgs/img':
@@ -501,8 +575,6 @@ class WarScreen(FloatLayout):
                     #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
                     # self.add_widget(self.bg_image)
                     # self.new()
-
-
             elif touch.button == 'right':
                 if len(self.picture_image):
                     self.remove_widget(self.picture_image[-1])
@@ -513,7 +585,7 @@ class WarScreen(FloatLayout):
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                print("touch.pos: ", x, y)
+                # print("touch.pos: ", x, y)
                 x, y = x / M, y / M
                 if x < 1250:
                     px = round((x - 66) / 133.3, 0)
@@ -595,7 +667,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
-        self.title = "BingGo v1.1.1"
+        self.title = "BingGo v1.1.2"
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 
@@ -618,8 +690,12 @@ class BingGo(App):
         return self.war_screen
 
     def on_stop(self):
+        """应用退出时保存数据并清理资源"""
         if self.war_screen.war.turn != 0:
             self.war_screen.save("lastsave.json")
+        # 关闭异步事件循环
+        if hasattr(self.war_screen, 'loop'):
+            self.war_screen.loop.call_soon_threadsafe(self.war_screen.loop.stop)
         print("正在退出")
 
 
