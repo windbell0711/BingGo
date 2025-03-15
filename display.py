@@ -667,7 +667,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
-        self.title = "BingGo v1.1.2"
+        self.title = "BingGo v1.1.3"  # Title
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 

@@ -60,25 +60,19 @@ typ_num2str = {
     13: "P "
 }
 
-# init_lineup = [
-#     "R", "N", "B", "K", " ", "Q", "N", "B", "R", "",
-#     "P", "P", "P", "P", " ", "P", "P", "P", "P", "",
-#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-#     "兵", " ", "兵", " ", "兵", " ", "兵", " ", "兵", "",
-#     " ", "炮", " ", " ", " ", " ", " ", "炮", " ", "",
-#     " ", " ", " ", " ", " ", " ", " ", " ", " ", "",
-#     "车", "马", "相", "士", "帅", "士", "相", "马", "车", ""
-# ]
+PREFERENCE_BY_DEFAULT = """\
+img_style,intl
+quick_cmd_status,on
+init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
+ai_depth,4
+promotion_distance,2
+"""
+
 
 def reset_preference() -> None:
     """初始化重置preference.csv"""
     with open(file="preference.csv", mode='w', newline='', encoding='utf-8') as f:
-        f.write("img_style,intl\n"
-                "quick_cmd_status,on\n"
-                "init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|\n"
-                "ai_depth,5")
+        f.write(PREFERENCE_BY_DEFAULT)
 
 def read_preference(key: str) -> str:
     """从preference.csv中读入"""
@@ -131,5 +125,8 @@ if d.isdigit() and 1 < int(d) < 9:
 else:
     AI_DEPTH = 5
 
-
-promotion_distance=2
+p = read_preference("promotion_distance").strip()
+if p.isdigit() and 1 <= int(p) <= 3:
+    PROMOTION_DISTANCE = int(p)
+else:
+    PROMOTION_DISTANCE = 2

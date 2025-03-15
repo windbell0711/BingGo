@@ -1,4 +1,5 @@
 img_style,intl
 quick_cmd_status,on
 init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
-ai_depth,5
+ai_depth,4
+promotion_distance,2

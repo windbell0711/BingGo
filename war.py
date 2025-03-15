@@ -13,7 +13,7 @@ from kivy.clock import Clock
 
 from beach import *
 from intelligence6 import Intelligence
-from config import promotion_distance as pd
+from config import PROMOTION_DISTANCE as pd
 
 
 

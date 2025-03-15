@@ -490,7 +490,7 @@ class Intelligence:
 
 
     def make_move(self, move, beach):
-        if beach[move[0]] == 7 and move[1] // 10 == 0:  # 兵升变
+        if beach[move[0]] == 7 and move[1] // 10 == config.PROMOTION_DISTANCE:  # 兵升变
             beach[move[0]] = None
             beach[move[1]] = 0
         elif beach[move[0]] == 13 and move[1] // 10 == 8:  # 另一个兵升变
@@ -560,9 +560,9 @@ class Intelligence:
         self.times+=1
         beach2=beach[:]
         if 12 not in beach2:
-            return 10000
+            return 10000*depth
         if 6 not in beach2:
-            return -10000
+            return -10000*depth
         if depth == 0:
             return self.evaluate(beach2)
         else:
