@@ -1,0 +1,405 @@
+!ERROR 1741941444.374313
+
+logs: [[[0, 50, 51]], [[0, 5, 32]]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 383, in idle
+    self.dispatch_input()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 334, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 263, in post_dispatch_input
+    listener.dispatch('on_motion', etype, me)
+  File "kivy\\_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\core\window\__init__.py", line 1709, in on_motion
+    self.dispatch('on_touch_down', me)
+  File "kivy\\_event.pyx", line 727, in kivy._event.EventDispatcher.dispatch
+  File "kivy\\_event.pyx", line 1307, in kivy._event.EventObservers.dispatch
+  File "kivy\\_event.pyx", line 1231, in kivy._event.EventObservers._dispatch
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 486, in handle_button_press
+    self.ai_move_thread_start()
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 312, in ai_move_thread_start
+    process.start()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\multiprocessing\process.py", line 112, in start
+    self._popen = self._Popen(self)
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\multiprocessing\context.py", line 223, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\multiprocessing\context.py", line 322, in _Popen
+    return Popen(process_obj)
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\multiprocessing\popen_spawn_win32.py", line 89, in __init__
+    reduction.dump(process_obj, to_child)
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\multiprocessing\reduction.py", line 60, in dump
+    ForkingPickler(file, protocol).dump(obj)
+AttributeError: Can't pickle local object 'WarScreen.ai_move_thread_start.<locals>._run_and_get_result'
+
+
+
+
+
+!ERROR 1741941585.3025975
+
+logs: []
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 383, in idle
+    self.dispatch_input()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 334, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 263, in post_dispatch_input
+    listener.dispatch('on_motion', etype, me)
+  File "kivy\\_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\core\window\__init__.py", line 1709, in on_motion
+    self.dispatch('on_touch_down', me)
+  File "kivy\\_event.pyx", line 727, in kivy._event.EventDispatcher.dispatch
+  File "kivy\\_event.pyx", line 1307, in kivy._event.EventObservers.dispatch
+  File "kivy\\_event.pyx", line 1231, in kivy._event.EventObservers._dispatch
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 481, in handle_button_press
+    self.ai_move_thread_start()
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 306, in ai_move_thread_start
+    process = multiprocessing.Process(target=self._run_and_get_result, args=(queue, self.war))
+AttributeError: 'WarScreen' object has no attribute '_run_and_get_result'
+
+
+
+
+
+!ERROR 1741946164.425756
+
+logs: [[(0, 50, 40)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 63, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741947210.5126812
+
+logs: []
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 383, in idle
+    self.dispatch_input()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 334, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 263, in post_dispatch_input
+    listener.dispatch('on_motion', etype, me)
+  File "kivy\\_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\core\window\__init__.py", line 1709, in on_motion
+    self.dispatch('on_touch_down', me)
+  File "kivy\\_event.pyx", line 727, in kivy._event.EventDispatcher.dispatch
+  File "kivy\\_event.pyx", line 1307, in kivy._event.EventObservers.dispatch
+  File "kivy\\_event.pyx", line 1231, in kivy._event.EventObservers._dispatch
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 488, in handle_button_press
+    if not self.move_allowed:
+AttributeError: 'WarScreen' object has no attribute 'move_allowed'
+
+
+
+
+
+!ERROR 1741947500.4924507
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(0, 56, 46)], [(2, 7, 52), (0, 7, 52)], [(0, 67, 65)], [(2, 5, 65), (0, 6, 65)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741947534.2639663
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741947584.1588175
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)], [(0, 11, 31)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741947615.667304
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741947727.3242483
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741955090.1499448
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)], [(0, 11, 31)], [(2, 13, 36), (0, 46, 36)], [(0, 1, 22)], [(0, 61, 66)], [(0, 6, 25)], [(0, 36, 35)], [(0, 25, 33)], [(0, 66, 67)], [(0, 5, 27)], [(0, 88, 68)], [(2, 7, 54), (0, 27, 54)], [(0, 82, 64)], [(0, 7, 8)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741955129.1141598
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)], [(0, 11, 31)], [(2, 13, 36), (0, 46, 36)], [(0, 1, 22)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 319, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'
+
+
+
+
+
+!ERROR 1741955389.0463154
+
+logs: [[(0, 50, 40)], [(0, 16, 36)], [(2, 10, 7), (0, 67, 7)], [(2, 5, 7), (0, 8, 7)], [(0, 56, 46)], [(0, 11, 31)], [(2, 13, 36), (0, 46, 36)], [(0, 1, 22)], [(0, 61, 66)], [(0, 6, 25)], [(0, 36, 35)], [(0, 25, 33)]]
+
+error raised: Traceback (most recent call last):
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\main.py", line 24, in <module>
+    b.run()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\base.py", line 379, in idle
+    Clock.tick()
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 733, in tick
+    self.post_idle(ts, self.idle())
+  File "D:\Users\admin\AppData\Local\Programs\Python\Python37\lib\site-packages\kivy\clock.py", line 776, in post_idle
+    self._process_events()
+  File "kivy\\_clock.pyx", line 620, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 653, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 649, in kivy._clock.CyClockBase._process_events
+  File "kivy\\_clock.pyx", line 218, in kivy._clock.ClockEvent.tick
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\display.py", line 320, in <lambda>
+    lambda dt: self.war.main(task.result()) if task.result() else None)
+  File "D:\Documents\Jetbrains\PycharmProjects\BingGo\war.py", line 62, in main
+    moves.append((0, self.active_qizi.p, p))
+AttributeError: 'NoneType' object has no attribute 'p'

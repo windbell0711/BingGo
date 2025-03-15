@@ -13,6 +13,7 @@ from kivy.clock import Clock
 
 from beach import *
 from intelligence6 import Intelligence
+from config import promotion_distance as pd
 
 
 
@@ -32,6 +33,8 @@ class War:
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
         self.turn = 0
 
+        self.move_allowed = True
+
         self.auto_intl = False
         self.auto_chn = False
 
@@ -42,6 +45,8 @@ class War:
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
+        if not self.move_allowed:
+            raise
         moves = []
         if castle:
             if p == 0:
@@ -59,7 +64,7 @@ class War:
             if self.active_qizi.typ == 13 and 79 < p < 89:  # ♟->♛
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 11, p))
-            elif self.active_qizi.typ == 7 and 0 <= p < 9:  # 兵 -> 将
+            elif self.active_qizi.typ == 7 and p//10==pd:  # 兵 -> 将
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 0, p))
 
@@ -100,16 +105,14 @@ class War:
             return False
 
 
-    def ai_move(self):
+    def generate_ai_move(self):
         self.ai.get_attack_pose()
         if  (self.ai.king_p in self.ai.Chn and self.mycamp_intl == False) or (self.ai.shuai_p in self.ai.Intl and self.mycamp_intl==True):
             print("!游戏已结束")
-            return []
+            return
         if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
             print("!游戏已结束")
-            return []
-
-
+            return
         if self.mycamp_intl:
             self.ai.get_best_move_Intl() #TODO
             pf, pt = self.ai.best_move
@@ -118,7 +121,8 @@ class War:
             self.ai.get_best_move_Chn()
             pf, pt = self.ai.best_move
         self.active_qizi = self.beach[pf]
-        self.main(p=pt)
+        return pt
+        # self.main(p=pt)
 
     def regret(self):
         self.turn -= 1  # 先上一回合再操作
@@ -206,7 +210,8 @@ class War:
     def ai_continue(self):
         """如果设置了人机对弈，则自动完成下一步"""
         if (self.mycamp_intl and self.auto_intl) or (not self.mycamp_intl and self.auto_chn):
-            self.ai_move()
+            if self.move_allowed:
+                self.display.ai_move_thread_start()
             return True
         return False
 

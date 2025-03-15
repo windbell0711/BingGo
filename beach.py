@@ -41,8 +41,12 @@ class Beach:
         b.initiate(self.to_int())
         return b
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: int):
         """返回该位置棋子或None"""
+        if item is None:  # 新增None检查
+            raise IndexError("Position cannot be None")
+        if not 0 <= item < 90:  # 确保在棋盘范围内
+            raise IndexError("Position %d out of range" % item)
         return self.beach[item]
 
     def set_son(self, qizi, p: int):

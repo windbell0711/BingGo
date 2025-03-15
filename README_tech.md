@@ -92,7 +92,12 @@ git clone https://github.com/windbell0711/BingGo.git
 
 
 ## How to package
-### Create a .exe via PyInstaller
+
+### Use a template for quick packeging
+1. Check **BingGo.spec** and modify marked lines
+2. Open the Terminal of the project, Run pyinstaller: ```pyinstaller BingGo.spec```
+
+### Create *.exe via PyInstaller
 1. Open the Terminal of the project  *e.g. D:/Documents/.../BingGo*
 2. Run pyinstaller: ```pyinstaller [-F] [-w] [-i ....ico] [-n ...] main.py```
 3. Modify the .spec file as below: ([example](BingGo.spec))
@@ -107,20 +112,41 @@ git clone https://github.com/windbell0711/BingGo.git
 2. [question on stackoverflow](https://stackoverflow.com/questions/62500014/cant-create-a-exe-with-python-kivy-on-windows-pyinstaller/62707185#62707185)
 
 
-## Developing History
+
+## History
+
+### Developing
 ```
 2025.1.15 立项。
 1.16 确定实现路径和基本方向。
 1.17 环境配置，基础学习；GitHub代码库配置；走子逻辑实现(Qizi类)；游戏名称及贴图。
 1.18 修复bug；战场实现(Beach类)；修改mycamp判断方式；用kivy实现可视化，检测光标所在格。
 1.19 修复bug；撰写README；更新display.py；部分重构。
-1.20 修复bug；实现走子、吃子、……。
-1.21 忘了。
-1.22 修复bug；实现check智能判断。
-1.23 修复bug；实现人工智障、保存载入。
-1.24
+1.20 修复bug；实现走子、吃子等。
+1.21 懒得记了。
 ```
+
+### Releases
+|   Time    |           Version           | Platform |                      Download                       |                                   Release                                    |
+|:---------:|:---------------------------:|:--------:|:---------------------------------------------------:|:----------------------------------------------------------------------------:|
+| 2025.3.7  |           v1.1.2            | Windows  | [v1.1.2](https://wwqe.lanzouo.com/iuP3Y2pwrj1c) (0) |                                      /                                       |
+| 2025.2.11 |           v1.1.1            | Windows  | [v1.1.1](https://wwqe.lanzouo.com/iDu4z2nhpbwb) (3) |                                      /                                       |
+| 2025.2.11 |            v1.1             | Windows  | [v1.1](https://wwqe.lanzouo.com/iibQm2nhazve) (66)  |                                      /                                       |
+| 2025.1.31 |     BingGo Release v1.0     | Windows  | [v1.0](https://wwqe.lanzouo.com/iHWAY2mgk88h) (103) |       [v1.0](https://github.com/windbell0711/BingGo/releases/tag/v1.0)       |
+| 2025.1.22 | BingGo Release (Trial) v0.0 | Windows  |                          /                          | [v0.0-alpha](https://github.com/windbell0711/BingGo/releases/tag/v0.0-alpha) |
+
+
+### Videos
+
+|    Time     |            Title            |  Version  |                            bv id                             | View | Like | Comment |
+|:-----------:|:---------------------------:|:---------:|:------------------------------------------------------------:|:----:|:----:|:-------:|
+|  2025.2.11  | 【中国象棋vs国际象棋】v1.1实机演示（附下载链接） |   v1.1    | [BV1dMNzeBExy](https://www.bilibili.com/video/BV1dMNzeBExy/) | 4005 |  96  |   30    |
+|  2025.2.6   |  【中国象棋vs国际象棋】游戏规则介绍（含下载链接）  |   v1.0    | [BV1fPNEeDEBb](https://www.bilibili.com/video/BV1fPNEeDEBb/) | 4247 | 208  |   69    |
+
+
+
+
 
 <br/>
 
-*summarized by [@windbell0711](https://github.com/windbell0711/windbell0711)*
+*summarized by [@windbell0711](https://github.com/windbell0711/windbell0711), 2025.03.07*
