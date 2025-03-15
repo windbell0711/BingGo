@@ -139,6 +139,16 @@ class WarScreen(FloatLayout):
     def remove_label(self):
         for i in self.hints:
             self.remove_widget(i)
+
+    def add_gif(self, text):
+        self.gif=(Image(source=f'./{self.img_source}/{text}.gif', size_hint=(None, None),
+                                size=("%ddp" % (300 * S), "%ddp" % (300 * S)),
+                                pos_hint={'center_x': 0.87, 'center_y': 0.515}))
+        self.add_widget(self.gif)
+
+    def remove_gif(self):
+        self.remove_widget(self.gif)
+
     idt_light=[]
     bigidt=0
 
@@ -306,6 +316,7 @@ class WarScreen(FloatLayout):
 
     def ai_move_thread_start(self):
         """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
+        self.add_gif('jiazai')
         self.war.move_allowed = False
         async def _async_task():
             try:
@@ -320,6 +331,7 @@ class WarScreen(FloatLayout):
                 lambda dt: self.war.main(task.result()) if task.result() else None)
             self.war.move_allowed = True
             print("AI任务完成，走子放开")
+            self.remove_gif()
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
             _async_task(),
