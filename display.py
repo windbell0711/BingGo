@@ -141,8 +141,8 @@ class WarScreen(FloatLayout):
             self.remove_widget(i)
 
     def add_gif(self, text):
-        self.gif=(Image(source=f'./{self.img_source}/{text}.gif', size_hint=(None, None),
-                                size=("%ddp" % (300 * S), "%ddp" % (300 * S)),
+        self.gif = (Image(source=f'./{self.img_source}/{text}.gif', size_hint=(None, None),
+                                size=("%ddp" % (150 * S), "%ddp" % (150 * S)),
                                 pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.gif)
 
@@ -316,7 +316,6 @@ class WarScreen(FloatLayout):
 
     def ai_move_thread_start(self):
         """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
-        self.add_gif('jiazai')
         self.war.move_allowed = False
         async def _async_task():
             try:
@@ -327,17 +326,19 @@ class WarScreen(FloatLayout):
                 print("!AI任务异常: " + str(e))
                 return None
         def _on_complete(task):
-            Clock.schedule_once(  # 通过Clock切换回主线程
-                lambda dt: self.war.main(task.result()) if task.result() else None)
+            def _ui_operation(dt):
+                self.war.main(task.result())
+                self.remove_gif()
+            Clock.schedule_once(_ui_operation)  # 通过Clock切换回主线程
             self.war.move_allowed = True
             print("AI任务完成，走子放开")
-            self.remove_gif()
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
             _async_task(),
             self.loop
         ).add_done_callback(_on_complete)
         print("已通过异步事件循环提交任务，限制走子")
+        self.add_gif('jiazai')
 
     # def ai_move_thread_start(self):
     # """
