@@ -490,7 +490,7 @@ class Intelligence:
 
 
     def make_move(self, move, beach):
-        if beach[move[0]] == 7 and move[1] // 10 == config.PROMOTION_DISTANCE:  # 兵升变
+        if beach[move[0]] == 7 and move[1] // 10 == config.PROMOTION_DIS:  # 兵升变
             beach[move[0]] = None
             beach[move[1]] = 0
         elif beach[move[0]] == 13 and move[1] // 10 == 8:  # 另一个兵升变

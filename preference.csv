@@ -1,5 +1,7 @@
 img_style,intl
 quick_cmd_status,on
+save_when_quit,on
 init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
 ai_depth,4
-promotion_distance,2
+promotion_dis,2
+screen_scale,1

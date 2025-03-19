@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import csv
 
-screen_scale = 1
+# screen_scale = 1
 active_qizi_delta_scale = 5  # 原大小：65
 
 typ_dict = {
@@ -63,9 +63,11 @@ typ_num2str = {
 PREFERENCE_BY_DEFAULT = """\
 img_style,intl
 quick_cmd_status,on
+save_when_quit,on
 init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
 ai_depth,4
-promotion_distance,2
+promotion_dis,2
+screen_scale,1
 """
 
 
@@ -112,21 +114,22 @@ def write_preference(key, value) -> None:
         writer = csv.writer(file)
         writer.writerows(lines)
 
+def check_num(key: str, min_num: int | float, max_num: int | float, value_if_invalid: int | float) -> int | float:
+    r = read_preference(key).strip()
+    if r.isnumeric() and min_num <= float(r) <= max_num:
+        if '.' in r:
+            return float(r)
+        return int(r)
+    else:
+        return value_if_invalid
 
-# init_lineup = "|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|"
+
 init_lineup = read_preference("init_lineup")[1:]  # 去掉起始的“|”
 
-IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
+IMG_STYLE_INTL   = {"intl": True, "chn": False}[read_preference("img_style").lower()]
 QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
+SAVE_WHEN_QUIT   = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
 
-d = read_preference("ai_depth").strip()
-if d.isdigit() and 1 < int(d) < 9:
-    AI_DEPTH = int(d)
-else:
-    AI_DEPTH = 5
-
-p = read_preference("promotion_distance").strip()
-if p.isdigit() and 1 <= int(p) <= 3:
-    PROMOTION_DISTANCE = int(p)
-else:
-    PROMOTION_DISTANCE = 2
+AI_DEPTH      = check_num("ai_depth",      2,   8,  5)
+PROMOTION_DIS = check_num("promotion_dis", 1,   3,  2)
+SCREEN_SCALE  = check_num("screen_scale",  0.1, 10, 1)

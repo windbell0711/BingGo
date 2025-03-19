@@ -12,9 +12,8 @@ import json
 from kivy.clock import Clock
 
 from beach import *
+import config
 from intelligence6 import Intelligence
-from config import PROMOTION_DISTANCE as pd
-
 
 
 class War:
@@ -64,7 +63,7 @@ class War:
             if self.active_qizi.typ == 13 and 79 < p < 89:  # ♟->♛
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 11, p))
-            elif self.active_qizi.typ == 7 and p//10==pd:  # 兵 -> 将
+            elif self.active_qizi.typ == 7 and p//10 == config.PROMOTION_DIS:  # 兵 -> 将
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 0, p))
 

@@ -14,6 +14,8 @@ import threading
 import time
 
 from kivy.config import Config
+from numpy.ma.core import angle
+from setuptools.command.rotate import rotate
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -28,6 +30,7 @@ from kivy.core.audio import SoundLoader
 from kivy.core.clipboard import Clipboard
 from kivy.metrics import Metrics
 from kivy.animation import Animation
+from kivy.graphics import Rotate
 from kivy.clock import Clock
 
 from war import *
@@ -37,7 +40,7 @@ class BieGuanWoException(Exception):
     pass
 
 try:
-    S = config.screen_scale
+    S = config.SCREEN_SCALE
 except AttributeError as e:
     print("! " + str(e))
     S = 1
@@ -140,14 +143,14 @@ class WarScreen(FloatLayout):
         for i in self.hints:
             self.remove_widget(i)
 
-    def add_gif(self, text):
-        self.gif = (Image(source=f'./{self.img_source}/{text}.gif', size_hint=(None, None),
-                                size=("%ddp" % (150 * S), "%ddp" % (150 * S)),
-                                pos_hint={'center_x': 0.87, 'center_y': 0.515}))
-        self.add_widget(self.gif)
-
-    def remove_gif(self):
-        self.remove_widget(self.gif)
+    # def add_gif(self, text):
+    #     self.gif=(Image(source=f'./{self.img_source}/{text}.gif', size_hint=(None, None),
+    #                             size=("%ddp" % (300 * S), "%ddp" % (300 * S)),
+    #                             pos_hint={'center_x': 0.87, 'center_y': 0.515}))
+    #     self.add_widget(self.gif)
+    #
+    # def remove_gif(self):
+    #     self.remove_widget(self.gif)
 
     idt_light=[]
     bigidt=0
@@ -328,37 +331,29 @@ class WarScreen(FloatLayout):
         def _on_complete(task):
             def _ui_operation(dt):
                 self.war.main(task.result())
-                self.remove_gif()
+                # self.remove_gif()
+                self.remove_widget(self.jiazai)
             Clock.schedule_once(_ui_operation)  # 通过Clock切换回主线程
             self.war.move_allowed = True
             print("AI任务完成，走子放开")
+        # ui显示加载中
+        self.jiazai = Image(
+            source='imgs/img/jiazai.png',
+            size_hint=(None, None),
+            size=(300*M, 300*M),
+            pos_hint={'center_x': 0.87, 'center_y': 0.515
+            },
+        )
+        self.add_widget(self.jiazai)
+        with self.jiazai.canvas.before:
+            rot = Rotate(angle=0, origin=(1392*M,618*M))  # 固定旋转中心坐标
+        Animation(angle=-18000, duration=300).start(rot)  # 创造并开始旋转动画
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
             _async_task(),
             self.loop
         ).add_done_callback(_on_complete)
         print("已通过异步事件循环提交任务，限制走子")
-        self.add_gif('jiazai')
-
-    # def ai_move_thread_start(self):
-    # """
-    # 主线程：启动子线程 → 立即返回 → 保持UI响应
-    # 子线程：执行_run_and_get_result → 得到结果 → 通过Clock调度主线程回调
-    # 主线程：执行_on_complete → 更新UI
-    # """
-    # def _run_and_get_result():
-    #     # 这里执行耗时操作
-    #     result = self.war.generate_ai_move()
-    #     return result
-    # def _on_complete(result):
-    #     # 这里处理结果（主线程）
-    #     self.war.main(result)
-    # # 创建并启动线程
-    # thread = threading.Thread(target=lambda: Clock.schedule_once(
-    #     lambda dt: _on_complete(_run_and_get_result())
-    # ))
-    # thread.start()
-    # self.click_time = 0
 
     creative_mode=False
     c_typ=0
@@ -704,8 +699,10 @@ class BingGo(App):
 
     def on_stop(self):
         """应用退出时保存数据并清理资源"""
-        if self.war_screen.war.turn != 0:
-            self.war_screen.save("lastsave.json")
+        # 保存棋局数据
+        if config.SAVE_WHEN_QUIT:
+            if self.war_screen.war.turn != 0:
+                self.war_screen.save("lastsave.json")
         # 关闭异步事件循环
         if hasattr(self.war_screen, 'loop'):
             self.war_screen.loop.call_soon_threadsafe(self.war_screen.loop.stop)
