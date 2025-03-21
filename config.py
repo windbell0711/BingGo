@@ -114,13 +114,32 @@ def write_preference(key, value) -> None:
         writer = csv.writer(file)
         writer.writerows(lines)
 
-def check_num(key: str, min_num: int | float, max_num: int | float, value_if_invalid: int | float) -> int | float:
+def is_int(s: str) -> bool:
+    for c in s:
+        if not (c.isdigit() or c == "-"):
+            return False
+    return True
+
+def is_float(s: str) -> bool:
+    for c in s:
+        if not (c.isdigit() or c == "." or c == "-"):
+            return False
+    return True
+
+def check_int(key: str, min_num: int, max_num: int, value_if_invalid: int) -> int:
     r = read_preference(key).strip()
-    if r.isnumeric() and min_num <= float(r) <= max_num:
-        if '.' in r:
-            return float(r)
+    if is_int(r) and min_num <= int(r) <= max_num:
         return int(r)
     else:
+        print("!Invalid " + key + ": " + r)
+        return value_if_invalid
+
+def check_float(key: str, min_num: float, max_num: float, value_if_invalid: float) -> float:
+    r = read_preference(key).strip()
+    if is_float(r) and min_num <= float(r) <= max_num:
+        return float(r)
+    else:
+        print("!Invalid " + key + ": " + r)
         return value_if_invalid
 
 
@@ -130,6 +149,6 @@ IMG_STYLE_INTL   = {"intl": True, "chn": False}[read_preference("img_style").low
 QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
 SAVE_WHEN_QUIT   = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
 
-AI_DEPTH      = check_num("ai_depth",      2,   8,  5)
-PROMOTION_DIS = check_num("promotion_dis", 1,   3,  2)
-SCREEN_SCALE  = check_num("screen_scale",  0.1, 10, 1)
+AI_DEPTH      = check_int  ("ai_depth", 2, 8, 5)
+PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
+SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
