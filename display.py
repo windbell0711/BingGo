@@ -337,16 +337,18 @@ class WarScreen(FloatLayout):
             self.war.move_allowed = True
             print("AI任务完成，走子放开")
         # ui显示加载中
+        self.remove_label()
+        self.remove_path()
         self.jiazai = Image(
             source='imgs/img/jiazai.png',
             size_hint=(None, None),
-            size=(300*M, 300*M),
-            pos_hint={'center_x': 0.87, 'center_y': 0.515
+            size=("%ddp" % (70 * S), "%ddp" % (70 * S)),
+            pos_hint={'center_x': 0.875, 'center_y': 0.515
             },
         )
         self.add_widget(self.jiazai)
         with self.jiazai.canvas.before:
-            rot = Rotate(angle=0, origin=(1392*M,618*M))  # 固定旋转中心坐标
+            rot = Rotate(angle=0, origin=(1400*M,618*M))  # 固定旋转中心坐标
         Animation(angle=-18000, duration=300).start(rot)  # 创造并开始旋转动画
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
@@ -531,7 +533,10 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    self.ai_move_thread_start()
+                    if not (self.war.ai.shuai_is_checkmate() or self.war.ai.king_is_checkmate()):
+                        self.ai_move_thread_start()
+                    else:
+                        print('游戏已结束')
                 # 新局
                 elif 1458 < x < 1542 and 70 < y < 152:
                     if not self.war.move_allowed:

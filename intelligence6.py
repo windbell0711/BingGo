@@ -560,9 +560,9 @@ class Intelligence:
         self.times+=1
         beach2=beach[:]
         if 12 not in beach2:
-            return 10000*depth
+            return 10000*depth+10000
         if 6 not in beach2:
-            return -10000*depth
+            return -10000*depth-10000
         if depth == 0:
             return self.evaluate(beach2)
         else:
