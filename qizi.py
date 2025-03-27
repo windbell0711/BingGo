@@ -7,8 +7,6 @@
 @License : Apache 2.0
 @File    : qizi.py
 """
-from typing import List, Dict, Tuple
-import config
 
 
 class Qizi:

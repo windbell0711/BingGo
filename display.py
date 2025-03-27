@@ -8,14 +8,11 @@
 @File    : diaplay.py
 """
 import asyncio
-import json
 import os
 import threading
 import time
 
 from kivy.config import Config
-from numpy.ma.core import angle
-from setuptools.command.rotate import rotate
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -31,7 +28,6 @@ from kivy.core.clipboard import Clipboard
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.graphics import Rotate
-from kivy.clock import Clock
 
 from war import *
 import config

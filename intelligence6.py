@@ -6,8 +6,6 @@
 @License : Apache 2.0
 @File    : intelligence.py
 """
-import random
-import copy
 import config
 
 AI_DEPTH = config.AI_DEPTH
