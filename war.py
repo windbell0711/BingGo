@@ -91,18 +91,11 @@ class War:
 
         Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
-    def king_win(self):
-        if self.ai.shuai_is_checkmate():
-            return True
-        else:
-            return False
+    def king_win(self) -> bool:
+        return self.ai.shuai_is_checkmate()
 
-    def shuai_win(self):
-        if self.ai.king_is_checkmate():
-            return True
-        else:
-            return False
-
+    def shuai_win(self) -> bool:
+        return self.ai.king_is_checkmate()
 
     def generate_ai_move(self):
         self.ai.get_attack_pose()
@@ -209,9 +202,10 @@ class War:
     def ai_continue(self):
         """如果设置了人机对弈，则自动完成下一步"""
         if (self.mycamp_intl and self.auto_intl) or (not self.mycamp_intl and self.auto_chn):
-            if self.move_allowed:
+            if self.move_allowed and not (self.king_win() or self.shuai_win()):  # 检查是否可以移动且没有达到任何一方的胜利条件
                 self.display.ai_move_thread_start()
             return True
+        print("!无法自动进行下一步")
         return False
 
     @staticmethod

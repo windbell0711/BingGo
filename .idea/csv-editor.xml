@@ -3,13 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\dist\BingGo v1.1.3\preference.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="|" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\preference.csv">
           <value>
             <Attribute>
