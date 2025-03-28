@@ -11,12 +11,15 @@ import asyncio
 import os
 import threading
 import time
+from typing import List
 
 from kivy.config import Config
+
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
-Config.set('graphics', 'multisamples', '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
+Config.set('graphics', 'multisamples',
+           '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 from kivy.app import App
 from kivy.uix.label import Label
@@ -32,8 +35,10 @@ from kivy.graphics import Rotate
 from war import *
 import config
 
+
 class BieGuanWoException(Exception):
     pass
+
 
 try:
     S = config.SCREEN_SCALE
@@ -42,11 +47,14 @@ except AttributeError as e:
     S = 1
 M = Metrics.density * S / 2
 
+
 def fx(p):
     return (p % 10 + 0.5) / 12
 
+
 def fy(p):
     return (8.5 - p // 10) / 9
+
 
 class WarScreen(FloatLayout):
     def __init__(self, args, **kwargs):
@@ -61,14 +69,17 @@ class WarScreen(FloatLayout):
 
         # self.auto_intl = False
         # self.auto_chn = False
-        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)), size_hint=(None, None),
+        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
+                                   size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
-        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)), size_hint=(None, None),
+        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
+                                  size_hint=(None, None),
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
 
         # 窗口及背景图设置
         Window.size = (800 * S, 600 * S)
-        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=('%ddp' % (800 * S), '%ddp' % (600 * S)), size_hint=(None, None),
+        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
+                              size_hint=(None, None),
                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(self.bg_image)
         self.turn_label = Label(
@@ -118,7 +129,8 @@ class WarScreen(FloatLayout):
             self.beach.set_son(qizi, p)
             self.pieces.append(qizi)
             self.imgs.append(Image(
-                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None), size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
+                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None),
+                size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                 pos_hint={'center_x': fx(p), 'center_y': fy(p)}
             ))
             self.add_widget(self.imgs[-1])
@@ -141,7 +153,8 @@ class WarScreen(FloatLayout):
 
     def add_label_sound(self, text, sound):
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
-                                size=('%ddp' % (65 * S), '%ddp' % (65 * S)), pos_hint={'center_x': 0.375, 'center_y': 0.5}))
+                                size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
+                                pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
         Clock.schedule_once(lambda dt: self.remove_label(), 1)
         self.sound = SoundLoader.load(f'./music/{sound}.wav')
@@ -153,7 +166,8 @@ class WarScreen(FloatLayout):
     def add_label(self, text):
         self.remove_label()
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
-                                size=('%ddp' % (200 * S), '%ddp' % (200 * S)), pos_hint={'center_x': 0.87, 'center_y': 0.515}))
+                                size=('%ddp' % (200 * S), '%ddp' % (200 * S)),
+                                pos_hint={'center_x': 0.87, 'center_y': 0.515}))
         self.add_widget(self.hints[-1])
 
     def remove_label(self):
@@ -169,13 +183,13 @@ class WarScreen(FloatLayout):
     # def remove_gif(self):
     #     self.remove_widget(self.gif)
 
-    idt_light=[]
-    bigidt=0
-
+    idt_light = []
+    bigidt = 0
 
     def show_path(self):
         self.bigidt = self.beach[self.war.active_qizi.p].idt
-        self.imgs[self.bigidt].size = ('%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
+        self.imgs[self.bigidt].size = (
+        '%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
                 if self.img_source == 'imgs/img2':
@@ -192,7 +206,8 @@ class WarScreen(FloatLayout):
 
             else:
                 self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
-                                 size=('%ddp' % (120 * S), '%ddp' % (120 * S)), pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                       size=('%ddp' % (120 * S), '%ddp' % (120 * S)),
+                                       pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -203,7 +218,7 @@ class WarScreen(FloatLayout):
             self.remove_widget(self.imgs[i])
             self.imgs[i].opacity = 1
             self.add_widget(self.imgs[i])
-        self.idt_light=[]
+        self.idt_light = []
         for i in self.dots:
             self.remove_widget(i)
 
@@ -266,7 +281,8 @@ class WarScreen(FloatLayout):
                 an.append((1, idt))
                 self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
                 self.imgs.append(Image(source=f'./{self.img_source}/%d.png' % oper[1], size_hint=(None, None),
-                                       size=('%ddp' % (65 * S), '%ddp' % (65 * S)), pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
+                                       size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
+                                       pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
                 an.append((2, self.beach[oper[2]].idt))
@@ -336,23 +352,33 @@ class WarScreen(FloatLayout):
 
     def ai_move_thread_start(self):
         """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
+        if self.war.is_checkmate:  # 新增游戏结束检查
+            print("游戏已结束，无法AI走子")
+            return
+
         self.war.move_allowed = False
         async def _async_task():
-            try:
-                # 耗时操作（AI计算）
-                result = self.war.generate_ai_move()
-                return result
-            except Exception as e:
-                print("!AI任务异常: " + str(e))
-                return None
+            # try:
+            #     # 耗时操作（AI计算）
+            #     result = self.war.generate_ai_move()
+            #     return result
+            # except Exception as e:
+            #     print("!AI任务异常: " + str(e))
+            #     return None
+            result = self.war.generate_ai_move()
+            return result
+
         def _on_complete(task):
             def _ui_operation(dt):
-                self.war.main(task.result())
-                # self.remove_gif()
+                result = task.result()
+                if result is not None and not self.war.is_checkmate:  # 新增有效性检查
+                    self.war.main(result)
                 self.remove_widget(self.jiazai)
-            Clock.schedule_once(_ui_operation)  # 通过Clock切换回主线程
+
             self.war.move_allowed = True
+            Clock.schedule_once(_ui_operation)
             print("AI任务完成，走子放开")
+
         # ui显示加载中
         self.remove_label()
         self.remove_path()
@@ -361,11 +387,11 @@ class WarScreen(FloatLayout):
             size_hint=(None, None),
             size=('%ddp' % (70 * S), '%ddp' % (70 * S)),
             pos_hint={'center_x': 0.875, 'center_y': 0.515
-            },
+                      },
         )
         self.add_widget(self.jiazai)
         with self.jiazai.canvas.before:
-            rot = Rotate(angle=0, origin=(1400*M,618*M))  # 固定旋转中心坐标
+            rot = Rotate(angle=0, origin=(1400 * M, 618 * M))  # 固定旋转中心坐标
         Animation(angle=-18000, duration=300).start(rot)  # 创造并开始旋转动画
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
@@ -374,10 +400,11 @@ class WarScreen(FloatLayout):
         ).add_done_callback(_on_complete)
         print("已通过异步事件循环提交任务，限制走子")
 
-    creative_mode=False
-    c_typ=0
+    creative_mode = False
+    c_typ = 0
+
     def handle_button_press(self, window, touch):
-        if self.creative_mode :
+        if self.creative_mode:
             x, y = touch.pos
             # print("touch.pos: ", x, y)
             x, y = x / M, y / M
@@ -385,19 +412,19 @@ class WarScreen(FloatLayout):
             if touch.button == 'scrollup':
                 self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
                 self.create_p[self.c_typ].opacity = 1
-                if self.c_typ>12:
-                    self.c_typ=0
+                if self.c_typ > 12:
+                    self.c_typ = 0
                 else:
-                    self.c_typ+=1
+                    self.c_typ += 1
                 self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
                 self.create_p[self.c_typ].opacity = 0.7
             elif touch.button == 'scrolldown':
                 self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
                 self.create_p[self.c_typ].opacity = 1
-                if self.c_typ<1:
-                    self.c_typ=13
+                if self.c_typ < 1:
+                    self.c_typ = 13
                 else:
-                    self.c_typ-=1
+                    self.c_typ -= 1
                 self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
                 self.create_p[self.c_typ].opacity = 0.7
 
@@ -419,31 +446,31 @@ class WarScreen(FloatLayout):
                         self.create_p[self.c_typ].opacity = 0.7
 
             elif touch.button == 'left':
-                if 1220<x<1576 and 62<y<220:
-                    shuai=0
-                    king=0
+                if 1220 < x < 1576 and 62 < y < 220:
+                    shuai = 0
+                    king = 0
                     for i in self.beach:
-                        if i!=None and i.typ==6:
-                            shuai+=1
+                        if i != None and i.typ == 6:
+                            shuai += 1
                         elif i != None and i.typ == 12:
-                            king+=1
-                    if king!=1 or shuai!=1:
+                            king += 1
+                    if king != 1 or shuai != 1:
                         print('不正确的王或帅数量')
                         return
                     self.war.ai.get_attack_pose()
-                    self.creative_mode=False
+                    self.creative_mode = False
 
                     self.remove_widget(self.cr_image)
                     for i in self.create_p:
                         self.remove_widget(i)
 
 
-                elif 1220<x<1576 and 228<y<1108:
+                elif 1220 < x < 1576 and 228 < y < 1108:
                     self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
                     self.create_p[self.c_typ].opacity = 1
-                    typx=(x-1200)//180
-                    typy=(y-228)//125
-                    self.c_typ=int(typx+2*typy)
+                    typx = (x - 1200) // 180
+                    typy = (y - 228) // 125
+                    self.c_typ = int(typx + 2 * typy)
                     self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
                     self.create_p[self.c_typ].opacity = 0.7
                     print(self.c_typ)
@@ -456,20 +483,19 @@ class WarScreen(FloatLayout):
                         print("!位置不合法  p:", p)
                         return
 
-                    if self.beach[p]!=None:
+                    if self.beach[p] != None:
                         self.generate_animation([(2, self.beach[p].typ, p)])
                         self.war.beach.set_son(None, p=p)
 
 
                     else:
 
-                        if self.c_typ==6 and p not in (63,64,65,73,74,75,83,84,85):
+                        if self.c_typ == 6 and p not in (63, 64, 65, 73, 74, 75, 83, 84, 85):
                             print('帅不能摆在这里')
                             return
 
-
-                        self.generate_animation([(1,self.c_typ,p)])
-                        self.war.beach.set_son(Qizi(p=p,typ=self.c_typ,beach=self.war.beach),p=p)
+                        self.generate_animation([(1, self.c_typ, p)])
+                        self.war.beach.set_son(Qizi(p=p, typ=self.c_typ, beach=self.war.beach), p=p)
         else:
             if touch.button == 'left':
                 if len(self.picture_image):
@@ -490,7 +516,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    self.creative_mode=True
+                    self.creative_mode = True
                     self.remove_path()
                     self.remove_label()
                     self.war.mycamp_intl = False
@@ -502,11 +528,11 @@ class WarScreen(FloatLayout):
                                           pos_hint={'center_x': 0.5, 'center_y': 0.5})
                     self.add_widget(self.cr_image)
                     self.create_p = []
-                    for i in range(0,14):
+                    for i in range(0, 14):
                         self.create_p.append(Image(
                             source=f'./{self.img_source}/{i}.png', size_hint=(None, None),
                             size=('%ddp' % (55 * S), '%ddp' % (55 * S)),
-                            pos_hint={'center_x': i%2/10+0.825, 'center_y': i//2/10+0.25}
+                            pos_hint={'center_x': i % 2 / 10 + 0.825, 'center_y': i // 2 / 10 + 0.25}
                         ))
                         self.add_widget(self.create_p[-1])
                     self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
@@ -520,12 +546,12 @@ class WarScreen(FloatLayout):
                         print("not allowed to move yet")
                         return
                     self.war.ai.get_attack_pose()
-                    if self.war.ai.king_p in self.war.ai.Chn and self.war.mycamp_intl==False:
+                    if self.war.is_checkmate and self.war.mycamp_intl == False:
                         self.add_label('red_wins')
                         print('游戏结束')
                         return
-                    elif self.war.ai.shuai_p in self.war.ai.Intl and self.war.mycamp_intl==True:
-                        self.ass_label('black_wins')
+                    elif self.war.is_checkmate and self.war.mycamp_intl == True:
+                        self.add_label('black_wins')
                         print('游戏结束')
                         return
                     # if self.regret_mode:
@@ -550,7 +576,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    if not (self.war.ai.shuai_is_checkmate() or self.war.ai.king_is_checkmate()):
+                    if not self.war.is_checkmate():
                         self.ai_move_thread_start()
                     else:
                         print('游戏已结束')
@@ -564,7 +590,7 @@ class WarScreen(FloatLayout):
                 elif 174 < y < 262:
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
-                        return 
+                        return
                     if 1266 < x < 1440:
                         self.save()
                     elif 1418 < x < 1548:
@@ -590,7 +616,7 @@ class WarScreen(FloatLayout):
                     if self.war.move_allowed:
                         self.war.ai_continue()
                 # 切换贴图风格
-                elif 641*2 < x < 690*2 and 100 < y < 146:
+                elif 641 * 2 < x < 690 * 2 and 100 < y < 146:
                     if self.img_source == 'imgs/img':
                         self.img_source = 'imgs/img2'
                         config.write_preference("img_style", "intl")
@@ -663,7 +689,7 @@ class WarScreen(FloatLayout):
                 cmd = p
                 pass
             else:
-                cmd, argu = p[:p.find(" ")].lower(), p[p.find(" ")+1:]  # 需要参数
+                cmd, argu = p[:p.find(" ")].lower(), p[p.find(" ") + 1:]  # 需要参数
                 if cmd == "load":
                     try:
                         l = json.loads(argu)
@@ -688,7 +714,8 @@ class WarScreen(FloatLayout):
 
     def show_picture(self, typ):
         self.picture_image.append(
-            Image(source=f'./{self.img_source}/{typ}_p.png', size=('%ddp' % (700 * S), '%ddp' % (500 * S)), size_hint=(None, None),
+            Image(source=f'./{self.img_source}/{typ}_p.png', size=('%ddp' % (700 * S), '%ddp' % (500 * S)),
+                  size_hint=(None, None),
                   pos_hint={'center_x': 0.5, 'center_y': 0.5}))
         self.add_widget(self.picture_image[-1])
 

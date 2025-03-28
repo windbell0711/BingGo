@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="删除不使用的库引用">
+      <change beforePath="$PROJECT_DIR$/.idea/BingGo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BingGo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/beach.py" beforeDir="false" afterPath="$PROJECT_DIR$/beach.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/img2/jiazai.png" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/img2/jiazai.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" afterPath="$PROJECT_DIR$/preference.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +29,12 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--follow-tags" />
+        <option name="title" value="Current Branch" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -34,7 +46,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/windbell0711/BingGo&quot;,
-    &quot;accountId&quot;: &quot;b2803e96-e6d2-4ee0-9234-a19e277e60db&quot;
+    &quot;accountId&quot;: &quot;e6c225ee-1707-4591-a478-3a8dcd231e2a&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -59,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/Documents/Jetbrains/PycharmProjects/BingGo",
+    "last_opened_file_path": "T:/Python/BingGo/BingGo",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -84,11 +96,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="T:\Python\BingGo\BingGo" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
@@ -252,7 +264,42 @@
       <workItem from="1742093524944" duration="323000" />
       <workItem from="1742390692309" duration="3187000" />
       <workItem from="1742556139465" duration="5960000" />
+      <workItem from="1743086528560" duration="4183000" />
+      <workItem from="1743133051659" duration="13050000" />
     </task>
+    <task id="LOCAL-00001" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083505170</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083505170</updated>
+    </task>
+    <task id="LOCAL-00002" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083942514</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083942514</updated>
+    </task>
+    <task id="LOCAL-00003" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083959527</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083959527</updated>
+    </task>
+    <task id="LOCAL-00004" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743085265017</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743085265017</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,20 +325,21 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="删除不使用的库引用" />
+    <option name="LAST_COMMIT_MESSAGE" value="删除不使用的库引用" />
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/config.py</url>
-          <line>129</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="" />
+        <watch expression="self.active_qizi&#10;" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1742566912442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display Coverage Results" MODIFIED="1741944681326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main 覆盖结果" MODIFIED="1743149080397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

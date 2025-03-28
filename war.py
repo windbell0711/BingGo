@@ -8,9 +8,11 @@
 @File    : war.py
 """
 import json
+from typing import Tuple
 
 from kivy.clock import Clock
 
+from FSF import FSF
 from beach import *
 import config
 from intelligence6 import Intelligence
@@ -26,8 +28,8 @@ class War:
             if name == " " or name == "|":
                 continue
             self.beach.set_son(Qizi(p=p, typ=config.typ_dict[name], beach=self.beach), p)
-        self.ai = Intelligence(self.beach, self.mycamp_intl)
-
+        # self.ai = Intelligence(self.beach, self.mycamp_intl)
+        self.ai = FSF()
         self.active_qizi = None
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
         self.turn = 0
@@ -39,13 +41,15 @@ class War:
 
         self.SCREEN_POS_x = args[0]
         self.SCREEN_POS_y = args[1]
+
+        self.is_checkmate = False
         # self.SCREEN_POS_a = args[2]
         # self.SCREEN_POS_b = args[3]
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
         if not self.move_allowed:
-            raise
+            raise ValueError("!Move not allowed.")
         moves = []
         if castle:
             if p == 0:
@@ -105,20 +109,24 @@ class War:
 
 
     def generate_ai_move(self):
-        self.ai.get_attack_pose()
-        if  (self.ai.king_p in self.ai.Chn and self.mycamp_intl == False) or (self.ai.shuai_p in self.ai.Intl and self.mycamp_intl==True):
-            print("!游戏已结束")
-            return
-        if self.ai.shuai_is_checkmate() or self.ai.king_is_checkmate():
+        # self.ai.get_attack_pose()
+        # if  (self.ai.king_p in self.ai.Chn and self.mycamp_intl == False) or (self.ai.shuai_p in self.ai.Intl and self.mycamp_intl==True):
+        #     print("!游戏已结束")
+        #     return
+        if self.is_checkmate:
             print("!游戏已结束")
             return
         if self.mycamp_intl:
-            self.ai.get_best_move_Intl() #TODO
-            pf, pt = self.ai.best_move
+            pf, pt = self.ai.get_best_move_Intl() #TODO
             #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
-            self.ai.get_best_move_Chn()
-            pf, pt = self.ai.best_move
+            pf, pt = self.ai.get_best_move_Chn()
+        print(pf, pt)
+        # print(pf, pt, self.beach)
+        # for l in self.beach:
+        #     print(l)
+        if self.ai.is_checkmate():
+            self.is_checkmate = True
         self.active_qizi = self.beach[pf]
         return pt
         # self.main(p=pt)
@@ -130,18 +138,18 @@ class War:
         # for i in range(len(self.logs[self.turn])-1, -1, -1):  # 倒序重现
         #     self.display_operation(self.reverse_operation(self.logs[self.turn][i]))
         self.mycamp_intl = not self.mycamp_intl
-        self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
         self.display.generate_animation(ms)
+        self.ai.regret()
 
     def gret(self):
         ms = self.logs[self.turn]
         self.conduct_operations(ms)
         self.turn += 1  # 先操作再下一回合
         self.mycamp_intl = not self.mycamp_intl
-        self.ai.reset_attack_pose()
         self.display.turn_label.text = str(self.turn)
         self.display.generate_animation(ms)
+        self.ai.gret()
 
     def solve_board_press(self, p: int):
         """用户点按棋盘上一点"""
@@ -181,22 +189,9 @@ class War:
                 self.beach.kill_son(p=oper[2])
 
     def _check(self):  # 是否将军
-        self.ai.get_attack_pose()
-        if not self.mycamp_intl:
-            if self.ai.shuai_p in self.ai.Intl:
-                return "check"
-            elif self.ai.king_p in self.ai.Chn:
-                if self.ai.king_is_checkmate():
-                    return "red_wins"
-                return "checked"
-            return ""
+        if self.ai.io.info_handler.info["score"][1].mate == 1:
+            return "black_win" if self.mycamp_intl else "white_win"
         else:
-            if self.ai.king_p in self.ai.Chn:
-                return "wangbeijj"
-            elif self.ai.shuai_p in self.ai.Intl:
-                if self.ai.shuai_is_checkmate():
-                    return "black_wins"
-                return "jiangjun"
             return ""
 
     # def ラウンドを終える(self):

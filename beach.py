@@ -7,6 +7,10 @@
 @File    : beach.py
 """
 from __future__ import annotations
+
+from typing import List
+
+import config
 from qizi import *
 
 
@@ -44,7 +48,7 @@ class Beach:
     def __getitem__(self, item: int):
         """返回该位置棋子或None"""
         if item is None:  # 新增None检查
-            raise IndexError("Position cannot be None")
+            raise ValueError("Position cannot be None")
         if not 0 <= item < 90:  # 确保在棋盘范围内
             raise IndexError("Position %d out of range" % item)
         return self.beach[item]
