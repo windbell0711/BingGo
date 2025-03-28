@@ -48,15 +48,9 @@ except AttributeError as e:
 M = Metrics.density * S / 2
 
 
-def fx(p):
-    return (p % 10 + 0.5) / 12
-
-
-def fy(p):
-    return (8.5 - p // 10) / 9
-
 
 class WarScreen(FloatLayout):
+
     def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
         self.war = War(self, args)
@@ -131,11 +125,23 @@ class WarScreen(FloatLayout):
             self.imgs.append(Image(
                 source=f'./{self.img_source}/{typ}.png', size_hint=(None, None),
                 size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
-                pos_hint={'center_x': fx(p), 'center_y': fy(p)}
+                pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}
             ))
             self.add_widget(self.imgs[-1])
 
         self._init_async_event_loop()  # 新增异步事件循环线程
+
+    def fx(self, p):
+        if self.pov_Chn:
+            return (p % 10 + 0.5) / 12
+        else:
+            return 0.75 - (p % 10 + 0.5) / 12
+
+    def fy(self, p):
+        if self.pov_Chn:
+            return (8.5 - p // 10) / 9
+        else:
+            return 1 - (8.5 - p // 10) / 9
 
     def _init_async_event_loop(self):
         """初始化异步事件循环线程"""
@@ -200,14 +206,14 @@ class WarScreen(FloatLayout):
                 elif self.img_source == 'imgs/img':
                     self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
                                            size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
-                                           pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                           pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                     self.dots[-1].opacity = 0.5
                     self.add_widget(self.dots[-1])
 
             else:
                 self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
                                        size=('%ddp' % (120 * S), '%ddp' % (120 * S)),
-                                       pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                       pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -226,6 +232,9 @@ class WarScreen(FloatLayout):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
         py = 8 - round((y - 66) / 133.3, 0)
+        if not self.pov_Chn:
+            px = 8 - px
+            py = 8 - py
         p = int(px + 10 * py)  # 点选的位置
         if not self.beach.valid(p):
             print("!位置不合法  p:", p)
@@ -261,7 +270,7 @@ class WarScreen(FloatLayout):
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
         # 走子平移动画
-        animation = Animation(pos_hint={'center_x': fx(p), 'center_y': fy(p)}, duration=0.1)
+        animation = Animation(pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}, duration=0.1)
         animation.start(self.imgs[idt])
 
     def generate_animation(self, opers: List[Tuple[int, int, int]]):
@@ -433,6 +442,9 @@ class WarScreen(FloatLayout):
                 if x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
@@ -457,7 +469,7 @@ class WarScreen(FloatLayout):
                     if king != 1 or shuai != 1:
                         print('不正确的王或帅数量')
                         return
-                    self.war.ai.get_attack_pose()
+                    self.war.AI.get_attack_pose()
                     self.creative_mode = False
 
                     self.remove_widget(self.cr_image)
@@ -478,6 +490,9 @@ class WarScreen(FloatLayout):
                 elif x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
@@ -545,7 +560,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("not allowed to move yet")
                         return
-                    self.war.ai.get_attack_pose()
+                    self.war.AI.get_attack_pose()
                     if self.war.is_checkmate and self.war.mycamp_intl == False:
                         self.add_label('red_wins')
                         print('游戏结束')
@@ -576,7 +591,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    if not self.war.is_checkmate():
+                    if self.war.king_win and self.war.shuai_win:
                         self.ai_move_thread_start()
                     else:
                         print('游戏已结束')
@@ -646,6 +661,9 @@ class WarScreen(FloatLayout):
                 if x < 1250:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
@@ -662,6 +680,19 @@ class WarScreen(FloatLayout):
                         else:
                             self.show_picture(self.beach[p].typ)
 
+    pov_Chn = True
+    def twist(self):
+        self.pov_Chn = not self.pov_Chn
+        a = 0
+        for i in self.imgs:
+            p = self.pieces[a].p
+            i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
+            a += 1
+        print('已翻转棋盘')
+
+    def skip(self):
+        self.war.mycamp_intl = not self.war.mycamp_intl
+
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
             return
@@ -677,6 +708,13 @@ class WarScreen(FloatLayout):
         # ->
         elif key == 275:
             self.gret()
+
+        # Ctrl + T
+        elif 'ctrl' in modifier and key == 116:
+            self.twist()
+        # Ctrl + E
+        elif 'ctrl' in modifier and key == 101:
+            self.skip()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
             print("load " + json.dumps(self.war.logs))

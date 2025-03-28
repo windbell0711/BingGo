@@ -28,7 +28,7 @@ class War:
             if name == " " or name == "|":
                 continue
             self.beach.set_son(Qizi(p=p, typ=config.typ_dict[name], beach=self.beach), p)
-        # self.ai = Intelligence(self.beach, self.mycamp_intl)
+        self.AI = Intelligence(self.beach, self.mycamp_intl)
         self.ai = FSF()
         self.active_qizi = None
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
@@ -74,9 +74,9 @@ class War:
         self.display.remove_path()
         # self.display.show_path()
         self.conduct_operations(opers=moves)
-        label = self._check()
+        label = self.AI.get_attack_pose()
         self.display.remove_label()
-        if not label == "":
+        if not label == None:
             self.display.add_label(label)
         if label == "check" or label == "wangbeijj":
             ms = [self.reverse_operation(m) for m in reversed(moves)]
@@ -96,13 +96,13 @@ class War:
         Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
 
     def king_win(self):
-        if self.ai.shuai_is_checkmate():
+        if self.AI.shuai_is_checkmate():
             return True
         else:
             return False
 
     def shuai_win(self):
-        if self.ai.king_is_checkmate():
+        if self.AI.king_is_checkmate():
             return True
         else:
             return False
