@@ -7,15 +7,14 @@
 @License : Apache 2.0
 @File    : war.py
 """
-import json
 from typing import Tuple
 
 from kivy.clock import Clock
 
 from FSF import FSF
+from Utils import s2l
 from beach import *
 import config
-from intelligence6 import Intelligence
 
 
 class War:
@@ -28,10 +27,15 @@ class War:
             if name == " " or name == "|":
                 continue
             self.beach.set_son(Qizi(p=p, typ=config.typ_dict[name], beach=self.beach), p)
-        # self.ai = Intelligence(self.beach, self.mycamp_intl)
         self.ai = FSF()
         self.active_qizi = None
         self.logs: List[List[Tuple[int, int, int]]] = []  # 走子日志
+        '''
+        0 移动+pf+pt
+        1 生成+p+你是谁(见config.py的类型typ)
+        2 干掉+typ(没用)+p
+        就是不管合不合法 所有操作都能做
+        '''
         self.turn = 0
 
         self.move_allowed = True
@@ -53,7 +57,7 @@ class War:
         moves = []
         if castle:
             if p == 0:
-                moves.append((4, 0, 2))
+                moves.append((4, 0, 2))  # 4: castle
                 moves.append((4, 3, 1))
             elif p == 8:
                 moves.append((4, 8, 4))
@@ -71,17 +75,29 @@ class War:
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 0, p))
 
+        def is_palindrome_list(lst):
+            n = len(lst)
+            if n < 2:
+                return False
+            mid = n // 2
+            a = lst[mid - 1]
+            b = lst[mid]
+            return a[1] == b[2] and a[2] == b[1]
+
+        self.ai.io.moves.append(s2l(str(moves)))
+
         self.display.remove_path()
         # self.display.show_path()
         self.conduct_operations(opers=moves)
-        label = self._check()
+        label = self.ai.get_checked(self.beach, self.mycamp_intl)
         self.display.remove_label()
-        if not label == "":
-            self.display.add_label(label)
-        if label == "check" or label == "wangbeijj":
+        if label > 0:
+            self.display.add_label("将军！" if label in (2, 4) else "将杀！")
+        if label == 1 or label == 3:
             ms = [self.reverse_operation(m) for m in reversed(moves)]
             moves.extend(ms)
             self.conduct_operations(opers=ms)
+            self.ai.io.moves.pop()
         else:
             if self.turn != len(self.logs):
                 self.logs = self.logs[:self.turn]
@@ -94,15 +110,16 @@ class War:
         self.display.generate_animation(moves)
 
         Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
+        return moves
 
     def king_win(self):
-        if self.ai.shuai_is_checkmate():
+        if self.ai.is_checkmate() and not self.mycamp_intl:
             return True
         else:
             return False
 
     def shuai_win(self):
-        if self.ai.king_is_checkmate():
+        if self.ai.is_checkmate() and self.mycamp_intl:
             return True
         else:
             return False
@@ -113,11 +130,13 @@ class War:
         # if  (self.ai.king_p in self.ai.Chn and self.mycamp_intl == False) or (self.ai.shuai_p in self.ai.Intl and self.mycamp_intl==True):
         #     print("!游戏已结束")
         #     return
+        if self.ai.is_checkmate():
+            self.is_checkmate = True
         if self.is_checkmate:
             print("!游戏已结束")
             return
         if self.mycamp_intl:
-            pf, pt = self.ai.get_best_move_Intl() #TODO
+            pf, pt = self.ai.get_best_move_Intl()
             #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
             pf, pt = self.ai.get_best_move_Chn()
@@ -125,9 +144,7 @@ class War:
         # print(pf, pt, self.beach)
         # for l in self.beach:
         #     print(l)
-        if self.ai.is_checkmate():
-            self.is_checkmate = True
-        self.active_qizi = self.beach[pf]
+        self.active_qizi = self.beach[pf] # TODO:随机的None值，需要修复
         return pt
         # self.main(p=pt)
 
@@ -140,6 +157,7 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.display.turn_label.text = str(self.turn)
         self.display.generate_animation(ms)
+        self.ai.get_status()
         self.ai.regret()
 
     def gret(self):
@@ -149,14 +167,17 @@ class War:
         self.mycamp_intl = not self.mycamp_intl
         self.display.turn_label.text = str(self.turn)
         self.display.generate_animation(ms)
+        self.ai.get_status()
         self.ai.gret()
 
     def solve_board_press(self, p: int):
         """用户点按棋盘上一点"""
+
         moves = []
         # label = ""
         # next_turn = False  # 弃用
         # 点选棋子为己方阵营
+        # print((self.beach.occupied(p), self.beach[p].camp_intl, self.mycamp_intl) if self.beach.occupied(p) else self.beach.occupied(p))
         if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp_intl:
             # 王车易位
             if (self.mycamp_intl and
@@ -164,7 +185,7 @@ class War:
                 self.active_qizi.typ == 12 and
                 self.active_qizi.p == 3 and
                 self.beach[p].typ == 8 and
-                not self.ai.king_is_checkmate() and
+                not self.ai.is_checkmate() and
                 ((p == 0 and self.beach[1] == self.beach[2] is None) or
                  (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None))):
                 moves = self.main(p=p, castle=True)
@@ -176,7 +197,8 @@ class War:
             moves = self.main(p=p)
         else:
             print("无法抵达或无法选中", p)
-
+        if moves:
+            print(self.ai.io.moves)
         return moves
 
     def conduct_operations(self, opers):
@@ -189,8 +211,9 @@ class War:
                 self.beach.kill_son(p=oper[2])
 
     def _check(self):  # 是否将军
+        self.ai.get_status()
         if self.ai.io.info_handler.info["score"][1].mate == 1:
-            return "black_win" if self.mycamp_intl else "white_win"
+            return "black_wins" if self.mycamp_intl else "red_wins"
         else:
             return ""
 

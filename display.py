@@ -48,14 +48,6 @@ except AttributeError as e:
 M = Metrics.density * S / 2
 
 
-def fx(p):
-    return (p % 10 + 0.5) / 12
-
-
-def fy(p):
-    return (8.5 - p // 10) / 9
-
-
 class WarScreen(FloatLayout):
     def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
@@ -131,11 +123,23 @@ class WarScreen(FloatLayout):
             self.imgs.append(Image(
                 source=f'./{self.img_source}/{typ}.png', size_hint=(None, None),
                 size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
-                pos_hint={'center_x': fx(p), 'center_y': fy(p)}
+                pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}
             ))
             self.add_widget(self.imgs[-1])
 
         self._init_async_event_loop()  # 新增异步事件循环线程
+
+    def fx(self, p):
+        if self.pov_Chn:
+            return (p % 10 + 0.5) / 12
+        else:
+            return 0.75 - (p % 10 + 0.5) / 12
+
+    def fy(self, p):
+        if self.pov_Chn:
+            return (8.5 - p // 10) / 9
+        else:
+            return 1 - (8.5 - p // 10) / 9
 
     def _init_async_event_loop(self):
         """初始化异步事件循环线程"""
@@ -189,7 +193,7 @@ class WarScreen(FloatLayout):
     def show_path(self):
         self.bigidt = self.beach[self.war.active_qizi.p].idt
         self.imgs[self.bigidt].size = (
-        '%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
+            '%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
         for p in self.war.active_qizi.get_ma():
             if self.beach.occupied(p):
                 if self.img_source == 'imgs/img2':
@@ -200,14 +204,14 @@ class WarScreen(FloatLayout):
                 elif self.img_source == 'imgs/img':
                     self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
                                            size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
-                                           pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                           pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                     self.dots[-1].opacity = 0.5
                     self.add_widget(self.dots[-1])
 
             else:
                 self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
                                        size=('%ddp' % (120 * S), '%ddp' % (120 * S)),
-                                       pos_hint={'center_x': fx(p), 'center_y': fy(p)}))
+                                       pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                 self.dots[-1].opacity = 0.5
                 self.add_widget(self.dots[-1])
 
@@ -261,7 +265,7 @@ class WarScreen(FloatLayout):
         self.remove_widget(self.imgs[idt])
         self.add_widget(self.imgs[idt])
         # 走子平移动画
-        animation = Animation(pos_hint={'center_x': fx(p), 'center_y': fy(p)}, duration=0.1)
+        animation = Animation(pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}, duration=0.1)
         animation.start(self.imgs[idt])
 
     def generate_animation(self, opers: List[Tuple[int, int, int]]):
@@ -269,6 +273,7 @@ class WarScreen(FloatLayout):
         接收一个回合内的多次操作，在WarScreen().beach上进行修改，同时运行相关动画。
         :param opers: 操作
         """
+        print(opers)
         an = []
         # prepare
         for i in range(len(opers)):
@@ -282,7 +287,7 @@ class WarScreen(FloatLayout):
                 self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
                 self.imgs.append(Image(source=f'./{self.img_source}/%d.png' % oper[1], size_hint=(None, None),
                                        size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
-                                       pos_hint={'center_x': fx(oper[2]), 'center_y': fy(oper[2])}))
+                                       pos_hint={'center_x': self.fx(oper[2]), 'center_y': self.fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
             elif oper[0] == 2:
                 an.append((2, self.beach[oper[2]].idt))
@@ -357,6 +362,7 @@ class WarScreen(FloatLayout):
             return
 
         self.war.move_allowed = False
+
         async def _async_task():
             # try:
             #     # 耗时操作（AI计算）
@@ -457,7 +463,7 @@ class WarScreen(FloatLayout):
                     if king != 1 or shuai != 1:
                         print('不正确的王或帅数量')
                         return
-                    self.war.ai.get_attack_pose()
+                    self.war.ai.get_status()  # 快速获取当前状态
                     self.creative_mode = False
 
                     self.remove_widget(self.cr_image)
@@ -545,7 +551,8 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("not allowed to move yet")
                         return
-                    self.war.ai.get_attack_pose()
+                    self.war.ai.get_status()  #快速获取当前状态
+                    print(">>>", self.war.ai.get_checked(self.war.beach, self.war.mycamp_intl))
                     if self.war.is_checkmate and self.war.mycamp_intl == False:
                         self.add_label('red_wins')
                         print('游戏结束')
@@ -662,6 +669,21 @@ class WarScreen(FloatLayout):
                         else:
                             self.show_picture(self.beach[p].typ)
 
+    pov_Chn = True
+
+    def twist(self):
+        self.pov_Chn = not self.pov_Chn
+
+        a = 0
+        for i in self.imgs:
+            p = self.pieces[a].p
+            i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
+            a += 1
+        print('已翻转棋盘')
+
+    def skip(self):
+        self.war.mycamp_intl = not self.war.mycamp_intl
+
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
             return
@@ -677,6 +699,12 @@ class WarScreen(FloatLayout):
         # ->
         elif key == 275:
             self.gret()
+        # Ctrl + E
+        elif 'ctrl' in modifier and key == 101:
+            self.skip()
+        # Ctrl + T
+        elif 'ctrl' in modifier and key == 116:
+            self.twist()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
             print("load " + json.dumps(self.war.logs))

@@ -13,7 +13,7 @@ from display import BieGuanWoException
 
 debug = True
 
-if debug == True:
+if not debug:
     try:
         import time
         import os

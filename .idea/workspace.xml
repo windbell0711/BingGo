@@ -4,18 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="删除不使用的库引用">
-      <change beforePath="$PROJECT_DIR$/.idea/BingGo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BingGo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="添加debug模式">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/beach.py" beforeDir="false" afterPath="$PROJECT_DIR$/beach.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FSF.py" beforeDir="false" afterPath="$PROJECT_DIR$/FSF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chess/uci.py" beforeDir="false" afterPath="$PROJECT_DIR$/chess/uci.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log_error.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log_error.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" afterPath="$PROJECT_DIR$/preference.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zvgv3.ini" beforeDir="false" afterPath="$PROJECT_DIR$/zvgv3.ini" afterDir="false" />
     </list>
+    <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="">
+      <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" afterPath="$PROJECT_DIR$/preference.csv" afterDir="false" />
+    </list>
+    <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,10 +42,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;windbell0711&quot;
-  }
+  &quot;lastFilter&quot;: {}
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -63,29 +64,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.display.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "T:/Python/BingGo/BingGo",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Code Search",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.display.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;T:/Python/BingGo/BingGo&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Python"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Python&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="BingGo" is-module-sdk="true">
@@ -265,7 +266,10 @@
       <workItem from="1742390692309" duration="3187000" />
       <workItem from="1742556139465" duration="5960000" />
       <workItem from="1743086528560" duration="4183000" />
-      <workItem from="1743133051659" duration="13050000" />
+      <workItem from="1743133051659" duration="20562000" />
+      <workItem from="1743238228835" duration="6387000" />
+      <workItem from="1743244649671" duration="16335000" />
+      <workItem from="1743301907828" duration="1088000" />
     </task>
     <task id="LOCAL-00001" summary="删除不使用的库引用">
       <option name="closed" value="true" />
@@ -299,7 +303,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743085265017</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="添加chess库&#10;添加FSF引擎的基本适配&#10;小幅重写了现有ai调用逻辑">
+      <option name="closed" value="true" />
+      <created>1743149308423</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743149308423</updated>
+    </task>
+    <task id="LOCAL-00006" summary="添加debug模式">
+      <option name="closed" value="true" />
+      <created>1743162567549</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743162567549</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,12 +347,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="删除不使用的库引用" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除不使用的库引用" />
+    <MESSAGE value="添加chess库&#10;添加FSF引擎的基本适配&#10;小幅重写了现有ai调用逻辑" />
+    <MESSAGE value="添加debug模式" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加debug模式" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="" />
         <watch expression="self.active_qizi&#10;" language="Python" />
       </configuration>
     </watches-manager>
@@ -340,6 +361,6 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main 覆盖结果" MODIFIED="1743149080397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main 覆盖结果" MODIFIED="1743303011440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

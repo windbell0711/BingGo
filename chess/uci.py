@@ -737,6 +737,8 @@ class SpurProcess(object):
 
 class Engine(object):
     def __init__(self, process):
+        self.Mmoves = []
+        self.Mmove_received = threading.Event()
         self.process = process
 
         self.name = None
@@ -792,6 +794,10 @@ class Engine(object):
                 return self._info(command_and_args[1])
             elif command_and_args[0] == "option":
                 return self._option(command_and_args[1])
+            elif (command_and_args[0][1]+command_and_args[0][3]).isnumeric():
+                return self.moves(command_and_args[0][:-1])
+            elif command_and_args[0] == "Nodes":
+                return self.moveEnd()
 
     def _stdin_thread_target(self):
         while self.is_alive():
@@ -1281,6 +1287,12 @@ class Engine(object):
     def is_alive(self):
         """Poll the engine process to check if it is alive."""
         return self.process.is_alive()
+
+    def moves(self, move):
+        self.Mmoves.append(move)
+
+    def moveEnd(self):
+        self.Mmove_received.set()
 
 
 def popen_engine(command, engine_cls=Engine):

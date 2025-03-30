@@ -127,3 +127,37 @@ error raised: Traceback (most recent call last):
     if i != None and i > 7:
                      ^^^^^
 TypeError: '>' not supported between instances of 'Qizi' and 'int'
+
+
+
+
+
+!ERROR 1743162636.992021
+
+logs: []
+
+error raised: Traceback (most recent call last):
+  File "T:\Python\BingGo\BingGo\main.py", line 29, in <module>
+    b.run()
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\app.py", line 956, in run
+    runTouchApp()
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\base.py", line 574, in runTouchApp
+    EventLoop.mainloop()
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\base.py", line 339, in mainloop
+    self.idle()
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\base.py", line 383, in idle
+    self.dispatch_input()
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\base.py", line 334, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\base.py", line 263, in post_dispatch_input
+    listener.dispatch('on_motion', etype, me)
+  File "kivy\\_event.pyx", line 731, in kivy._event.EventDispatcher.dispatch
+  File "T:\Python\BingGo\BingGo\venv\Lib\site-packages\kivy\core\window\__init__.py", line 1709, in on_motion
+    self.dispatch('on_touch_down', me)
+  File "kivy\\_event.pyx", line 727, in kivy._event.EventDispatcher.dispatch
+  File "kivy\\_event.pyx", line 1307, in kivy._event.EventObservers.dispatch
+  File "kivy\\_event.pyx", line 1231, in kivy._event.EventObservers._dispatch
+  File "T:\Python\BingGo\BingGo\display.py", line 548, in handle_button_press
+    self.io.engine.go(depth=1) #快速获取当前状态
+    ^^^^^^^
+AttributeError: 'WarScreen' object has no attribute 'io'

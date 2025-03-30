@@ -530,4 +530,4 @@ class Qizi:
         self.p = p  # 我动
 
     def __str__(self) -> str:
-        return f"{self.typ} {self.p}"
+        return f"qizi({self.typ} {self.p})"
