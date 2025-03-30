@@ -49,6 +49,7 @@ class War:
         self.is_checkmate = False
         # self.SCREEN_POS_a = args[2]
         # self.SCREEN_POS_b = args[3]
+        self.last_cp = None
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
@@ -140,6 +141,14 @@ class War:
             #pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
             pf, pt = self.ai.get_best_move_Chn()
+        if pf == pt == None:
+            print("!游戏已结束")
+            return
+        cp = self.ai.get_cp()
+        if self.last_cp == cp == 0: # 和棋
+            print("!游戏已结束")
+            return
+        self.last_cp = cp
         print(pf, pt)
         # print(pf, pt, self.beach)
         # for l in self.beach:
@@ -213,7 +222,7 @@ class War:
     def _check(self):  # 是否将军
         self.ai.get_status()
         if self.ai.io.info_handler.info["score"][1].mate == 1:
-            return "black_wins" if self.mycamp_intl else "red_wins"
+            return "red_wins" if self.mycamp_intl else "black_wins"
         else:
             return ""
 

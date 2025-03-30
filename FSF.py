@@ -18,16 +18,22 @@ class FSF:
 
     def get_best_move_Intl(self):
         bm = self.io.go(movetime=100).bestmove
+        if self.is_checkmate():
+            return None, None
         return Utils.pos(bm[0:2]), Utils.pos(bm[2:])
 
     def get_best_move_Chn(self):
         bm = self.io.go(movetime=100).bestmove
+        if self.is_checkmate():
+            return None, None
+        print(bm)
         return Utils.pos(bm[0:2]), Utils.pos(bm[2:])
 
     def is_checkmate(self):
         h = self.io.info_handler
         self.get_status()
-        if h.info["score"][1].mate == 1:
+        print(h.info["score"])
+        if h.info["score"][1].mate == 0:
             return True
         return False
 
@@ -41,7 +47,7 @@ class FSF:
 
     def get_status(self, move_now = ""):
         e = self.io.engine
-        e.send_line("position " + self.io.start_pos + " moves " + " ".join(self.io.moves + [move_now] if move_now else []))
+        e.send_line("position " + self.io.start_pos + " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
         e.go(depth=6)
     def get_checked(self, board: Beach, intl: bool):
         # pms = self.io.get_possible_moves().result()
@@ -73,3 +79,6 @@ class FSF:
             return 2 # 黑方将军
 
         return 0
+
+    def get_cp(self):
+        return self.io.info_handler.info["score"][1].cp
