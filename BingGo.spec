@@ -21,7 +21,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='BingGo v1.1.3',  # Name
+    name='BingGo v1.2.0',  # Name
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -42,5 +42,5 @@ coll = COLLECT(
     *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
     upx=True,
     upx_exclude=[],
-    name='BingGo v1.1.3',  # Name
+    name='BingGo v1.2.0',  # Name
 )

@@ -2,24 +2,23 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-17
 @Github  : windbell0711/BingGo
-@Author  : Lilold333
-@Coauthor: windbell0711
+@Author  : Lilold
+@Coauthor: windbell07
 @License : Apache 2.0
-@File    : diaplay.py
+@File    : display.py
 """
 import asyncio
+import json
 import os
 import threading
 import time
-from typing import List
 
 from kivy.config import Config
 
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
-Config.set('graphics', 'multisamples',
-           '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
+Config.set('graphics', 'multisamples', '0')  # https://stackoverflow.com/questions/34969990/kivy-does-not-detect-opengl-2-0
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 from kivy.app import App
 from kivy.uix.label import Label
@@ -87,7 +86,7 @@ class WarScreen(FloatLayout):
         # TODO: msg_output
         # self.msg_current = ""
         # self.msg_label = Label(
-        #     text="BingGo v1.1.3",
+        #     text=f"BingGo {config.VERSION}",
         #     size_hint=(None, None),
         #     size=('%ddp' % (200 * S), '%ddp' % (100 * S)),
         #     pos_hint={'center_x': 0.88, 'center_y': 0.515},
@@ -230,6 +229,9 @@ class WarScreen(FloatLayout):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
         py = 8 - round((y - 66) / 133.3, 0)
+        if not self.pov_Chn:
+            px = 8 - px
+            py = 8 - py
         p = int(px + 10 * py)  # 点选的位置
         if not self.beach.valid(p):
             print("!位置不合法  p:", p)
@@ -273,7 +275,6 @@ class WarScreen(FloatLayout):
         接收一个回合内的多次操作，在WarScreen().beach上进行修改，同时运行相关动画。
         :param opers: 操作
         """
-        print(opers)
         an = []
         # prepare
         for i in range(len(opers)):
@@ -360,7 +361,6 @@ class WarScreen(FloatLayout):
         if self.war.is_checkmate:  # 新增游戏结束检查
             print("游戏已结束，无法AI走子")
             return
-
         self.war.move_allowed = False
 
         async def _async_task():
@@ -380,7 +380,6 @@ class WarScreen(FloatLayout):
                 if result is not None and not self.war.is_checkmate:  # 新增有效性检查
                     self.war.main(result)
                 self.remove_widget(self.jiazai)
-
             self.war.move_allowed = True
             Clock.schedule_once(_ui_operation)
             print("AI任务完成，走子放开")
@@ -439,12 +438,15 @@ class WarScreen(FloatLayout):
                 if x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
                         return
 
-                    if self.beach[p] != None:
+                    if self.beach[p] is not None:
                         self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
                         self.create_p[self.c_typ].opacity = 1
                         self.c_typ = self.beach[p].typ
@@ -484,22 +486,20 @@ class WarScreen(FloatLayout):
                 elif x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
                         return
-
-                    if self.beach[p] != None:
+                    if self.beach[p] is not None:
                         self.generate_animation([(2, self.beach[p].typ, p)])
                         self.war.beach.set_son(None, p=p)
-
-
                     else:
-
                         if self.c_typ == 6 and p not in (63, 64, 65, 73, 74, 75, 83, 84, 85):
                             print('帅不能摆在这里')
                             return
-
                         self.generate_animation([(1, self.c_typ, p)])
                         self.war.beach.set_son(Qizi(p=p, typ=self.c_typ, beach=self.war.beach), p=p)
         else:
@@ -583,7 +583,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    if not self.war.is_checkmate():
+                    if not self.war.is_checkmate:
                         self.ai_move_thread_start()
                     else:
                         print('游戏已结束')
@@ -653,6 +653,9 @@ class WarScreen(FloatLayout):
                 if x < 1250:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
+                    if not self.pov_Chn:
+                        px = 8 - px
+                        py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
                         print("!位置不合法  p:", p)
@@ -673,12 +676,11 @@ class WarScreen(FloatLayout):
 
     def twist(self):
         self.pov_Chn = not self.pov_Chn
-
-        a = 0
+        cnt = 0
         for i in self.imgs:
-            p = self.pieces[a].p
+            p = self.pieces[cnt].p
             i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
-            a += 1
+            cnt += 1
         print('已翻转棋盘')
 
     def skip(self):
@@ -692,7 +694,7 @@ class WarScreen(FloatLayout):
         if time.time() - self.click_time < 0.15:  # 点按频率限制
             return
         self.click_time = time.time()
-        print(key, modifier)
+        # print(key, modifier)  # debug
         # <-
         if key == 276:
             self.regret()
@@ -712,33 +714,87 @@ class WarScreen(FloatLayout):
         # Ctrl + V
         elif 'ctrl' in modifier and key == 118:
             p = Clipboard.paste().strip().replace("\n", "")
-            print("Running " + p)
-            if p.find(" ") == -1:  # 不需要参数
-                cmd = p
-                pass
-            else:
-                cmd, argu = p[:p.find(" ")].lower(), p[p.find(" ") + 1:]  # 需要参数
-                if cmd == "load":
-                    try:
-                        l = json.loads(argu)
-                        self.new()
-                        self.war.logs = l
-                    except json.decoder.JSONDecodeError:
-                        print("!Invalid log: " + argu)
-                elif cmd == "quick_cmd":
-                    if argu == "on":
-                        self.quick_cmd_status = 1
-                        config.write_preference(key="quick_cmd_status", value="on")
-                    elif argu == "off":
-                        self.quick_cmd_status = 0
-                        config.write_preference(key="quick_cmd_status", value="off")
-                    else:
-                        print("!Invalid argu: " + argu)
-                elif cmd == "init_lineup":
-                    if len(argu) == 91 and argu[0] == "|":
-                        config.write_preference(key="init_lineup", value=argu)
-                    else:
-                        print("!Invalid argu: " + argu)
+            print("Running: " + p)
+            r = self.handle_quick_cmd(user_input=p)
+            print("Return: " + r)
+
+    def handle_quick_cmd(self, user_input: str) -> str:
+        """
+        处理用户输入的快速指令。
+        输入：指令内容。输出：如有一条则显示返回提示，如有多条则显示完成几条指令，如中途错误则为显示错误信息。
+        """
+        if ";" in user_input or "；" in user_input:
+            user_input_li = user_input.replace("；", ";").split(";")
+            for inp in user_input_li:
+                ret = self.handle_single_quick_cmd(inp)
+                if ret[0] == '!':
+                    return ret
+            return "已完成 " + str(len(user_input_li)) + " 条指令"
+        else:
+            return self.handle_single_quick_cmd(user_input)
+
+    def handle_single_quick_cmd(self, user_input: str) -> str:
+        """
+        处理用户输入的单行快速指令。
+        输入：指令内容。输出：返回信息，第一个字符为“!”表示出错中断。
+        """
+        # 预处理输入
+        inp = user_input.strip().replace("：", ":").replace("，", ",").rstrip(":")
+        if inp.strip() == "":  return "empty msg"
+
+        # 分割指令和参数
+        if inp.find(":") == -1:  # 不需要参数
+            cmd = inp.lower().lstrip('/').lstrip('\\')
+            args = []
+        else:  # 需要参数
+            cmd  = inp[:inp.find(":")].strip().lower().lstrip('/').lstrip('\\')
+            args = [argu.strip() for argu in inp[inp.find(":")+1:].split(",")]
+
+        # 处理和执行指令
+        # 载入
+        if cmd in ("load_log", "load", "载入", "导入"):
+            if len(args) != 1:  return "!Invalid args: " + str(args)  # 控制参数个数
+            try:
+                l = json.loads(args[0])
+                self.new()
+                self.war.logs = l
+                return "已载入布局"
+            except json.decoder.JSONDecodeError:
+                return "!Invalid log: " + args[0]
+        # 翻转
+        elif cmd in ("twist", "翻转", "反转"):
+            self.twist()
+            return "已翻转棋盘"
+        # 跳过
+        elif cmd in ("skip", "跳过", "交换"):
+            self.skip()
+            return "已更改执棋阵营"
+        # 更改设置
+        elif cmd in ("set_preference", "set", "更改设置", "设置"):
+            if len(args) != 2:  return "!Invalid args: " + str(args)  # 控制参数个数
+            if args[0] == "init_lineup":  # 特判：如果要改布局，必须先检查格式是否正确
+                def lineup_valid(lineup: str) -> bool:
+                    """检查布局字符串格式正确"""
+                    if len(lineup) != 91:  return False
+                    num_of_line = 0
+                    for c in lineup:
+                        if c in config.ALL_PIECE_TYPES or c == " ":
+                            num_of_line += 1
+                        elif c.isdigit():  # 后续版本可能可以用数字代表空格数
+                            num_of_line += int(c)
+                        elif c == '|':
+                            if num_of_line != 9:  return False
+                            num_of_line = 0
+                        else:
+                            return False
+                    return True
+                if not lineup_valid(args[1]):  return "!Invalid argu: " + args[1]
+                config.write_preference(key="init_lineup", value=args[1])
+                return "已设置布局"
+            config.write_preference(key=args[0], value=args[1])
+            return "已将 " + args[0] + " 更改为 " + args[1]
+        return "!Invalid cmd: " + cmd
+
 
     def show_picture(self, typ):
         self.picture_image.append(
@@ -752,7 +808,7 @@ class BingGo(App):
     def __init__(self, args=(-1, -1)):
         super().__init__()
         self.args = args
-        self.title = "BingGo v1.1.3"  # Title
+        self.title = f"BingGo {config.VERSION}"  # Title
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
 

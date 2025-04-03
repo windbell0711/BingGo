@@ -2,12 +2,11 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-17
 @Github  : windbell0711/BingGo
-@Author  : Lilold333
-@Coauthor: TheWindbell07
+@Author  : Lilold
+@Coauthor: windbell07
 @License : Apache 2.0
 @File    : qizi.py
 """
-
 
 class Qizi:
     def __init__(self, p: int, typ: int, beach, idt=None):

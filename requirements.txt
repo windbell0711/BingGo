@@ -1,5 +1,5 @@
 Kivy==2.3.0
 PyInstaller
 pywin32
-chess
+chess>=1.11.2
 pyffish

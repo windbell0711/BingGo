@@ -2,7 +2,7 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-19
 @Github  : windbell0711/BingGo
-@Author  : windbell0711
+@Author  : windbell07
 @License : Apache 2.0
 @File    : beach.py
 """
@@ -74,7 +74,7 @@ class Beach:
         """移动棋子，会覆盖"""
         if self.beach[pto] is not None:
             self.beach[pto].alive = False
-            # raise Exception("已弃用") TODO
+            # raise Exception("已弃用")
         self.beach[pto] = self.beach[pfrom]  # 移动到新位置
         self.beach[pfrom] = None  # 从原位置移除
         self.beach[pto].p = pto

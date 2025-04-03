@@ -1,14 +1,10 @@
 """
 -*- coding: utf-8 -*-
-@Time    : 2025-01-21
+@Time    : 2025-01-17
 @Github  : windbell0711/BingGo
-@Author  : Lilold333
-@Coauthor: windbell0711
 @License : Apache 2.0
 @File    : main.py
-"""
-#TODO:删除注释
-
+"""  # TODO: 删除注释
 from display import BieGuanWoException
 
 debug = True

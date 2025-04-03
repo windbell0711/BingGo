@@ -2,8 +2,9 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-24
 @Github  : windbell0711/BingGo
-@Author  : windbell0711
-@Coauthor: Lilold333
+@Author  : windbell07
+@Coauthor: Lilold
+@Coauthor: mimi
 @License : Apache 2.0
 @File    : war.py
 """
@@ -93,6 +94,7 @@ class War:
         label = self.ai.get_checked(self.beach, self.mycamp_intl)
         self.display.remove_label()
         if label > 0:
+            # self.display.add_label("将军！" if label in (2, 4) else "将杀！") TODO
             self.display.add_label("将军！" if label in (2, 4) else "将杀！")
         if label == 1 or label == 3:
             ms = [self.reverse_operation(m) for m in reversed(moves)]
@@ -125,7 +127,6 @@ class War:
         else:
             return False
 
-
     def generate_ai_move(self):
         # self.ai.get_attack_pose()
         # if  (self.ai.king_p in self.ai.Chn and self.mycamp_intl == False) or (self.ai.shuai_p in self.ai.Intl and self.mycamp_intl==True):
@@ -138,10 +139,10 @@ class War:
             return
         if self.mycamp_intl:
             pf, pt = self.ai.get_best_move_Intl()
-            #pf, pt = AI.get_ai_move(chessboard=self.beach)
+            # pf, pt = AI.get_ai_move(chessboard=self.beach)
         else:
             pf, pt = self.ai.get_best_move_Chn()
-        if pf == pt == None:
+        if pf is None and pt is None:
             print("!游戏已结束")
             return
         cp = self.ai.get_cp()
@@ -153,7 +154,7 @@ class War:
         # print(pf, pt, self.beach)
         # for l in self.beach:
         #     print(l)
-        self.active_qizi = self.beach[pf] # TODO:随机的None值，需要修复
+        self.active_qizi = self.beach[pf]  # TODO:随机的None值，需要修复
         return pt
         # self.main(p=pt)
 

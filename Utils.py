@@ -1,3 +1,12 @@
+"""
+-*- coding: utf-8 -*-
+@Time    : 2025-03-31
+@Github  : windbell0711/BingGo
+@Author  : mimi
+@License : Apache 2.0
+@File    : FSF.py
+"""
+from __future__ import annotations
 import json
 import os
 import sys

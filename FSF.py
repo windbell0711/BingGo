@@ -1,7 +1,16 @@
+"""
+-*- coding: utf-8 -*-
+@Time    : 2025-03-31
+@Github  : windbell0711/BingGo
+@Author  : mimi
+@License : Apache 2.0
+@File    : FSF.py
+"""
 import os
 import time
 
 import Utils
+import config
 from beach import Beach
 
 import pyffish
@@ -45,10 +54,11 @@ class FSF:
         self.io.moves.append(self.lasts[-1])
         self.lasts.pop()
 
-    def get_status(self, move_now = ""):
+    def get_status(self, move_now=""):
         e = self.io.engine
         e.send_line("position " + self.io.start_pos + " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
-        e.go(depth=6)
+        e.go(depth=config.AI_DEPTH)
+
     def get_checked(self, board: Beach, intl: bool):
         # pms = self.io.get_possible_moves().result()
         # intl = not intl
@@ -69,14 +79,14 @@ class FSF:
         print(self.io.moves[-1] if self.io.moves else "", pms)
         if self.io.moves and self.io.moves[-1] not in pms:
             if intl:
-                return 3 # 黑方自己走入将杀
-            return 1 # 红方自己走入将杀
+                return 3  # 黑方自己走入将杀 checked
+            return 1  # 红方自己走入将杀 wangbeijj
 
         check = pyffish.gives_check("zhongxiang_vs_guoxiang", self.io.start_pos, self.io.moves)
         if check:
             if intl:
-                return 4 # 红方将军
-            return 2 # 黑方将军
+                return 4  # 红方将军 jiangjun
+            return 2  # 黑方将军 check
 
         return 0
 
