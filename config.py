@@ -1,11 +1,15 @@
 """
 -*- coding: utf-8 -*-
+@Time    : 2025-01-17
 @Github  : windbell0711/BingGo
+@License : Apache 2.0
 @File    : config.py
 """
 from __future__ import annotations
-
+from typing import Any, List, Tuple
 import csv
+
+VERSION = "v1.2.0"
 
 # screen_scale = 1
 active_qizi_delta_scale = 5  # 原大小：65
@@ -60,12 +64,14 @@ typ_num2str = {
     13: "P "
 }
 
+ALL_PIECE_TYPES = "jcmxspwbRNBQKP"
+
 PREFERENCE_BY_DEFAULT = """\
 img_style,intl
 quick_cmd_status,on
 save_when_quit,on
 init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
-ai_depth,4
+ai_depth,6
 promotion_dis,2
 screen_scale,1
 """
@@ -149,6 +155,6 @@ IMG_STYLE_INTL   = {"intl": True, "chn": False}[read_preference("img_style").low
 QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
 SAVE_WHEN_QUIT   = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
 
-AI_DEPTH      = check_int  ("ai_depth", 2, 8, 5)
+AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
 PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
 SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)

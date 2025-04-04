@@ -2,12 +2,10 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-22
 @Github  : windbell0711/BingGo
-@Author  : Lilold333
+@Author  : Lilold
 @License : Apache 2.0
 @File    : intelligence.py
 """
-import random
-import copy
 import config
 
 AI_DEPTH = config.AI_DEPTH

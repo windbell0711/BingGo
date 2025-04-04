@@ -2,11 +2,15 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-19
 @Github  : windbell0711/BingGo
-@Author  : windbell0711
+@Author  : windbell07
 @License : Apache 2.0
 @File    : beach.py
 """
 from __future__ import annotations
+
+from typing import List
+
+import config
 from qizi import *
 
 
@@ -44,7 +48,7 @@ class Beach:
     def __getitem__(self, item: int):
         """返回该位置棋子或None"""
         if item is None:  # 新增None检查
-            raise IndexError("Position cannot be None")
+            raise ValueError("Position cannot be None")
         if not 0 <= item < 90:  # 确保在棋盘范围内
             raise IndexError("Position %d out of range" % item)
         return self.beach[item]
@@ -70,7 +74,7 @@ class Beach:
         """移动棋子，会覆盖"""
         if self.beach[pto] is not None:
             self.beach[pto].alive = False
-            # raise Exception("已弃用") TODO
+            # raise Exception("已弃用")
         self.beach[pto] = self.beach[pfrom]  # 移动到新位置
         self.beach[pfrom] = None  # 从原位置移除
         self.beach[pto].p = pto

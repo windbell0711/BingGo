@@ -1,7 +1,7 @@
 img_style,intl
 quick_cmd_status,on
-save_when_quit,on
-init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b b b b b| p     p |         |cmxswsxmc|
-ai_depth,4
+save_when_quit,off
+init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
+ai_depth,8
 promotion_dis,2
 screen_scale,1

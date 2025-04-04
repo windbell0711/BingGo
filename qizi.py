@@ -2,14 +2,11 @@
 -*- coding: utf-8 -*-
 @Time    : 2025-01-17
 @Github  : windbell0711/BingGo
-@Author  : Lilold333
-@Coauthor: TheWindbell07
+@Author  : Lilold
+@Coauthor: windbell07
 @License : Apache 2.0
 @File    : qizi.py
 """
-from typing import List, Dict, Tuple
-import config
-
 
 class Qizi:
     def __init__(self, p: int, typ: int, beach, idt=None):
@@ -520,8 +517,7 @@ class Qizi:
         protect=list(set(protect))
         self.protect = protect
         return protect
-    
-    
+
 
     def move(self, p):
         """对该子在beach中实施移动，包括吃子，不校验能否走到"""
@@ -531,3 +527,6 @@ class Qizi:
         self.beach.set_son(None, self.p)  # 我走
         self.beach.set_son(self, p)  # 我来
         self.p = p  # 我动
+
+    def __str__(self) -> str:
+        return f"qizi({self.typ} {self.p})"

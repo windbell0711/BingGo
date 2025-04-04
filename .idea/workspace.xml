@@ -4,11 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="添加debug模式">
+      <change beforePath="$PROJECT_DIR$/.idea/BingGo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BingGo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BingGo.spec" beforeDir="false" afterPath="$PROJECT_DIR$/BingGo.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FSF.py" beforeDir="false" afterPath="$PROJECT_DIR$/FSF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Libs/setup.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/beach.py" beforeDir="false" afterPath="$PROJECT_DIR$/beach.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligence6.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log_error.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preference.csv" beforeDir="false" afterPath="$PROJECT_DIR$/preference.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qizi.py" beforeDir="false" afterPath="$PROJECT_DIR$/qizi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
     </list>
+    <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="" />
+    <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,13 +46,16 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--follow-tags" />
+        <option name="title" value="Current Branch" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;windbell0711&quot;
-  }
+  &quot;lastFilter&quot;: {}
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -57,14 +84,15 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/display.py&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;Code Search&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;D:/Desktop/display.py&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -83,11 +111,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="T:\Python\BingGo\BingGo" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
@@ -250,18 +278,85 @@
       <workItem from="1742093372809" duration="78000" />
       <workItem from="1742093524944" duration="323000" />
       <workItem from="1742390692309" duration="3187000" />
-      <workItem from="1742556139465" duration="6402000" />
-      <workItem from="1742640674144" duration="859000" />
-      <workItem from="1743043306073" duration="1753000" />
-      <workItem from="1743061151508" duration="5000" />
-      <workItem from="1743062649103" duration="753000" />
+      <workItem from="1742556139465" duration="5960000" />
+      <workItem from="1743086528560" duration="4183000" />
+      <workItem from="1743133051659" duration="20562000" />
+      <workItem from="1743238228835" duration="6387000" />
+      <workItem from="1743244649671" duration="16335000" />
+      <workItem from="1743301907828" duration="1088000" />
+      <workItem from="1743427287519" duration="595000" />
+      <workItem from="1743672074220" duration="19010000" />
     </task>
+    <task id="LOCAL-00001" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083505170</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083505170</updated>
+    </task>
+    <task id="LOCAL-00002" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083942514</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083942514</updated>
+    </task>
+    <task id="LOCAL-00003" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743083959527</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743083959527</updated>
+    </task>
+    <task id="LOCAL-00004" summary="删除不使用的库引用">
+      <option name="closed" value="true" />
+      <created>1743085265017</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743085265017</updated>
+    </task>
+    <task id="LOCAL-00005" summary="添加chess库&#10;添加FSF引擎的基本适配&#10;小幅重写了现有ai调用逻辑">
+      <option name="closed" value="true" />
+      <created>1743149308423</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743149308423</updated>
+    </task>
+    <task id="LOCAL-00006" summary="添加debug模式">
+      <option name="closed" value="true" />
+      <created>1743162567549</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743162567549</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="mimi" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -275,26 +370,39 @@
                   <entry key="Table.Space.CommitStatus.ColumnIdWidth" value="42" />
                 </map>
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="mimi" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
             </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="删除不使用的库引用" />
+    <MESSAGE value="添加chess库&#10;添加FSF引擎的基本适配&#10;小幅重写了现有ai调用逻辑" />
+    <MESSAGE value="添加debug模式" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加debug模式" />
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/config.py</url>
-          <line>129</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self.active_qizi&#10;" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1743159921035" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display Coverage Results" MODIFIED="1741944681326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1743691195833" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
