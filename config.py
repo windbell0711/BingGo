@@ -63,7 +63,7 @@ ALL_PIECE_TYPES = "jcmxspwbRNBQKP"
 def lineup_valid(lineup: str) -> bool:
     """检查布局字符串格式正确"""
     if len(lineup) != 91:  return False
-    num_of_line = 0
+    num_of_line = 9
     for c in lineup:
         if c in ALL_PIECE_TYPES or c == " ":
             num_of_line += 1

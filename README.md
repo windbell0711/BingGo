@@ -8,19 +8,19 @@
 
 [![](https://img.shields.io/badge/python-3.7.5+-purple)](https://www.python.org)
 [![](https://img.shields.io/badge/issues-0-blue)](https://github.com/windbell0711/BingGo/issues)
-[![](https://img.shields.io/badge/contributors-2-green)](https://github.com/windbell0711/BingGo/graphs/contributors)
-![](https://img.shields.io/badge/stars-2-orange)
+[![](https://img.shields.io/badge/contributors-3-green)](https://github.com/windbell0711/BingGo/graphs/contributors)
+![](https://img.shields.io/badge/stars-3-orange)
 [![](https://img.shields.io/badge/framework-kivy-darkred)](https://github.com/kivy/kivy)
 [![](https://img.shields.io/badge/LICENSE-Apache2.0-yellow)](https://github.com/windbell0711/BingGo?tab=Apache-2.0-1-ov-file#readme)
 
 <p align="center">
   <a href="https://github.com/windbell0711/BingGo">
-    <img src="./img_readme/mahoupao.png" alt="Logo" width="160" height="160">
+    <img src="./img_readme/mahoupao.png" alt="Logo" width="150" height="150">
   </a>
 </p>
 
 <h3 align="center">BingGo</h3>
-<p align="center">the magical integration with Chinese chess and International chess</p>
+<p align="center">the magical integration with XiangQi and Chess</p>
 
 [<p align="center">**探索代码仓库 »**</p>](https://github.com/windbell0711/BingGo)
 
@@ -40,7 +40,7 @@
   - [完整规则](#完整规则)
 - [游戏介绍](#游戏介绍)
   - [游戏安装](#游戏安装)
-  - [功能简介](#功能简介)
+  - [功能介绍](#功能介绍)
 - [开发者](#开发者)
 - [技术信息](#技术信息)
 - [版权说明](#版权说明)
@@ -166,22 +166,36 @@
 点击右下角的贴图切换按钮，游戏会自动退出，重启游戏即可享受最新贴图。
 注：退出游戏前会将未保存棋局录入lastsave.json，并在下次启动时载入。
 
-</details><details><summary><strong>快捷指令与偏好设置（v1.1+）</strong></summary>
+</details><details><summary><strong>个性化设置（v1.2+）</strong></summary>
 
-用户的偏好设置记录在preference.csv中，不建议直接修改该文件，删除该文件可恢复默认设置，以下为可设置的选项：
 
 ...
 
 注：如果错误地编辑了preference.csv可能导致程序崩溃，此时只需删除preference.csv恢复默认设置即可。
 
----
+</details><details><summary><strong>快捷指令（v1.2+）</strong></summary>
 
 当在游戏界面（可点按任意空白处）内时，按下Ctrl+V，程序会读取最近的一条剪贴板信息，如果符合快捷指令语法将会直接执行。
 
-快捷指令由“关键字+空格+参数”组成，全部快捷指令语法如下：
+也可以将快捷指令写入**输入框**，**按下Enter键**即可执行，执行结果会在输入框内显示。
 
-load ...  载入棋局
-...
+快捷指令由“**指令名**”或“**指令名：参数1，参数2，参数3...**”组成，标点符号同时支持全半角。指令名前面可以加上“/”或“\”。多条快捷指令可以用“；”分隔，执行时会依次执行。
+
+常见指令语法如下：
+
+|     指令名     |    别名     |      参数1      |  参数2  |            说明            |
+|:-----------:|:---------:|:-------------:|:-----:|:------------------------:|
+|    load     |   载入、导入   |               |       |                          |
+|    twist    |   翻转、反转   |       /       |   /   |          棋盘上下翻转          |
+|    skip     |   跳过、交换   |       /       |   /   |        当前一步执棋方交换         |
+|    sleep    | 装死、假死、未响应 | 时长(1~10000毫秒) |   /   |       使界面未响应指定时间（雾       |
+|     set     |  更改设置、设置  |     目标设置项     | 目标设置值 |  修改setting.ini以进行个性化设置   |
+|    reset    |   重置设置    |       /       |   /   |       将用户设置重置为默认值        |
+|  set_zvgv3  |   棋类设置    |     目标设置项     | 目标设置值 | !谨慎操作，修改zvgv3.ini以改变棋局逻辑 |
+| reset_zvgv3 |  重置棋类设置   |       /       |   /   |       将棋类设置重置为默认值        |
+|    help     |  帮助、芝士什么  |       /       |   /   |         打开帮助文档网页         |
+|    hello    |   你好、版本   |       /       |   /   |         显示当前版本信息         |
+
 
 </details>
 

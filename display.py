@@ -12,6 +12,7 @@ import json
 import os
 import threading
 import time
+import webbrowser
 
 from kivy.config import Config
 
@@ -93,7 +94,7 @@ class WarScreen(FloatLayout):
             pos_hint={'center_x': 0.878, 'center_y': 0.5},
             font_name='./fonts/simli.ttf'  # 设置支持中文的字体  TODO: 无法正常输入中文
         )
-        self.text_input.bind(on_text_validate=self.on_enter_pressed)  # 绑定 on_text_validate 事件
+        # self.text_input.bind(on_text_validate=self.on_enter_pressed)  # 绑定 on_text_validate 事件
         self.add_widget(self.text_input)
 
         # TODO: msg_output
@@ -709,10 +710,10 @@ class WarScreen(FloatLayout):
         self.click_time = time.time()
         # print(key, modifier)  # debug
         # <-
-        if key == 276:
+        if key == 276 and not self.text_input.focus:
             self.regret()
         # ->
-        elif key == 275:
+        elif key == 275 and not self.text_input.focus:
             self.gret()
         # Ctrl + E
         elif 'ctrl' in modifier and key == 101:
@@ -724,12 +725,19 @@ class WarScreen(FloatLayout):
         elif 'ctrl' in modifier and key == 99:
             print("load " + json.dumps(self.war.logs))
             Clipboard.copy("load " + json.dumps(self.war.logs))
-        # Ctrl + V
-        elif 'ctrl' in modifier and key == 118:
-            p = Clipboard.paste().strip().replace("\n", "")
-            print("Running: " + p)
-            r = self.handle_quick_cmd(user_input=p)
-            print("Return: " + r)
+        # # Ctrl + V
+        # elif 'ctrl' in modifier and key == 118:
+        #     p = Clipboard.paste().strip().replace("\n", "")
+        #     print("Running: " + p)
+        #     r = self.handle_quick_cmd(user_input=p)
+        #     print("Return: " + r)
+        # Enter
+        elif key == 13 or ('numlock' in modifier and key == 271):
+            # Enter按下后，执行输入框中的内容
+            if not self.text_input.focus:  self.text_input.focus = True
+            if not self.text_input.text == "":
+                ret = self.handle_quick_cmd(user_input=self.text_input.text)
+                self.text_input.text = ret if ret.find(':') == -1 else ret[:ret.find(':')]
 
     def handle_quick_cmd(self, user_input: str) -> str:
         """
@@ -752,21 +760,22 @@ class WarScreen(FloatLayout):
         输入：指令内容。输出：返回信息，第一个字符为“!”表示出错中断。
         """
         # 预处理输入
-        inp = user_input.strip().replace("：", ":").replace("，", ",").rstrip(":")
-        if inp.strip() == "":  return "empty msg"
+        infp = user_input.strip().replace("：", ":").replace("，", ",")
+        inp = infp.rstrip(":").lstrip('/').lstrip('\\')
+        if inp.strip() == "":  return "!输入为空"
 
         # 分割指令和参数
         if inp.find(":") == -1:  # 不需要参数
-            cmd = inp.lower().lstrip('/').lstrip('\\')
+            cmd = inp.lower()
             args = []
         else:  # 需要参数
-            cmd  = inp[:inp.find(":")].strip().lower().lstrip('/').lstrip('\\')
+            cmd  = inp[:inp.find(":")].strip().lower()
             args = [argu.strip() for argu in inp[inp.find(":")+1:].split(",")]
 
         # 处理和执行指令
         # 载入
         if cmd in ("load_log", "load", "载入", "导入"):
-            if len(args) != 1:  return "!Invalid args: " + str(args)  # 控制参数个数
+            if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
             try:
                 l = json.loads(args[0])
                 self.new()
@@ -784,52 +793,39 @@ class WarScreen(FloatLayout):
             return "已更改执棋阵营"
         # 装死（会导致未响应）
         elif cmd in ("sleep", "装死", "假死", "未响应"):
-            if len(args) != 1:  return "!Invalid args: " + str(args)  # 控制参数个数
-            if args[0].isdigit() and 0 < int(args[0]) < 60001:  return "!Invalid arg: " + str(args[0])  # 1ms<参数<=60001ms
+            if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
+            if not (args[0].strip().isdigit() and 0 < int(args[0]) < 10001):  return "!参数无效哦: " + str(args[0])  # 1ms<参数<=10001ms
             time.sleep(int(args[0]) / 1000)
-            return f"已装死{args[0]}秒"
+            return f"已装死{args[0]}ms"
         # 更改设置
         elif cmd in ("set", "更改设置", "设置"):
-            if len(args) != 2:  return "!Invalid args: " + str(args)  # 控制参数个数
-            # if args[0] == "INIT_LINEUP":  # 特判：如果要改布局，必须先检查格式是否正确
-            #     def lineup_valid(lineup: str) -> bool:
-            #         """检查布局字符串格式正确"""
-            #         if len(lineup) != 91:  return False
-            #         num_of_line = 0
-            #         for c in lineup:
-            #             if c in config.ALL_PIECE_TYPES or c == " ":
-            #                 num_of_line += 1
-            #             elif c.isdigit():  # 后续版本可能可以用数字代表空格数
-            #                 num_of_line += int(c)
-            #             elif c == '|':
-            #                 if num_of_line != 9:  return False
-            #                 num_of_line = 0
-            #             else:
-            #                 return False
-            #         return True
-            #     if not lineup_valid(args[1]):  return "!Invalid argu: " + args[1]
-            #     config.edit_setting(key="INIT_LINEUP", value=args[1])
-            #     return "已设置布局"
+            if len(args) != 2:  return f"!参数个数错误({len(args)}/{2})"  # 控制参数个数
             config.edit_setting(key=args[0], value=args[1])
-            return "已将 " + args[0] + " 更改为 " + args[1]
+            return "已完成更改: " + args[0] + " 更改为 " + args[1]
         # 重置设置
         elif cmd in ("reset", "重置设置"):
             config.reset_setting()
             return "已重置设置"
         # 更改zvgv3设置
-        elif cmd in ("set_zvgv3", "zvgv3", "更改zvgv3设置", "棋类设置"):
-            if len(args) != 2:  return "!Invalid args: " + str(args)  # 控制参数个数
+        elif cmd in ("set_zvgv3", "更改zvgv3设置", "棋类设置"):
+            if len(args) != 2:  return f"!参数个数错误({len(args)}/{2})"  # 控制参数个数
             config.edit_zvgv3(key=args[0], value=args[1])
         # 重置zvgv3设置
         elif cmd in ("reset_zvgv3", "重置zvgv3设置", "重置棋类设置"):
             config.reset_zvgv3()
             return "已重置zvgv3设置"
-        return "!Invalid cmd: " + cmd
+        # 显示帮助
+        elif cmd in ("help", "帮助", "芝士什么"):
+            webbrowser.open("https://gitee.com/thewindbell07/BingGo/blob/master/README.md")
+            return "已打开帮助文档"
+        elif cmd in ("hello", "hi", "version", "你好", "版本"):
+            return "BingGo " + config.VERSION
+        return "!无效的指令: " + cmd
 
-    def on_enter_pressed(self, instance):
-        """Enter按下后，执行输入框中的内容"""
-        ret = self.handle_quick_cmd(user_input=instance.text)
-        instance.text = ret
+    # def on_enter_pressed(self, instance):
+    #     """Enter按下后，执行输入框中的内容"""
+    #     ret = self.handle_quick_cmd(user_input=instance.text)
+    #     instance.text = ret
 
     def show_picture(self, typ):
         self.picture_image.append(
