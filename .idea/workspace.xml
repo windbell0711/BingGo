@@ -7,9 +7,8 @@
     <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="添加debug模式">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setting.ini" beforeDir="false" afterPath="$PROJECT_DIR$/setting.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_readme/img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_readme/img2.png" beforeDir="false" />
     </list>
     <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="" />
     <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
@@ -267,7 +266,9 @@
       <workItem from="1743427287519" duration="595000" />
       <workItem from="1743672074220" duration="19010000" />
       <workItem from="1743847471435" duration="468000" />
-      <workItem from="1743851489087" duration="5125000" />
+      <workItem from="1743851489087" duration="5784000" />
+      <workItem from="1743858282981" duration="232000" />
+      <workItem from="1743858549404" duration="91000" />
     </task>
     <task id="LOCAL-00001" summary="删除不使用的库引用">
       <option name="closed" value="true" />
@@ -384,7 +385,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1743856563846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1743858551970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$config.coverage" NAME="config Coverage Results" MODIFIED="1743840732869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$.coverage" NAME=" Coverage Results" MODIFIED="1743839426124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -205,9 +205,11 @@
 <img src="./img_readme/Lilold.png" alt="Lilold" width="60" height="60"><a href="https://github.com/Lilold333"> @Lilold</a>
 <br/>
 <img src="./img_readme/windbell0711.png" alt="windbell0711" width="60" height="60"><a href="https://github.com/windbell0711"> @windbell0711</a>
+<br/>
+<img src="./img_readme/mimi.png" alt="windbell0711" width="60" height="60"><a href="https://github.com/mimi99528"> @mimi99</a>
 
 ## 技术信息
 本项目使用[kivy框架](https://github.com/kivy/kivy)开发，更多信息欢迎查看[技术文档](README_tech.md)！
 
 ## 版权说明
-本项目采用[Apache 2.0](LICENSE)协议
+本项目采用[Apache 2.0](LICENSE)协议。
