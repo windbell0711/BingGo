@@ -30,6 +30,7 @@ from kivy.core.clipboard import Clipboard
 from kivy.metrics import Metrics
 from kivy.animation import Animation
 from kivy.graphics import Rotate
+from kivy.uix.textinput import TextInput
 
 from war import *
 import config
@@ -40,7 +41,7 @@ class BieGuanWoException(Exception):
 
 
 try:
-    S = config.SCREEN_SCALE
+    S: float = config.SCREEN_SCALE
 except AttributeError as e:
     print("! " + str(e))
     S = 1
@@ -54,7 +55,7 @@ class WarScreen(FloatLayout):
         self.beach = Beach()
 
         self.click_time = time.time()
-        self.quick_cmd_status = config.QUICK_CMD_STATUS
+        self.quick_cmd_status = config.QUICK_CMD_ON
 
         self.img_source = 'imgs/img2' if config.IMG_STYLE_INTL else "imgs/img"
 
@@ -82,6 +83,18 @@ class WarScreen(FloatLayout):
             bold=True,
             color=[0, 0, 0, 1])
         self.add_widget(self.turn_label)
+        # 添加 TextInput 实例
+        self.text_input = TextInput(
+            text="",
+            font_size=f'{20 * S}dp',
+            multiline=False,
+            size_hint=(None, None),
+            size=('150dp', '40dp'),
+            pos_hint={'center_x': 0.878, 'center_y': 0.5},
+            font_name='./fonts/simli.ttf'  # 设置支持中文的字体  TODO: 无法正常输入中文
+        )
+        self.text_input.bind(on_text_validate=self.on_enter_pressed)  # 绑定 on_text_validate 事件
+        self.add_widget(self.text_input)
 
         # TODO: msg_output
         # self.msg_current = ""
@@ -94,7 +107,7 @@ class WarScreen(FloatLayout):
         #     color=[0, 0, 0, 1],
         #     halign='center',  # 水平居中
         #     valign='middle',  # 垂直居中
-        #     font_name='./fonts/SIMLI.TTF'  # 隶书
+        #     font_name='./fonts/simli.ttf'  # 隶书
         # )
         # self.add_widget(self.msg_label)
 
@@ -112,7 +125,7 @@ class WarScreen(FloatLayout):
         self.pieces = []
         self.imgs = []
         for p in range(90):
-            name = config.init_lineup[p]
+            name = config.INIT_LINEUP[1:][p]
             if name == " " or name == "|":
                 continue
             typ = config.typ_dict[name]
@@ -626,10 +639,10 @@ class WarScreen(FloatLayout):
                 elif 641 * 2 < x < 690 * 2 and 100 < y < 146:
                     if self.img_source == 'imgs/img':
                         self.img_source = 'imgs/img2'
-                        config.write_preference("img_style", "intl")
+                        config.edit_setting("img_style", "intl")
                     else:
                         self.img_source = 'imgs/img'
-                        config.write_preference("img_style", "chn")
+                        config.edit_setting("img_style", "chn")
                     print("重置成功，请重启。")
                     raise BieGuanWoException
                     # self.remove_widget(self.bg_image)
@@ -769,32 +782,54 @@ class WarScreen(FloatLayout):
         elif cmd in ("skip", "跳过", "交换"):
             self.skip()
             return "已更改执棋阵营"
+        # 装死（会导致未响应）
+        elif cmd in ("sleep", "装死", "假死", "未响应"):
+            if len(args) != 1:  return "!Invalid args: " + str(args)  # 控制参数个数
+            if args[0].isdigit() and 0 < int(args[0]) < 60001:  return "!Invalid arg: " + str(args[0])  # 1ms<参数<=60001ms
+            time.sleep(int(args[0]) / 1000)
+            return f"已装死{args[0]}秒"
         # 更改设置
-        elif cmd in ("set_preference", "set", "更改设置", "设置"):
+        elif cmd in ("set", "更改设置", "设置"):
             if len(args) != 2:  return "!Invalid args: " + str(args)  # 控制参数个数
-            if args[0] == "init_lineup":  # 特判：如果要改布局，必须先检查格式是否正确
-                def lineup_valid(lineup: str) -> bool:
-                    """检查布局字符串格式正确"""
-                    if len(lineup) != 91:  return False
-                    num_of_line = 0
-                    for c in lineup:
-                        if c in config.ALL_PIECE_TYPES or c == " ":
-                            num_of_line += 1
-                        elif c.isdigit():  # 后续版本可能可以用数字代表空格数
-                            num_of_line += int(c)
-                        elif c == '|':
-                            if num_of_line != 9:  return False
-                            num_of_line = 0
-                        else:
-                            return False
-                    return True
-                if not lineup_valid(args[1]):  return "!Invalid argu: " + args[1]
-                config.write_preference(key="init_lineup", value=args[1])
-                return "已设置布局"
-            config.write_preference(key=args[0], value=args[1])
+            # if args[0] == "INIT_LINEUP":  # 特判：如果要改布局，必须先检查格式是否正确
+            #     def lineup_valid(lineup: str) -> bool:
+            #         """检查布局字符串格式正确"""
+            #         if len(lineup) != 91:  return False
+            #         num_of_line = 0
+            #         for c in lineup:
+            #             if c in config.ALL_PIECE_TYPES or c == " ":
+            #                 num_of_line += 1
+            #             elif c.isdigit():  # 后续版本可能可以用数字代表空格数
+            #                 num_of_line += int(c)
+            #             elif c == '|':
+            #                 if num_of_line != 9:  return False
+            #                 num_of_line = 0
+            #             else:
+            #                 return False
+            #         return True
+            #     if not lineup_valid(args[1]):  return "!Invalid argu: " + args[1]
+            #     config.edit_setting(key="INIT_LINEUP", value=args[1])
+            #     return "已设置布局"
+            config.edit_setting(key=args[0], value=args[1])
             return "已将 " + args[0] + " 更改为 " + args[1]
+        # 重置设置
+        elif cmd in ("reset", "重置设置"):
+            config.reset_setting()
+            return "已重置设置"
+        # 更改zvgv3设置
+        elif cmd in ("set_zvgv3", "zvgv3", "更改zvgv3设置", "棋类设置"):
+            if len(args) != 2:  return "!Invalid args: " + str(args)  # 控制参数个数
+            config.edit_zvgv3(key=args[0], value=args[1])
+        # 重置zvgv3设置
+        elif cmd in ("reset_zvgv3", "重置zvgv3设置", "重置棋类设置"):
+            config.reset_zvgv3()
+            return "已重置zvgv3设置"
         return "!Invalid cmd: " + cmd
 
+    def on_enter_pressed(self, instance):
+        """Enter按下后，执行输入框中的内容"""
+        ret = self.handle_quick_cmd(user_input=instance.text)
+        instance.text = ret
 
     def show_picture(self, typ):
         self.picture_image.append(

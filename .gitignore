@@ -5,6 +5,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Pyffish Install
+!pyffish.cp311-win_amd64.pyd
+
 # C extensions
 *.so
 
@@ -132,6 +135,8 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv37/
+.venv312/
 env/
 venv/
 ENV/
