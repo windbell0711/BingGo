@@ -12,8 +12,9 @@ from typing import Tuple
 
 from kivy.clock import Clock
 
+import Utils
 from FSF import FSF
-from Utils import s2l
+from Utils import pos2uci
 from beach import *
 import config
 
@@ -86,8 +87,7 @@ class War:
             b = lst[mid]
             return a[1] == b[2] and a[2] == b[1]
 
-        self.ai.io.moves.append(s2l(str(moves)))
-
+        self.ai.io.moves.append(pos2uci(str(moves)))
         self.display.remove_path()
         # self.display.show_path()
         self.conduct_operations(opers=moves)
@@ -182,7 +182,6 @@ class War:
 
     def solve_board_press(self, p: int):
         """用户点按棋盘上一点"""
-
         moves = []
         # label = ""
         # next_turn = False  # 弃用
@@ -203,7 +202,7 @@ class War:
             else:
                 self.active_qizi = self.beach[p]
         # 点选位置self.active_qizi能走到
-        elif self.active_qizi is not None and p in self.active_qizi.get_ma():
+        elif self.active_qizi is not None and p in Utils.ucis_to_poses(self.beach, self.ai.get_possible_moves_piece(Utils.posl(self.active_qizi.p))):
             moves = self.main(p=p)
         else:
             print("无法抵达或无法选中", p)
