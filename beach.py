@@ -137,6 +137,4 @@ if __name__ == '__main__':
     beach.set_son(qizi=bingo, p=50)
     beach.set_son(qizi=pawn, p=10)
     pao.get_ma()
-    print(pao.ma)
     pao.move(10)
-    print(beach.beach)

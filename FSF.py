@@ -8,7 +8,7 @@
 """
 import os
 import time
-
+import re
 import Utils
 import config
 from beach import Beach
@@ -92,3 +92,6 @@ class FSF:
 
     def get_cp(self):
         return self.io.info_handler.info["score"][1].cp
+
+    def get_possible_moves_piece(self, piece):
+        return [m for m in self.io.get_possible_moves(pop=False).result() if m.startswith(piece)]

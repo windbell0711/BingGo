@@ -15,6 +15,8 @@ import time
 
 from kivy.config import Config
 
+import Utils
+
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -193,7 +195,8 @@ class WarScreen(FloatLayout):
         self.bigidt = self.beach[self.war.active_qizi.p].idt
         self.imgs[self.bigidt].size = (
             '%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
-        for p in self.war.active_qizi.get_ma():
+        from_pos = Utils.posl(self.war.active_qizi.p)
+        for p in [Utils.pos(m[2:]) for m in self.war.ai.get_possible_moves_piece(from_pos)]:
             if self.beach.occupied(p):
                 if self.img_source == 'imgs/img2':
                     idt = self.beach[p].idt
@@ -241,7 +244,7 @@ class WarScreen(FloatLayout):
         self.war.solve_board_press(p)
 
         self.remove_path()
-        if not self.war.active_qizi is None:
+        if self.war.active_qizi:
             self.show_path()
 
     def save(self, file_name="save.json"):

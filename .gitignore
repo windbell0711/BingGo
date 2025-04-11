@@ -1,8 +1,8 @@
 lastsave.json
 
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized
 __pycache__/
-*.py[cod]
+*.py[co]
 *$py.class
 
 # C extensions

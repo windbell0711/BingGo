@@ -7,6 +7,8 @@
 @File    : FSF.py
 """
 from __future__ import annotations
+
+import copy
 import json
 import os
 import sys
@@ -19,16 +21,23 @@ import pyffish
 import chess.uci
 from chess.uci import GoCommand
 
+
 def pos(s: str) -> int:  # len(s)=2
-    return ord(s[0])-97 + (9-int(s[1]))*10
+    if type(s) == int:
+        s = str(s)
+    return ord(s[0]) - 97 + (9 - int(s[1])) * 10
+
 
 ALP = "abcdefghi"
+
+
 def posl(intp: int) -> str:
     return ALP[intp % 10] + str(9 - intp // 10)
 
-def s2l(l: str) -> str:
+
+def pos2uci(l: str) -> str:
     """binggo中logs转化为pgn"""
-    aaaaa = '['+l.replace("(", "[").replace(")", "]")+']'
+    aaaaa = '[' + l.replace("(", "[").replace(")", "]") + ']'
     a = json.loads(aaaaa)
     r = ""
     for i in a:
@@ -38,12 +47,13 @@ def s2l(l: str) -> str:
             if ii[0] == 0:
                 pf, pt = ii[1], ii[2]
             elif ii[0] == 1:
-                pro = 'm' if ii[1]==0 else 'q'
-        if pf == -1:  raise ValueError(str(ii)+"无移动操作")
-        r += posl(pf)+posl(pt)+pro
+                pro = 'm' if ii[1] == 0 else 'q'
+        if pf == -1:  raise ValueError(str(ii) + "无移动操作")
+        r += posl(pf) + posl(pt) + pro
     return r
 
-def l2s(b: list[bool], s: str) -> list:
+
+def uci2pos(b: list[bool], s: str) -> list:
     beach = b
     ret = []
     li = s.split(' ')
@@ -53,29 +63,40 @@ def l2s(b: list[bool], s: str) -> list:
         if beach[pt] == True:
             a.append([2, pt, pt])  #sha
         a.append([0, pf, pt])  #yi
-        if i[-1] == 'm' or i[-1]=='q':
+        if i[-1] == 'm' or i[-1] == 'q':
             a.append([2, pt, pt])  #sheng
-            a.append([1, 11 if i[-1]=='q' else 0, pt])  #sheng
+            a.append([1, 11 if i[-1] == 'q' else 0, pt])  #sheng
         beach[pf] = False
         beach[pt] = True
         ret.append(a)
     return ret
 
+
+def ucis_to_poses(beach, ms: list[str]):
+    moves = []
+    beach1 = copy.deepcopy(beach.beach)
+    for m in ms:
+        moves.append(uci2pos(beach1, m)[0][0][2])
+    print(moves)
+    return moves
+
+
 class GoPerftCommand(GoCommand):
     def __init__(self, perft,
-             searchmoves: Any = None,
-             ponder: bool = False,
-             wtime: Any = None,
-             btime: Any = None,
-             winc: Any = None,
-             binc: Any = None,
-             movestogo = None,
-             depth: Any = None,
-             nodes: Any = None,
-             mate: Any = None,
-             movetime: Any = None,
-             infinite: bool = False):
-        super().__init__(searchmoves, ponder, wtime, btime, winc, binc, movestogo, depth, nodes, mate, movetime, infinite)
+                 searchmoves: Any = None,
+                 ponder: bool = False,
+                 wtime: Any = None,
+                 btime: Any = None,
+                 winc: Any = None,
+                 binc: Any = None,
+                 movestogo=None,
+                 depth: Any = None,
+                 nodes: Any = None,
+                 mate: Any = None,
+                 movetime: Any = None,
+                 infinite: bool = False):
+        super().__init__(searchmoves, ponder, wtime, btime, winc, binc, movestogo, depth, nodes, mate, movetime,
+                         infinite)
 
         # 重新构建命令行参数，包含perft参数
         builder = []
@@ -178,14 +199,12 @@ class EngineIO:
             self.engine.ucinewgame()
             self.engine.setoption({"clear hash": True, "UCI_Variant": self.variant})
 
-
     def go(self, **kwargs):
-        e:chess.uci.Engine = self.engine
+        e: chess.uci.Engine = self.engine
         self.send_moves()
         bestmove = e.go(**kwargs)
         # self.moves.append(bestmove.bestmove)
         return bestmove
-
 
     def init_book(self):
         assert self.book
@@ -207,12 +226,14 @@ class EngineIO:
         self.reset_engine()  # 补充参数
         self.start_pos = random.choice(self.fens) if self.fens else "startpos"
 
-    def get_possible_moves(self, perft=1):
+    def get_possible_moves(self, perft=1, pop=True):
         print(self.moves)
-        if self.moves:
+        if self.moves and pop:
             temp = self.moves.pop()
             self.send_moves()
             self.moves.append(temp)
+        else:
+            self.send_moves()
         # 发送带perft参数的命令
         command = GoPerftCommand(perft=perft)
         moves = self.engine._queue_command(command, async_callback=True)
