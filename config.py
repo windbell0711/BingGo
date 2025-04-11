@@ -7,13 +7,10 @@
 """
 from __future__ import annotations
 from typing import Any, List, Tuple
-import csv
+import configparser
 
 VERSION = "v1.2.0"
-
-# screen_scale = 1
 active_qizi_delta_scale = 5  # 原大小：65
-
 typ_dict = {
     "将": 0,
     "车": 1,
@@ -46,7 +43,6 @@ typ_dict = {
     "K": 12,
     "P": 13
 }
-
 typ_num2str = {
     0: "j ",
     1: "c ",
@@ -63,98 +59,119 @@ typ_num2str = {
     12: "K ",
     13: "P "
 }
-
 ALL_PIECE_TYPES = "jcmxspwbRNBQKP"
-
-PREFERENCE_BY_DEFAULT = """\
-img_style,intl
-quick_cmd_status,on
-save_when_quit,on
-init_lineup,|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|
-ai_depth,6
-promotion_dis,2
-screen_scale,1
-"""
-
-
-def reset_preference() -> None:
-    """初始化重置preference.csv"""
-    with open(file="preference.csv", mode='w', newline='', encoding='utf-8') as f:
-        f.write(PREFERENCE_BY_DEFAULT)
-
-def read_preference(key: str) -> str:
-    """从preference.csv中读入"""
-    try:
-        with open(file="preference.csv", mode='r', newline='', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if row[0] == key:
-                    return row[1].strip()
-    except FileNotFoundError:
-        reset_preference()
-        print("!preference.csv文件缺失，已重置。")
-        return read_preference(key)
-
-def write_preference(key, value) -> None:
-    """在preference.csv中添加或覆盖"""
-    # 先读取现有内容
-    lines = []
-    key_found = False
-    try:
-        with open("preference.csv", mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if len(row) == 2 and row[0].strip() == key:
-                    lines.append([key, value])
-                    key_found = True
-                else:
-                    lines.append(row)
-    # 如果文件不存在，直接创建并写入
-    except FileNotFoundError:
-        print("!preference.csv不存在或已被移动，将新建preference.csv")
-    # 如果键不存在，追加新键值对
-    if not key_found:
-        lines.append([key, value])
-    # 写回文件
-    with open("preference.csv", mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerows(lines)
-
-def is_int(s: str) -> bool:
-    for c in s:
-        if not (c.isdigit() or c == "-"):
+def lineup_valid(lineup: str) -> bool:
+    """检查布局字符串格式正确"""
+    if len(lineup) != 91:  return False
+    num_of_line = 9
+    for c in lineup:
+        if c in ALL_PIECE_TYPES or c == " ":
+            num_of_line += 1
+        elif c.isdigit():  # 后续版本可能可以用数字代表空格数，但此处由长度拦死，所以不行
+            num_of_line += int(c)
+        elif c == '|':
+            if num_of_line != 9:  return False
+            num_of_line = 0
+        else:
             return False
     return True
 
-def is_float(s: str) -> bool:
-    for c in s:
-        if not (c.isdigit() or c == "." or c == "-"):
-            return False
-    return True
+# 设置相关信息    {key: [type,  default, function_valid]}
+SETTINGS = {
+    "img_style":      [str,  "intl", lambda s: s in ("intl", "chn")],
+    "quick_cmd_on":   [bool,  True,  lambda x: True],
+    "save_when_quit": [bool,  False, lambda x: True],
+    "INIT_LINEUP":    [str,  "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
+    "ai_depth":       [int,   8,     lambda i: 2 <= i <= 12],
+    "promotion_dis":  [int,   2,     lambda i: 1 <= i <= 3],
+    "screen_scale":   [float, 1.0,   lambda f: 0.25 <= f <= 10]
+}
 
-def check_int(key: str, min_num: int, max_num: int, value_if_invalid: int) -> int:
-    r = read_preference(key).strip()
-    if is_int(r) and min_num <= int(r) <= max_num:
-        return int(r)
-    else:
-        print("!Invalid " + key + ": " + r)
-        return value_if_invalid
+def edit_setting(key: str, value: str) -> None:
+    """在setting.ini中添加或覆盖"""
+    cfe = configparser.ConfigParser()
+    cfe.read("setting.ini")
+    if "BingGo" not in cfe:
+        cfe.add_section("BingGo")
+    cfe.set("BingGo", key, value)
+    with open("setting.ini", mode='w', newline='', encoding='utf-8') as fe:
+        cfe.write(fe)
 
-def check_float(key: str, min_num: float, max_num: float, value_if_invalid: float) -> float:
-    r = read_preference(key).strip()
-    if is_float(r) and min_num <= float(r) <= max_num:
-        return float(r)
-    else:
-        print("!Invalid " + key + ": " + r)
-        return value_if_invalid
+def reset_setting() -> None:
+    """恢复默认setting"""
+    cfr = configparser.ConfigParser()
+    cfr.add_section("BingGo")
+    for k, v in SETTINGS.items():
+        cfr.set("BingGo", k, str(v[1]))
+    with open("setting.ini", mode='w', newline='', encoding='utf-8') as fr:
+        cfr.write(fr)
+
+# 检查setting.ini文件是否存在，不存在则创建
+try:
+    with open(file="setting.ini", mode='r', newline='', encoding='utf-8'):
+        pass
+    cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
+    cf.read('setting.ini')  # 读取 INI 文件
+    _ = cf["BingGo"]
+except (KeyError, FileNotFoundError, configparser.ParsingError):
+    reset_setting()
+    cf = configparser.ConfigParser()
+    cf.read('setting.ini')
+
+# 读取设置并设为全局变量
+for key, value in SETTINGS.items():
+    const_name = key.upper()  # 对应的变量名改为全大写
+    try:  # 两处可能引发ValueError
+        if value[2](value[0](cf["BingGo"][key])):  # 键存在，且值合法，则设为读取的值
+            globals()[const_name] = value[0](cf["BingGo"][key])  # 黑魔法：设置一个以const_name为变量名的，以value[0]为类型，以cf["BingGo"][key]为值的变量
+        else:  raise ValueError
+    except (KeyError, ValueError):  # 键不存在，或者值不是合理的类型，或者值非法，则设为默认值
+        globals()[const_name] = value[1]  # 黑魔法：设置一个以const_name为变量名的，以value[1]为值的变量
+        pass  # TODO: 需要显示和记录错误信息
+# >>> print(AI_DEPTH)  # output: 8
+
+# INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
+#
+# IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
+IMG_STYLE_INTL = {"intl": True, "chn": False}[IMG_STYLE]  # TODO: 遗留问题
+# QUICK_CMD_ON   = {"on": 1, "off": 0}[read_preference("quick_cmd_on").lower()]
+# SAVE_WHEN_QUIT = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
+#
+# AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
+# PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
+# SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
+
+def edit_zvgv3(key: str, value: str) -> None:
+    """zvgv3.ini中添加或覆盖"""
+    cfex = configparser.ConfigParser()
+    cfex.read("zvgv3.ini")
+    if "zhongxiang_vs_guoxiang" not in cfex:
+        cfex.add_section("zhongxiang_vs_guoxiang")
+    cfex.set("zhongxiang_vs_guoxiang", key, value)
+    with open("zvgv3.ini", mode='w', newline='', encoding='utf-8') as fex:
+        cfex.write(fex)
+
+def reset_zvgv3() -> None:
+    """恢复默认zvgv3"""
+    with open("zvgv3.ini", mode='w', newline='', encoding='utf-8') as frx:
+        frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\nstartFen = rnbk1qnbr/pppp1pppp/9/9/9/O1OOOOO1O/1C5C1/9/RHEASAEHR w kq - 0 1\n\n"
+                  "wazir = s\nhorse = h\ncustomPiece1 = m:NB2RmpRcpR\ncustomPiece2 = e:B2\ncustomPiece3 = o:fWlWrW\ncustomPiece4 = a:K\ncustomPiece5 = c:mRcpR\n\n"
+                  "king = k\nqueen = q\nrook = r\nbishop = b\nknight = n\npawn= p\n\n"
+                  "pawnTypes = po\npromotionPawnTypesWhite = o\npromotionPawnTypesBlack = p\npromotionPieceTypesBlack = nbrq\npromotionPieceTypesWhite = m\npromotionRegionWhite = *9 *8 *7\npromotionRegionBlack = *1\n\n"
+                  "castling = true\ncastlingKingsideFile = g\ncastlingQueensideFile = c\ncastlingKingFile = e\ncastlingRookKingsideFile = i\ncastlingRookQueensideFile = a\n"
+                  "checking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\nextinctionPieceTypes = Sk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\nstalemateValue = loss\n\n"
+                  "mobilityRegionWhiteWazir = d1 e1 f1 d2 e2 f2 d3 e3 f3\n\npieceToCharTable = PNBRQ..Spnbrq..kAaEe..OoCc..")
+
+# 检查zvgv3.ini文件是否存在，不存在则创建
+try:
+    with open(file="zvgv3.ini", mode='r', newline='', encoding='utf-8'):
+        pass
+    cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
+    cf.read('zvgv3.ini')  # 读取 INI 文件
+    _ = cf["zhongxiang_vs_guoxiang"]
+except (KeyError, FileNotFoundError, configparser.ParsingError):
+    reset_zvgv3()
 
 
-init_lineup = read_preference("init_lineup")[1:]  # 去掉起始的“|”
-
-IMG_STYLE_INTL   = {"intl": True, "chn": False}[read_preference("img_style").lower()]
-QUICK_CMD_STATUS = {"on": 1, "off": 0}[read_preference("quick_cmd_status").lower()]
-SAVE_WHEN_QUIT   = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
-
-AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
-PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
-SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
+if __name__ == '__main__':
+    pass
