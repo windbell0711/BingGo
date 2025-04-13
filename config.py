@@ -9,8 +9,9 @@ from __future__ import annotations
 from typing import Any, List, Tuple
 import configparser
 
-VERSION = "v1.2.0"
-active_qizi_delta_scale = 5  # 原大小：65
+VERSION = 'v1.2.0'
+ACTIVE_QIZI_DELTA_SCALE = 5  # 原大小：65
+IMG_STYLE_DEFAULT = 'chn'
 typ_dict = {
     "将": 0,
     "车": 1,
@@ -59,7 +60,8 @@ typ_num2str = {
     12: "K ",
     13: "P "
 }
-ALL_PIECE_TYPES = "jcmxspwbRNBQKP"
+ALL_PIECE_TYPES = 'jcmxspwbRNBQKP'
+
 def lineup_valid(lineup: str) -> bool:
     """检查布局字符串格式正确"""
     if len(lineup) != 91:  return False
@@ -76,15 +78,18 @@ def lineup_valid(lineup: str) -> bool:
             return False
     return True
 
+def boolean(s: str) -> bool:  # bool()不是exp的作用，为此重新写一个boolean()
+    return {'True': True, 'False': False}[s]
+
 # 设置相关信息    {key: [type,  default, function_valid]}
 SETTINGS = {
-    "img_style":      [str,  "intl", lambda s: s in ("intl", "chn")],
-    "quick_cmd_on":   [bool,  True,  lambda x: True],
-    "save_when_quit": [bool,  False, lambda x: True],
-    "INIT_LINEUP":    [str,  "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
-    "ai_depth":       [int,   8,     lambda i: 2 <= i <= 12],
-    "promotion_dis":  [int,   2,     lambda i: 1 <= i <= 3],
-    "screen_scale":   [float, 1.0,   lambda f: 0.25 <= f <= 10]
+    "img_style":      [str,    "intl", lambda s: s in ("intl", "chn")],
+    "quick_cmd_on":   [boolean, True,  lambda x: True],
+    "save_when_quit": [boolean, False, lambda x: True],
+    "INIT_LINEUP":    [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
+    "ai_depth":       [int,     8,     lambda i: 2 <= i <= 12],
+    "promotion_dis":  [int,     2,     lambda i: 1 <= i <= 3],
+    "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10]
 }
 
 def edit_setting(key: str, value: str) -> None:
@@ -133,7 +138,6 @@ for key, value in SETTINGS.items():
 # INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
 #
 # IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
-IMG_STYLE_INTL = {"intl": True, "chn": False}[IMG_STYLE]  # TODO: 遗留问题
 # QUICK_CMD_ON   = {"on": 1, "off": 0}[read_preference("quick_cmd_on").lower()]
 # SAVE_WHEN_QUIT = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
 #

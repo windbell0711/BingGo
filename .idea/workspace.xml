@@ -4,13 +4,103 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="添加debug模式">
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="merge + several bugs fixed&#10;另外把两个intel整成了一运行就报错">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FSF.py" beforeDir="false" afterPath="$PROJECT_DIR$/FSF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligence6.py" beforeDir="false" afterPath="$PROJECT_DIR$/intelligence6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/0.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/0_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/1.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/10.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/10_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/11.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/11_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/12.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/12_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/13.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/13_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/1_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/2.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/2_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/3.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/3_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/4.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/4_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/5.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/5_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/6.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/6_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/7.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/7_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/8.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/8_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/9.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/9_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/beach.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/big_dot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/black_wins.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/check.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/checked.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/create.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/gou.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/jiangjun.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/jiazai.GIF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/jiazai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/king_lose_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/king_win_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/red_wins.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/shuai_lose_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/shuai_win_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/small_dot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img/wangbeijj.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/0.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/0_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/1.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/10.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/10_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/11.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/11_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/12.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/12_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/13.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/13_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/1_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/2.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/2_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/3.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/3_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/4.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/4_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/5.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/5_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/6.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/6_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/7.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/7_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/8.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/8_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/9.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/9_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/beach.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/big_dot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/black_wins.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/check.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/checked.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/create.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/gou.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/jiangjun.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/jiazai.GIF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/jiazai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/king_lose_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/king_win_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/red_wins.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/shuai_lose_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/shuai_win_p.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/small_dot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/img2/wangbeijj.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/setting.ini" beforeDir="false" afterPath="$PROJECT_DIR$/setting.ini" afterDir="false" />
     </list>
     <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="" />
     <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
@@ -226,8 +316,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.intelligence" />
         <item itemvalue="Python.config" />
+        <item itemvalue="Python.intelligence" />
         <item itemvalue="Python tests.Python tests in D:/Documents/Jetbrains/PycharmProjects/BingGo/test_config.py" />
         <item itemvalue="Python.display" />
       </list>
@@ -272,7 +362,8 @@
       <workItem from="1743851489087" duration="5784000" />
       <workItem from="1743858282981" duration="232000" />
       <workItem from="1743858549404" duration="91000" />
-      <workItem from="1744516582059" duration="303000" />
+      <workItem from="1744516582059" duration="981000" />
+      <workItem from="1744537290591" duration="8785000" />
     </task>
     <task id="LOCAL-00001" summary="删除不使用的库引用">
       <option name="closed" value="true" />
@@ -322,7 +413,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743162567549</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="merge + several bugs fixed&#10;另外把两个intel整成了一运行就报错">
+      <option name="closed" value="true" />
+      <created>1744517288942</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1744517288942</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,21 +477,15 @@
     <MESSAGE value="删除不使用的库引用" />
     <MESSAGE value="添加chess库&#10;添加FSF引擎的基本适配&#10;小幅重写了现有ai调用逻辑" />
     <MESSAGE value="添加debug模式" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加debug模式" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self.active_qizi&#10;" language="Python" />
-      </configuration>
-    </watches-manager>
+    <MESSAGE value="merge + several bugs fixed&#10;另外把两个intel整成了一运行就报错" />
+    <option name="LAST_COMMIT_MESSAGE" value="merge + several bugs fixed&#10;另外把两个intel整成了一运行就报错" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1744375822333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1744550082381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$config.coverage" NAME="config Coverage Results" MODIFIED="1743840732869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$intelligence.coverage" NAME="intelligence Coverage Results" MODIFIED="1744374651570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$config.coverage" NAME="config Coverage Results" MODIFIED="1744541697914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$.coverage" NAME=" Coverage Results" MODIFIED="1743839426124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -60,20 +60,20 @@ class WarScreen(FloatLayout):
         self.click_time = time.time()
         self.quick_cmd_status = config.QUICK_CMD_ON
 
-        self.img_source = 'imgs/img2' if config.IMG_STYLE_INTL else "imgs/img"
+        # self.img_source = 'imgs/img2' if config.IMG_STYLE else "imgs/img"
 
         # self.auto_intl = False
         # self.auto_chn = False
-        self.auto_intl_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
+        self.auto_intl_img = Image(source=self.get_img("gou"), size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
                                    size_hint=(None, None),
                                    pos_hint={'center_x': 0.803, 'center_y': 0.270})
-        self.auto_chn_img = Image(source=f'./{self.img_source}/gou.png', size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
+        self.auto_chn_img = Image(source=self.get_img("gou"), size=('%ddp' % (25 * S), '%ddp' % (25 * S)),
                                   size_hint=(None, None),
                                   pos_hint={'center_x': 0.803, 'center_y': 0.328})
 
         # 窗口及背景图设置
         Window.size = (800 * S, 600 * S)
-        self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
+        self.bg_image = Image(source=self.get_img("beach"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
                               size_hint=(None, None),
                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
         self.add_widget(self.bg_image)
@@ -136,7 +136,7 @@ class WarScreen(FloatLayout):
             self.beach.set_son(qizi, p)
             self.pieces.append(qizi)
             self.imgs.append(Image(
-                source=f'./{self.img_source}/{typ}.png', size_hint=(None, None),
+                source=self.get_img(str(typ)), size_hint=(None, None),
                 size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                 pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}
             ))
@@ -156,6 +156,13 @@ class WarScreen(FloatLayout):
         else:
             return 1 - (8.5 - p // 10) / 9
 
+    def get_img(self, name: str) -> str:
+        if os.path.exists(f'./imgs/{config.IMG_STYLE}/{name}.png'):  # 检查指定图片在当前包内是否存在
+            return f'./imgs/{config.IMG_STYLE}/{name}.png'
+        else:
+            print("!" + name + ".png not found, using default")
+            return f'./imgs/{config.IMG_STYLE_DEFAULT}/{name}.png'
+
     def _init_async_event_loop(self):
         """初始化异步事件循环线程"""
         self.loop = asyncio.new_event_loop()
@@ -171,7 +178,7 @@ class WarScreen(FloatLayout):
         self.loop.run_forever()
 
     def add_label_sound(self, text, sound):
-        self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
+        self.hints.append(Image(source=self.get_img("{text}"), size_hint=(None, None),
                                 size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                                 pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
@@ -187,7 +194,7 @@ class WarScreen(FloatLayout):
             print("!label text is empty")
             return
         self.remove_label()
-        self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
+        self.hints.append(Image(source=self.get_img("{text}"), size_hint=(None, None),
                                 size=('%ddp' % (200 * S), '%ddp' % (200 * S)),
                                 pos_hint={'center_x': 0.88, 'center_y': 0.58}))
         self.add_widget(self.hints[-1])
@@ -211,7 +218,7 @@ class WarScreen(FloatLayout):
     def show_path(self):
         self.bigidt = self.beach[self.war.active_qizi.p].idt
         self.imgs[self.bigidt].size = (
-            '%ddp' % ((65 + config.active_qizi_delta_scale) * S), '%ddp' % ((65 + config.active_qizi_delta_scale) * S))
+            '%ddp' % ((65 + config.ACTIVE_QIZI_DELTA_SCALE) * S), '%ddp' % ((65 + config.ACTIVE_QIZI_DELTA_SCALE) * S))
         from_pos = Utils.posl(self.war.active_qizi.p)
         for p in [Utils.pos(m[2:]) for m in self.war.ai.get_possible_moves_piece(from_pos)]:
             if self.beach.occupied(p):
@@ -221,14 +228,14 @@ class WarScreen(FloatLayout):
                     self.idt_light.append(idt)
                     self.imgs[idt].opacity = 0.5
                 elif self.img_source == 'imgs/img':
-                    self.dots.append(Image(source=f'./{self.img_source}/big_dot.png', size_hint=(None, None),
+                    self.dots.append(Image(source=self.get_img("big_dot"), size_hint=(None, None),
                                            size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                                            pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                     self.dots[-1].opacity = 0.5
                     self.add_widget(self.dots[-1])
 
             else:
-                self.dots.append(Image(source=f'./{self.img_source}/small_dot.png', size_hint=(None, None),
+                self.dots.append(Image(source=self.get_img("small_dot"), size_hint=(None, None),
                                        size=('%ddp' % (120 * S), '%ddp' % (120 * S)),
                                        pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                 self.dots[-1].opacity = 0.5
@@ -306,7 +313,7 @@ class WarScreen(FloatLayout):
                 idt = len(self.pieces)
                 an.append((1, idt))
                 self.pieces.append(Qizi(p=oper[2], typ=oper[1], beach=self.beach, idt=idt))
-                self.imgs.append(Image(source=f'./{self.img_source}/%d.png' % oper[1], size_hint=(None, None),
+                self.imgs.append(Image(source=self.get_img("%d") % oper[1], size_hint=(None, None),
                                        size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                                        pos_hint={'center_x': self.fx(oper[2]), 'center_y': self.fy(oper[2])}))
                 self.beach.place_son(typ=oper[1], p=oper[2], idt=idt)
@@ -549,14 +556,14 @@ class WarScreen(FloatLayout):
                     self.war.logs = []  # 走子日志
                     self.war.turn = 0
                     self.turn_label.text = '0'
-                    self.cr_image = Image(source=f'./{self.img_source}/create.png',
+                    self.cr_image = Image(source=self.get_img("create"),
                                           size=('%ddp' % (800 * S), '%ddp' % (600 * S)), size_hint=(None, None),
                                           pos_hint={'center_x': 0.5, 'center_y': 0.5})
                     self.add_widget(self.cr_image)
                     self.create_p = []
                     for i in range(0, 14):
                         self.create_p.append(Image(
-                            source=f'./{self.img_source}/{i}.png', size_hint=(None, None),
+                            source=self.get_img("{i}"), size_hint=(None, None),
                             size=('%ddp' % (55 * S), '%ddp' % (55 * S)),
                             pos_hint={'center_x': i % 2 / 10 + 0.825, 'center_y': i // 2 / 10 + 0.25}
                         ))
@@ -644,16 +651,14 @@ class WarScreen(FloatLayout):
                         self.war.ai_continue()
                 # 切换贴图风格
                 elif 641 * 2 < x < 690 * 2 and 100 < y < 146:
-                    if self.img_source == 'imgs/img':
-                        self.img_source = 'imgs/img2'
-                        config.edit_setting("img_style", "intl")
+                    if config.IMG_STYLE == 'chn':
+                        config.edit_setting("img_style", 'intl')
                     else:
-                        self.img_source = 'imgs/img'
-                        config.edit_setting("img_style", "chn")
+                        config.edit_setting("img_style", 'chn')
                     print("重置成功，请重启。")
                     raise BieGuanWoException
                     # self.remove_widget(self.bg_image)
-                    # self.bg_image = Image(source=f'./{self.img_source}/beach.png', size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
+                    # self.bg_image = Image(source=self.get_img("beach"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
                     #                       size_hint=(None, None),
                     #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
                     # self.add_widget(self.bg_image)
@@ -694,7 +699,7 @@ class WarScreen(FloatLayout):
 
     pov_Chn = True
 
-    def twist(self):
+    def flip(self):
         self.pov_Chn = not self.pov_Chn
         cnt = 0
         for i in self.imgs:
@@ -724,9 +729,9 @@ class WarScreen(FloatLayout):
         # Ctrl + E
         elif 'ctrl' in modifier and key == 101:
             self.skip()
-        # Ctrl + T
-        elif 'ctrl' in modifier and key == 116:
-            self.twist()
+        # Ctrl + F
+        elif 'ctrl' in modifier and key == 102:
+            self.flip()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
             print("load " + json.dumps(self.war.logs))
@@ -790,8 +795,8 @@ class WarScreen(FloatLayout):
             except json.decoder.JSONDecodeError:
                 return "!Invalid log: " + args[0]
         # 翻转
-        elif cmd in ("twist", "翻转", "反转"):
-            self.twist()
+        elif cmd in ("flip", "twist", "翻转", "反转"):
+            self.flip()
             return "已翻转棋盘"
         # 跳过
         elif cmd in ("skip", "跳过", "交换"):
@@ -828,14 +833,9 @@ class WarScreen(FloatLayout):
             return "BingGo " + config.VERSION
         return "!无效的指令: " + cmd
 
-    # def on_enter_pressed(self, instance):
-    #     """Enter按下后，执行输入框中的内容"""
-    #     ret = self.handle_quick_cmd(user_input=instance.text)
-    #     instance.text = ret
-
     def show_picture(self, typ):
         self.picture_image.append(
-            Image(source=f'./{self.img_source}/{typ}_p.png', size=('%ddp' % (700 * S), '%ddp' % (500 * S)),
+            Image(source=self.get_img(f'{typ}_p'), size=('%ddp' % (700 * S), '%ddp' % (500 * S)),
                   size_hint=(None, None),
                   pos_hint={'center_x': 0.5, 'center_y': 0.5}))
         self.add_widget(self.picture_image[-1])
@@ -859,13 +859,13 @@ class BingGo(App):
         # else:
         #     print("!声音播放出错", self.sound)
         self.war_screen = WarScreen(self.args)
+        return self.war_screen
 
+    def on_start(self):
         if os.path.exists("lastsave.json"):
             self.war_screen.load("lastsave.json")
             os.remove("./lastsave.json")
             print("已回复进度并删除lastsave.json")
-
-        return self.war_screen
 
     def on_stop(self):
         """应用退出时保存数据并清理资源"""
