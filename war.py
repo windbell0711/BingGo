@@ -55,8 +55,8 @@ class War:
 
     def main(self, p: int, castle=False):
         """将当前棋子移向位置p"""
-        if not self.move_allowed:
-            raise ValueError("!Move not allowed.")
+        # if not self.move_allowed:
+        #     raise ValueError("!Move not allowed.")
         moves = []
         if castle:
             if p == 0:
@@ -94,8 +94,8 @@ class War:
         label = self.ai.get_checked(self.beach, self.mycamp_intl)
         self.display.remove_label()
         if label > 0:
-            # self.display.add_label("将军！" if label in (2, 4) else "将杀！") TODO
-            self.display.add_label("将军！" if label in (2, 4) else "将杀！")
+            # self.display.add_label("将军！" if label in (2, 4) else "将杀！")
+            self.display.add_label(("", "wangbeijj", "check", "checked", "jiangjun")[label])
         if label == 1 or label == 3:
             ms = [self.reverse_operation(m) for m in reversed(moves)]
             moves.extend(ms)
@@ -116,16 +116,10 @@ class War:
         return moves
 
     def king_win(self):
-        if self.ai.is_checkmate() and not self.mycamp_intl:
-            return True
-        else:
-            return False
+        return self.ai.is_checkmate() and not self.mycamp_intl
 
     def shuai_win(self):
-        if self.ai.is_checkmate() and self.mycamp_intl:
-            return True
-        else:
-            return False
+        return self.ai.is_checkmate() and self.mycamp_intl
 
     def generate_ai_move(self):
         # self.ai.get_attack_pose()

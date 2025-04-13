@@ -4,8 +4,10 @@
 @Github  : windbell0711/BingGo
 @Author  : Lilold
 @License : Apache 2.0
-@File    : intelligence.py
+@File    : intelligence6.py
 """
+raise NotImplementedError(f"{__file__} {__name__} 已弃用")
+
 import config
 
 AI_DEPTH = config.AI_DEPTH

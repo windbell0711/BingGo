@@ -68,12 +68,12 @@ class FSF:
         #     print(m, move, p)
         #     if p and p.typ == 6:
         #         if not intl:
-        #             return 1 # 需要回退一步，因为红方自己走入将杀
-        #         return 2 # 黑方将军
+        #             return 1  # 需要回退一步，因为红方自己走入将杀
+        #         return 2  # 黑方将军
         #     if p and p.typ == 12:
         #         if intl:
-        #             return 3 # 黑方自己走入将杀
-        #         return 4 # 红方将军
+        #             return 3  # 黑方自己走入将杀
+        #         return 4  # 红方将军
         # return 0
         pms = self.io.get_possible_moves().result()
         print(self.io.moves[-1] if self.io.moves else "", pms)
@@ -81,13 +81,11 @@ class FSF:
             if intl:
                 return 3  # 黑方自己走入将杀 checked
             return 1  # 红方自己走入将杀 wangbeijj
-
         check = pyffish.gives_check("zhongxiang_vs_guoxiang", self.io.start_pos, self.io.moves)
         if check:
             if intl:
                 return 4  # 红方将军 jiangjun
             return 2  # 黑方将军 check
-
         return 0
 
     def get_cp(self):

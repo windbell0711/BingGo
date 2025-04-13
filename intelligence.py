@@ -6,6 +6,8 @@
 @License : Apache 2.0
 @File    : intelligence.py
 """
+raise NotImplementedError(f"{__file__} {__name__} 已弃用")
+
 import random
 
 def fro(x,y):

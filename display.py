@@ -183,10 +183,13 @@ class WarScreen(FloatLayout):
             self.sound.play()
 
     def add_label(self, text):
+        if text is None or text == "":
+            print("!label text is empty")
+            return
         self.remove_label()
         self.hints.append(Image(source=f'./{self.img_source}/{text}.png', size_hint=(None, None),
                                 size=('%ddp' % (200 * S), '%ddp' % (200 * S)),
-                                pos_hint={'center_x': 0.87, 'center_y': 0.515}))
+                                pos_hint={'center_x': 0.88, 'center_y': 0.58}))
         self.add_widget(self.hints[-1])
 
     def remove_label(self):
