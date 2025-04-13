@@ -39,10 +39,6 @@ from war import *
 import config
 
 
-class BieGuanWoException(Exception):
-    pass
-
-
 try:
     S: float = config.SCREEN_SCALE
 except AttributeError as e:
@@ -54,6 +50,7 @@ M = Metrics.density * S / 2
 class WarScreen(FloatLayout):
     def __init__(self, args, **kwargs):
         super(WarScreen, self).__init__(**kwargs)
+        self.restart_expected = False
         self.war = War(self, args)
         self.beach = Beach()
 
@@ -177,8 +174,8 @@ class WarScreen(FloatLayout):
         asyncio.set_event_loop(self.loop)
         self.loop.run_forever()
 
-    def add_label_sound(self, text, sound):
-        self.hints.append(Image(source=self.get_img("{text}"), size_hint=(None, None),
+    def add_label_sound(self, text: str, sound):
+        self.hints.append(Image(source=self.get_img(text), size_hint=(None, None),
                                 size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                                 pos_hint={'center_x': 0.375, 'center_y': 0.5}))
         self.add_widget(self.hints[-1])
@@ -194,7 +191,7 @@ class WarScreen(FloatLayout):
             print("!label text is empty")
             return
         self.remove_label()
-        self.hints.append(Image(source=self.get_img("{text}"), size_hint=(None, None),
+        self.hints.append(Image(source=self.get_img(text), size_hint=(None, None),
                                 size=('%ddp' % (200 * S), '%ddp' % (200 * S)),
                                 pos_hint={'center_x': 0.88, 'center_y': 0.58}))
         self.add_widget(self.hints[-1])
@@ -222,12 +219,12 @@ class WarScreen(FloatLayout):
         from_pos = Utils.posl(self.war.active_qizi.p)
         for p in [Utils.pos(m[2:]) for m in self.war.ai.get_possible_moves_piece(from_pos)]:
             if self.beach.occupied(p):
-                if self.img_source == 'imgs/img2':
+                if config.IMG_STYLE == 'intl':
                     idt = self.beach[p].idt
                     print(idt)
                     self.idt_light.append(idt)
                     self.imgs[idt].opacity = 0.5
-                elif self.img_source == 'imgs/img':
+                elif config.IMG_STYLE == 'chn':
                     self.dots.append(Image(source=self.get_img("big_dot"), size_hint=(None, None),
                                            size=('%ddp' % (65 * S), '%ddp' % (65 * S)),
                                            pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
@@ -279,15 +276,11 @@ class WarScreen(FloatLayout):
     def load(self, file_name="save.json"):
         if self.war.turn != 0:
             self.save("autosave%d.json" % int(time.time()))
-            self.new()
+            self.safe_restart()
         with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
             ret = json.load(f)
         self.war.logs = ret
         print("已载入")
-
-    def new(self):  # bug 多按了会卡，然而失去全部力气和手段
-        self.__init__((-1, -1))
-        print("已新局")
 
     def _move_animation(self, idt, p):
         # 确保图片置于顶层
@@ -619,7 +612,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         print("!请等待走子完成")
                         return
-                    self.new()
+                    self.safe_restart()
                 # 保存、载入
                 elif 174 < y < 262:
                     if not self.war.move_allowed:
@@ -655,14 +648,9 @@ class WarScreen(FloatLayout):
                         config.edit_setting("img_style", 'intl')
                     else:
                         config.edit_setting("img_style", 'chn')
-                    print("重置成功，请重启。")
-                    raise BieGuanWoException
-                    # self.remove_widget(self.bg_image)
-                    # self.bg_image = Image(source=self.get_img("beach"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
-                    #                       size_hint=(None, None),
-                    #                       pos_hint={'center_x': 0.5, 'center_y': 0.5})
-                    # self.add_widget(self.bg_image)
-                    # self.new()
+                    print("重置成功，准备重启...")
+                    # 延迟执行重启保证界面操作完成
+                    Clock.schedule_once(lambda dt: self.safe_restart(), 0.5)
             elif touch.button == 'right':
                 if len(self.picture_image):
                     self.remove_widget(self.picture_image[-1])
@@ -696,6 +684,12 @@ class WarScreen(FloatLayout):
                             self.show_picture('king_lose')
                         else:
                             self.show_picture(self.beach[p].typ)
+
+    def safe_restart(self):
+        """安全重启"""
+        if self.parent and self.parent.parent:  # 检查widget树状态
+            self.restart_expected = True
+            App.get_running_app().stop()
 
     pov_Chn = True
 
@@ -789,7 +783,7 @@ class WarScreen(FloatLayout):
             if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
             try:
                 l = json.loads(args[0])
-                self.new()
+                self.restart()
                 self.war.logs = l
                 return "已载入布局"
             except json.decoder.JSONDecodeError:
@@ -848,6 +842,7 @@ class BingGo(App):
         self.title = f"BingGo {config.VERSION}"  # Title
         self.icon = './imgs/mahoupao.ico'
         self.war_screen = None
+        self._is_running = True
 
     def build(self):
         # bgm设置
@@ -876,6 +871,8 @@ class BingGo(App):
         # 关闭异步事件循环
         if hasattr(self.war_screen, 'loop'):
             self.war_screen.loop.call_soon_threadsafe(self.war_screen.loop.stop)
+        # 更新运行状态
+        self._is_running = False
         print("正在退出")
 
 

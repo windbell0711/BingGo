@@ -111,40 +111,6 @@ def reset_setting() -> None:
     with open("setting.ini", mode='w', newline='', encoding='utf-8') as fr:
         cfr.write(fr)
 
-# 检查setting.ini文件是否存在，不存在则创建
-try:
-    with open(file="setting.ini", mode='r', newline='', encoding='utf-8'):
-        pass
-    cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
-    cf.read('setting.ini')  # 读取 INI 文件
-    _ = cf["BingGo"]
-except (KeyError, FileNotFoundError, configparser.ParsingError):
-    reset_setting()
-    cf = configparser.ConfigParser()
-    cf.read('setting.ini')
-
-# 读取设置并设为全局变量
-for key, value in SETTINGS.items():
-    const_name = key.upper()  # 对应的变量名改为全大写
-    try:  # 两处可能引发ValueError
-        if value[2](value[0](cf["BingGo"][key])):  # 键存在，且值合法，则设为读取的值
-            globals()[const_name] = value[0](cf["BingGo"][key])  # 黑魔法：设置一个以const_name为变量名的，以value[0]为类型，以cf["BingGo"][key]为值的变量
-        else:  raise ValueError
-    except (KeyError, ValueError):  # 键不存在，或者值不是合理的类型，或者值非法，则设为默认值
-        globals()[const_name] = value[1]  # 黑魔法：设置一个以const_name为变量名的，以value[1]为值的变量
-        pass  # TODO: 需要显示和记录错误信息
-# >>> print(AI_DEPTH)  # output: 8
-
-# INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
-#
-# IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
-# QUICK_CMD_ON   = {"on": 1, "off": 0}[read_preference("quick_cmd_on").lower()]
-# SAVE_WHEN_QUIT = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
-#
-# AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
-# PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
-# SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
-
 def edit_zvgv3(key: str, value: str) -> None:
     """zvgv3.ini中添加或覆盖"""
     cfex = configparser.ConfigParser()
@@ -166,16 +132,50 @@ def reset_zvgv3() -> None:
                   "checking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\nextinctionPieceTypes = Sk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\nstalemateValue = loss\n\n"
                   "mobilityRegionWhiteWazir = d1 e1 f1 d2 e2 f2 d3 e3 f3\n\npieceToCharTable = PNBRQ..Spnbrq..kAaEe..OoCc..")
 
-# 检查zvgv3.ini文件是否存在，不存在则创建
-try:
-    with open(file="zvgv3.ini", mode='r', newline='', encoding='utf-8'):
-        pass
-    cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
-    cf.read('zvgv3.ini')  # 读取 INI 文件
-    _ = cf["zhongxiang_vs_guoxiang"]
-except (KeyError, FileNotFoundError, configparser.ParsingError):
-    reset_zvgv3()
 
+def init_setting():
+    # 检查setting.ini文件是否存在，不存在则创建
+    try:
+        with open(file="setting.ini", mode='r', newline='', encoding='utf-8'):
+            pass
+        cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
+        cf.read('setting.ini')  # 读取 INI 文件
+        _ = cf["BingGo"]
+    except (KeyError, FileNotFoundError, configparser.ParsingError):
+        reset_setting()
+        cf = configparser.ConfigParser()
+        cf.read('setting.ini')
 
-if __name__ == '__main__':
-    pass
+    # 读取设置并设为全局变量
+    for key, value in SETTINGS.items():
+        const_name = key.upper()  # 对应的变量名改为全大写
+        try:  # 两处可能引发ValueError
+            if value[2](value[0](cf["BingGo"][key])):  # 键存在，且值合法，则设为读取的值
+                globals()[const_name] = value[0](cf["BingGo"][key])  # 黑魔法：设置一个以const_name为变量名的，以value[0]为类型，以cf["BingGo"][key]为值的变量
+            else:  raise ValueError
+        except (KeyError, ValueError):  # 键不存在，或者值不是合理的类型，或者值非法，则设为默认值
+            globals()[const_name] = value[1]  # 黑魔法：设置一个以const_name为变量名的，以value[1]为值的变量
+            pass  # TODO: 需要显示和记录错误信息
+    # >>> print(AI_DEPTH)  # output: 8
+
+    # INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
+    #
+    # IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
+    # QUICK_CMD_ON   = {"on": 1, "off": 0}[read_preference("quick_cmd_on").lower()]
+    # SAVE_WHEN_QUIT = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
+    #
+    # AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
+    # PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
+    # SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
+
+    # 检查zvgv3.ini文件是否存在，不存在则创建
+    try:
+        with open(file="zvgv3.ini", mode='r', newline='', encoding='utf-8'):
+            pass
+        cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
+        cf.read('zvgv3.ini')  # 读取 INI 文件
+        _ = cf["zhongxiang_vs_guoxiang"]
+    except (KeyError, FileNotFoundError, configparser.ParsingError):
+        reset_zvgv3()
+
+init_setting()
