@@ -89,7 +89,8 @@ SETTINGS = {
     "INIT_LINEUP":    [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
     "ai_depth":       [int,     8,     lambda i: 2 <= i <= 12],
     "promotion_dis":  [int,     2,     lambda i: 1 <= i <= 3],
-    "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10]
+    "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10],
+    "chess_log_lvl":  [int,     0,     lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
 }
 
 def edit_setting(key: str, value: str) -> None:

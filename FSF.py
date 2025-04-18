@@ -16,13 +16,15 @@ from beach import Beach
 import pyffish
 
 class FSF:
-
     def __init__(self):
+        import chess.uci
+        chess.uci.LOGGER.setLevel(config.CHESS_LOG_LVL)  # 设置chess库日志级别为WARNING
+
         self.io = Utils.EngineIO()
         cores = os.cpu_count()
         self.io.init_engine("fairy-stockfish-largeboards_x86-64-bmi2-latest.exe", {"Threads": cores, "Hash": cores*8}, config="zvgv3.ini", variant="zhongxiang_vs_guoxiang")
         self.io.init_game()
-        self.io.engine.go(depth=1) #快速获取当前状态
+        self.io.engine.go(depth=1)  # 快速获取当前状态
         self.lasts = []
 
     def get_best_move_Intl(self):

@@ -15,9 +15,6 @@ import time
 import webbrowser
 
 from kivy.config import Config
-
-import Utils
-
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -37,6 +34,7 @@ from kivy.uix.textinput import TextInput
 
 from war import *
 import config
+import Utils
 
 
 try:
