@@ -7,7 +7,7 @@
 """  # TODO: 删除注释
 import config
 
-debug = True
+debug = False
 
 if not debug:
     try:
@@ -29,6 +29,8 @@ if not debug:
             # 检查是否需要重启
             if not hasattr(instance, 'war_screen') or not instance.war_screen.restart_expected:
                 break
+
+            config.init_setting()
 
             # 显式清理资源
             del instance

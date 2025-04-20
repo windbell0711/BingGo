@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img/*', 'imgs/img/'), ('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/img2/*', 'imgs/img2/')],
+    datas=[('D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/*', 'imgs/')],
     # hiddenimports=['pkg_resources.py2_warn','win32timezone','six','packaging','packaging.version','webbrowser','kivy','enchant'],
     hiddenimports=['packaging','packaging.version','kivy','enchant'],  # Hidden Imports
     hookspath=[],  # Hooks
@@ -21,7 +21,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='BingGo v1.2.0',  # Name
+    name='BingGo alpha v1.2.0',  # Name
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -42,5 +42,5 @@ coll = COLLECT(
     *[Tree(p) for p in (sdl2.dep_bins + glew.dep_bins)],
     upx=True,
     upx_exclude=[],
-    name='BingGo v1.2.0',  # Name
+    name='BingGo alpha v1.2.0',  # Name
 )

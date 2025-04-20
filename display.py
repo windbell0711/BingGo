@@ -13,6 +13,7 @@ import os
 import threading
 import time
 import webbrowser
+import logging
 
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
@@ -40,7 +41,7 @@ import Utils
 try:
     S: float = config.SCREEN_SCALE
 except AttributeError as e:
-    print("! " + str(e))
+    logging.error(str(e))
     S = 1
 M = Metrics.density * S / 2
 
@@ -68,10 +69,14 @@ class WarScreen(FloatLayout):
 
         # 窗口及背景图设置
         Window.size = (800 * S, 600 * S)
-        self.bg_image = Image(source=self.get_img("beach"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
-                              size_hint=(None, None),
-                              pos_hint={'center_x': 0.5, 'center_y': 0.5})
-        self.add_widget(self.bg_image)
+        self.bg_img = Image(source=self.get_img("bg"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
+                            size_hint=(None, None),
+                            pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        self.add_widget(self.bg_img)
+        self.board_img = Image(source=self.get_img("board"), size=('%ddp' % (800 * S), '%ddp' % (600 * S)),
+                               size_hint=(None, None),
+                               pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        self.add_widget(self.board_img)
         self.turn_label = Label(
             text="0",
             size_hint=(None, None),
@@ -140,13 +145,13 @@ class WarScreen(FloatLayout):
         self._init_async_event_loop()  # 新增异步事件循环线程
 
     def fx(self, p):
-        if self.pov_Chn:
+        if not self.flipped:
             return (p % 10 + 0.5) / 12
         else:
             return 0.75 - (p % 10 + 0.5) / 12
 
     def fy(self, p):
-        if self.pov_Chn:
+        if not self.flipped:
             return (8.5 - p // 10) / 9
         else:
             return 1 - (8.5 - p // 10) / 9
@@ -155,7 +160,7 @@ class WarScreen(FloatLayout):
         if os.path.exists(f'./imgs/{config.IMG_STYLE}/{name}.png'):  # 检查指定图片在当前包内是否存在
             return f'./imgs/{config.IMG_STYLE}/{name}.png'
         else:
-            print("!" + name + ".png not found, using default")
+            logging.warning(f"{name}.png not found, using default")
             return f'./imgs/{config.IMG_STYLE_DEFAULT}/{name}.png'
 
     def _init_async_event_loop(self):
@@ -186,7 +191,7 @@ class WarScreen(FloatLayout):
 
     def add_label(self, text):
         if text is None or text == "":
-            print("!label text is empty")
+            logging.info("label text is empty")
             return
         self.remove_label()
         self.hints.append(Image(source=self.get_img(text), size_hint=(None, None),
@@ -219,7 +224,7 @@ class WarScreen(FloatLayout):
             if self.beach.occupied(p):
                 if config.IMG_STYLE == 'intl':
                     idt = self.beach[p].idt
-                    print(idt)
+                    # logging.debug(f"idt\t {idt}")
                     self.idt_light.append(idt)
                     self.imgs[idt].opacity = 0.5
                 elif config.IMG_STYLE == 'chn':
@@ -228,7 +233,6 @@ class WarScreen(FloatLayout):
                                            pos_hint={'center_x': self.fx(p), 'center_y': self.fy(p)}))
                     self.dots[-1].opacity = 0.5
                     self.add_widget(self.dots[-1])
-
             else:
                 self.dots.append(Image(source=self.get_img("small_dot"), size_hint=(None, None),
                                        size=('%ddp' % (120 * S), '%ddp' % (120 * S)),
@@ -251,12 +255,12 @@ class WarScreen(FloatLayout):
         """点按棋盘"""
         px = round((x - 66) / 133.3, 0)
         py = 8 - round((y - 66) / 133.3, 0)
-        if not self.pov_Chn:
+        if self.flipped:
             px = 8 - px
             py = 8 - py
         p = int(px + 10 * py)  # 点选的位置
         if not self.beach.valid(p):
-            print("!位置不合法  p:", p)
+            logging.error(f"位置不合法  p\t {p}")
             return
 
         # moves, label, next_turn = self.war.solve_board_press(p)
@@ -269,7 +273,7 @@ class WarScreen(FloatLayout):
     def save(self, file_name="save.json"):
         with open(file=os.getcwd() + "\\" + file_name, mode='w', encoding='utf-8') as f:
             json.dump(self.war.logs, f)
-        print("已保存")
+        logging.info("已保存")
 
     def load(self, file_name="save.json"):
         if self.war.turn != 0:
@@ -278,7 +282,7 @@ class WarScreen(FloatLayout):
         with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
             ret = json.load(f)
         self.war.logs = ret
-        print("已载入")
+        logging.info("已载入")
 
     def _move_animation(self, idt, p):
         # 确保图片置于顶层
@@ -350,19 +354,19 @@ class WarScreen(FloatLayout):
 
     def regret(self):
         if self.war.turn == 0:
-            print("!无法回退")
+            logging.warning("无法回退")
             self.turn_label_twinkle()
             return
         self.war.regret()
-        print("已回退一步")
+        logging.debug("已回退一步")
 
     def gret(self):
         if self.war.turn == len(self.war.logs):
-            print("!无法前进")
+            logging.warning("无法前进")
             self.turn_label_twinkle()
             return
         self.war.gret()
-        print("已前进一步")
+        logging.debug("已前进一步")
 
     def turn_label_twinkle(self):
         """显示当前回合的label闪红"""
@@ -376,8 +380,8 @@ class WarScreen(FloatLayout):
 
     def ai_move_thread_start(self):
         """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
-        if self.war.is_checkmate:  # 新增游戏结束检查
-            print("游戏已结束，无法AI走子")
+        if self.war.is_checkmate:
+            logging.warning("游戏已结束，无法AI走子")
             return
         self.war.move_allowed = False
 
@@ -387,7 +391,7 @@ class WarScreen(FloatLayout):
             #     result = self.war.generate_ai_move()
             #     return result
             # except Exception as e:
-            #     print("!AI任务异常: " + str(e))
+            #     logging.error("!AI任务异常: " + str(e))
             #     return None
             result = self.war.generate_ai_move()
             return result
@@ -400,7 +404,7 @@ class WarScreen(FloatLayout):
                 self.remove_widget(self.jiazai)
             self.war.move_allowed = True
             Clock.schedule_once(_ui_operation)
-            print("AI任务完成，走子放开")
+            logging.info("AI任务完成，走子放开")
 
         # ui显示加载中
         self.remove_label()
@@ -421,7 +425,7 @@ class WarScreen(FloatLayout):
             _async_task(),
             self.loop
         ).add_done_callback(_on_complete)
-        print("已通过异步事件循环提交任务，限制走子")
+        logging.info("已通过异步事件循环提交任务，限制走子")
 
     creative_mode = False
     c_typ = 0
@@ -429,9 +433,9 @@ class WarScreen(FloatLayout):
     def handle_button_press(self, window, touch):
         if self.creative_mode:
             x, y = touch.pos
-            # print("touch.pos: ", x, y)
+            logging.debug(f"touch.pos\t {x}, {y}")
             x, y = x / M, y / M
-            print(touch.button)
+            # logging.debug(touch.button)  # debug
             if touch.button == 'scrollup':
                 self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
                 self.create_p[self.c_typ].opacity = 1
@@ -451,17 +455,16 @@ class WarScreen(FloatLayout):
                 self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
                 self.create_p[self.c_typ].opacity = 0.7
 
-
             elif touch.button == 'middle':
                 if x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
-                    if not self.pov_Chn:
+                    if self.flipped:
                         px = 8 - px
                         py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
-                        print("!位置不合法  p:", p)
+                        logging.error(f"位置不合法  p\t {p}")
                         return
 
                     if self.beach[p] is not None:
@@ -481,7 +484,7 @@ class WarScreen(FloatLayout):
                         elif i != None and i.typ == 12:
                             king += 1
                     if king != 1 or shuai != 1:
-                        print('不正确的王或帅数量')
+                        logging.error('不正确的王或帅数量')
                         return
                     self.war.ai.get_status()  # 快速获取当前状态
                     self.creative_mode = False
@@ -489,7 +492,6 @@ class WarScreen(FloatLayout):
                     self.remove_widget(self.cr_image)
                     for i in self.create_p:
                         self.remove_widget(i)
-
 
                 elif 1220 < x < 1576 and 228 < y < 1108:
                     self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
@@ -499,24 +501,24 @@ class WarScreen(FloatLayout):
                     self.c_typ = int(typx + 2 * typy)
                     self.create_p[self.c_typ].size = ('%ddp' % (65 * S), '%ddp' % (65 * S))
                     self.create_p[self.c_typ].opacity = 0.7
-                    print(self.c_typ)
+                    logging.debug(self.c_typ)
 
                 elif x < 1220:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
-                    if not self.pov_Chn:
+                    if self.flipped:
                         px = 8 - px
                         py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
-                        print("!位置不合法  p:", p)
+                        logging.error(f"位置不合法  p\t {p}")
                         return
                     if self.beach[p] is not None:
                         self.generate_animation([(2, self.beach[p].typ, p)])
                         self.war.beach.set_son(None, p=p)
                     else:
                         if self.c_typ == 6 and p not in (63, 64, 65, 73, 74, 75, 83, 84, 85):
-                            print('帅不能摆在这里')
+                            logging.error('帅不能摆在这里')
                             return
                         self.generate_animation([(1, self.c_typ, p)])
                         self.war.beach.set_son(Qizi(p=p, typ=self.c_typ, beach=self.war.beach), p=p)
@@ -527,18 +529,18 @@ class WarScreen(FloatLayout):
                     self.picture_image = []
                     return
                 if time.time() - self.click_time < 0.15:  # 点按频率限制
-                    print("!请按慢一点")
+                    logging.warning("!请按慢一点")
                     return
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                # print("touch.pos: ", x, y)
+                logging.debug(f"touch.pos\t {x}, {y}")
                 x, y = x / M, y / M
 
                 # 摆子
                 if 1272 < x < 1384 and 456 < y < 534:
                     if not self.war.move_allowed:
-                        print("!请等待走子完成")
+                        logging.warning("请等待走子完成")
                         return
                     self.creative_mode = True
                     self.remove_path()
@@ -554,7 +556,7 @@ class WarScreen(FloatLayout):
                     self.create_p = []
                     for i in range(0, 14):
                         self.create_p.append(Image(
-                            source=self.get_img("{i}"), size_hint=(None, None),
+                            source=self.get_img(str(i)), size_hint=(None, None),
                             size=('%ddp' % (55 * S), '%ddp' % (55 * S)),
                             pos_hint={'center_x': i % 2 / 10 + 0.825, 'center_y': i // 2 / 10 + 0.25}
                         ))
@@ -564,28 +566,23 @@ class WarScreen(FloatLayout):
                 # 下棋
                 if x < 1250:
                     if not self.war.move_allowed:
-                        print("!请等待走子完成")
+                        logging.warning("请等待走子完成")
                         return
-                    if not self.war.move_allowed:
-                        print("not allowed to move yet")
-                        return
-                    self.war.ai.get_status()  #快速获取当前状态
-                    print(">>>", self.war.ai.get_checked(self.war.beach, self.war.mycamp_intl))
+                    self.war.ai.get_status()  # 快速获取当前状态
+                    logging.debug(f">>> {self.war.ai.get_checked(self.war.beach, self.war.mycamp_intl)}")
                     if self.war.is_checkmate and self.war.mycamp_intl == False:
                         self.add_label('red_wins')
-                        print('游戏结束')
+                        logging.info('游戏结束')
                         return
                     elif self.war.is_checkmate and self.war.mycamp_intl == True:
                         self.add_label('black_wins')
-                        print('游戏结束')
+                        logging.info('游戏结束')
                         return
-                    # if self.regret_mode:
-                    #     self.change_regret_mode()
                     self.click_board(x, y)
                 # 右上三个
                 elif 750 < y < 848 and 1268 < x < 1536:
                     if not self.war.move_allowed:
-                        print("!请等待走子完成")
+                        logging.warning("请等待走子完成")
                         return
                     self.remove_path()
                     self.remove_label()
@@ -598,23 +595,24 @@ class WarScreen(FloatLayout):
                     elif 1476 < x < 1536:
                         self.gret()
                 elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
-                    if not self.war.move_allowed:
-                        print("!请等待走子完成")
-                        return
-                    if not self.war.is_checkmate:
-                        self.ai_move_thread_start()
+                    if self.war.move_allowed:
+                        if not self.war.is_checkmate:
+                            self.ai_move_thread_start()
+                        else:
+                            logging.warning('游戏已结束')
                     else:
-                        print('游戏已结束')
+                        logging.warning("请等待走子完成")
+                    
                 # 新局
                 elif 1458 < x < 1542 and 70 < y < 152:
                     if not self.war.move_allowed:
-                        print("!请等待走子完成")
+                        logging.warning("请等待走子完成")
                         return
                     self.safe_restart()
                 # 保存、载入
                 elif 174 < y < 262:
                     if not self.war.move_allowed:
-                        print("!请等待走子完成")
+                        logging.warning("请等待走子完成")
                         return
                     if 1266 < x < 1440:
                         self.save()
@@ -646,7 +644,7 @@ class WarScreen(FloatLayout):
                         config.edit_setting("img_style", 'intl')
                     else:
                         config.edit_setting("img_style", 'chn')
-                    print("重置成功，准备重启...")
+                    logging.info("重置成功，准备重启...")
                     # 延迟执行重启保证界面操作完成
                     Clock.schedule_once(lambda dt: self.safe_restart(), 0.5)
             elif touch.button == 'right':
@@ -654,22 +652,22 @@ class WarScreen(FloatLayout):
                     self.remove_widget(self.picture_image[-1])
                     self.picture_image = []
                 if time.time() - self.click_time < 0.15:  # 点按频率限制
-                    print("!请按慢一点")
+                    logging.warning("!请按慢一点")
                     return
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                # print("touch.pos: ", x, y)
+                logging.debug(f"touch.pos\t {x}, {y}")
                 x, y = x / M, y / M
                 if x < 1250:
                     px = round((x - 66) / 133.3, 0)
                     py = 8 - round((y - 66) / 133.3, 0)
-                    if not self.pov_Chn:
+                    if self.flipped:
                         px = 8 - px
                         py = 8 - py
                     p = int(px + 10 * py)  # 点选的位置
                     if not self.beach.valid(p):
-                        print("!位置不合法  p:", p)
+                        logging.warning(f"位置不合法  p: {p}")
                         return
                     if not self.beach[p] is None:
                         if self.beach[p].typ == 6 and self.war.king_win():
@@ -689,19 +687,24 @@ class WarScreen(FloatLayout):
             self.restart_expected = True
             App.get_running_app().stop()
 
-    pov_Chn = True
+    flipped = False
 
     def flip(self):
-        self.pov_Chn = not self.pov_Chn
+        # 更新翻转状态
+        self.flipped = not self.flipped
+        # 将self.board_img上下翻转
+        self.board_img.texture.flip_vertical()
+        # 棋子全部更新位置
         cnt = 0
         for i in self.imgs:
             p = self.pieces[cnt].p
             i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
             cnt += 1
-        print('已翻转棋盘')
+        logging.info('已翻转棋盘')
 
     def skip(self):
         self.war.mycamp_intl = not self.war.mycamp_intl
+        logging.info('已切换当前执棋方')
 
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
@@ -711,7 +714,7 @@ class WarScreen(FloatLayout):
         if time.time() - self.click_time < 0.15:  # 点按频率限制
             return
         self.click_time = time.time()
-        # print(key, modifier)  # debug
+        # logging.debug(f"{key}, {modifier}")  # debug
         # <-
         if key == 276 and not self.text_input.focus:
             self.regret()
@@ -726,7 +729,7 @@ class WarScreen(FloatLayout):
             self.flip()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
-            print("load " + json.dumps(self.war.logs))
+            logging.info("load " + json.dumps(self.war.logs))
             Clipboard.copy("load " + json.dumps(self.war.logs))
         # # Ctrl + V
         # elif 'ctrl' in modifier and key == 118:
@@ -850,7 +853,7 @@ class BingGo(App):
         #     self.sound.loop = True
         #     self.sound.play()
         # else:
-        #     print("!声音播放出错", self.sound)
+        #     logging.error("!声音播放出错", self.sound)
         self.war_screen = WarScreen(self.args)
         return self.war_screen
 
@@ -858,7 +861,7 @@ class BingGo(App):
         if os.path.exists("lastsave.json"):
             self.war_screen.load("lastsave.json")
             os.remove("./lastsave.json")
-            print("已回复进度并删除lastsave.json")
+            logging.info("已回复进度并删除lastsave.json")
 
     def on_stop(self):
         """应用退出时保存数据并清理资源"""
@@ -871,7 +874,7 @@ class BingGo(App):
             self.war_screen.loop.call_soon_threadsafe(self.war_screen.loop.stop)
         # 更新运行状态
         self._is_running = False
-        print("正在退出")
+        logging.info("正在退出")
 
 
 def reset():

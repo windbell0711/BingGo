@@ -8,6 +8,7 @@
 @License : Apache 2.0
 @File    : war.py
 """
+import logging
 from typing import Tuple
 
 from kivy.clock import Clock
@@ -129,7 +130,7 @@ class War:
         if self.ai.is_checkmate():
             self.is_checkmate = True
         if self.is_checkmate:
-            print("!游戏已结束")
+            logging.warning("!游戏已结束")
             return
         if self.mycamp_intl:
             pf, pt = self.ai.get_best_move_Intl()
@@ -137,14 +138,14 @@ class War:
         else:
             pf, pt = self.ai.get_best_move_Chn()
         if pf is None and pt is None:
-            print("!游戏已结束")
+            logging.warning("!游戏已结束")
             return
         cp = self.ai.get_cp()
         if self.last_cp == cp == 0: # 和棋
-            print("!游戏已结束")
+            logging.warning("!游戏已结束")
             return
         self.last_cp = cp
-        print(pf, pt)
+        logging.debug(f"{pf}, {pt}")
         # print(pf, pt, self.beach)
         # for l in self.beach:
         #     print(l)
@@ -199,9 +200,9 @@ class War:
         elif self.active_qizi is not None and p in Utils.ucis_to_poses(self.beach, self.ai.get_possible_moves_piece(Utils.posl(self.active_qizi.p))):
             moves = self.main(p=p)
         else:
-            print("无法抵达或无法选中", p)
+            logging.info("无法抵达或无法选中\t" + str(p))
         if moves:
-            print(self.ai.io.moves)
+            logging.debug(self.ai.io.moves)
         return moves
 
     def conduct_operations(self, opers):

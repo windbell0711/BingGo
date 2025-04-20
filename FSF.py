@@ -6,6 +6,7 @@
 @License : Apache 2.0
 @File    : FSF.py
 """
+import logging
 import os
 import time
 import re
@@ -18,7 +19,7 @@ import pyffish
 class FSF:
     def __init__(self):
         import chess.uci
-        chess.uci.LOGGER.setLevel(config.CHESS_LOG_LVL)  # 设置chess库日志级别为WARNING
+        chess.uci.LOGGER.setLevel(config.CHESS_LOG)  # 设置chess库日志级别为WARNING
 
         self.io = Utils.EngineIO()
         cores = os.cpu_count()
@@ -37,13 +38,13 @@ class FSF:
         bm = self.io.go(movetime=100).bestmove
         if self.is_checkmate():
             return None, None
-        print(bm)
+        logging.debug(bm)
         return Utils.pos(bm[0:2]), Utils.pos(bm[2:])
 
     def is_checkmate(self):
         h = self.io.info_handler
         self.get_status()
-        print(h.info["score"])
+        logging.debug(h.info["score"])
         if h.info["score"][1].mate == 0:
             return True
         return False
@@ -67,7 +68,7 @@ class FSF:
         # for m in pms:
         #     move = Utils.pos(m[2:])
         #     p = board[move]
-        #     print(m, move, p)
+        #     logging.debug(f"{m}, {move}, {p}")
         #     if p and p.typ == 6:
         #         if not intl:
         #             return 1  # 需要回退一步，因为红方自己走入将杀
@@ -78,7 +79,7 @@ class FSF:
         #         return 4  # 红方将军
         # return 0
         pms = self.io.get_possible_moves().result()
-        print(self.io.moves[-1] if self.io.moves else "", pms)
+        logging.debug(str(self.io.moves[-1] if self.io.moves else "") + str(pms))
         if self.io.moves and self.io.moves[-1] not in pms:
             if intl:
                 return 3  # 黑方自己走入将杀 checked

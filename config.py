@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any, List, Tuple
 import configparser
 
-VERSION = 'v1.2.0'
+VERSION = '(pre-release) alpha-1.2.0'
 ACTIVE_QIZI_DELTA_SCALE = 5  # 原大小：65
 IMG_STYLE_DEFAULT = 'chn'
 typ_dict = {
@@ -83,14 +83,14 @@ def boolean(s: str) -> bool:  # bool()不是exp的作用，为此重新写一个
 
 # 设置相关信息    {key: [type,  default, function_valid]}
 SETTINGS = {
-    "img_style":      [str,    "intl", lambda s: s in ("intl", "chn")],
+    "img_style":      [str,    "intl", lambda s: s in ("intl", "chn", "windows")],
     "quick_cmd_on":   [boolean, True,  lambda x: True],
     "save_when_quit": [boolean, False, lambda x: True],
     "INIT_LINEUP":    [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
     "ai_depth":       [int,     8,     lambda i: 2 <= i <= 12],
     "promotion_dis":  [int,     2,     lambda i: 1 <= i <= 3],
     "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10],
-    "chess_log_lvl":  [int,     0,     lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
+    "chess_log":      [int,     0,     lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
 }
 
 def edit_setting(key: str, value: str) -> None:

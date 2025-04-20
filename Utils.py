@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import copy
 import json
+import logging
 import os
 import sys
 import warnings
@@ -77,7 +78,7 @@ def ucis_to_poses(beach, ms: list[str]):
     beach1 = copy.deepcopy(beach.beach)
     for m in ms:
         moves.append(uci2pos(beach1, m)[0][0][2])
-    print(moves)
+    logging.debug(f"moves: {moves}")
     return moves
 
 
@@ -227,7 +228,7 @@ class EngineIO:
         self.start_pos = random.choice(self.fens) if self.fens else "startpos"
 
     def get_possible_moves(self, perft=1, pop=True):
-        print(self.moves)
+        logging.debug(f"moves: {self.moves}")
         if self.moves and pop:
             temp = self.moves.pop()
             self.send_moves()
