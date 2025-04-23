@@ -13,7 +13,8 @@ import os
 import threading
 import time
 import webbrowser
-import logging
+
+import config
 
 from kivy.config import Config
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
@@ -34,7 +35,6 @@ from kivy.graphics import Rotate
 from kivy.uix.textinput import TextInput
 
 from war import *
-import config
 import Utils
 
 
@@ -410,7 +410,7 @@ class WarScreen(FloatLayout):
         self.remove_label()
         self.remove_path()
         self.jiazai = Image(
-            source='imgs/img/jiazai.png',
+            source=self.get_img('jiazai'),
             size_hint=(None, None),
             size=('%ddp' % (70 * S), '%ddp' % (70 * S)),
             pos_hint={'center_x': 0.875, 'center_y': 0.515
@@ -433,7 +433,7 @@ class WarScreen(FloatLayout):
     def handle_button_press(self, window, touch):
         if self.creative_mode:
             x, y = touch.pos
-            logging.debug(f"touch.pos\t {x}, {y}")
+            # logging.debug(f"touch.pos\t {x}, {y}")
             x, y = x / M, y / M
             # logging.debug(touch.button)  # debug
             if touch.button == 'scrollup':
@@ -534,7 +534,7 @@ class WarScreen(FloatLayout):
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                logging.debug(f"touch.pos\t {x}, {y}")
+                # logging.debug(f"touch.pos\t {x}, {y}")
                 x, y = x / M, y / M
 
                 # 摆子
@@ -657,7 +657,7 @@ class WarScreen(FloatLayout):
                 self.click_time = time.time()
 
                 x, y = touch.pos
-                logging.debug(f"touch.pos\t {x}, {y}")
+                # logging.debug(f"touch.pos\t {x}, {y}")
                 x, y = x / M, y / M
                 if x < 1250:
                     px = round((x - 66) / 133.3, 0)
@@ -803,11 +803,15 @@ class WarScreen(FloatLayout):
             if not (args[0].strip().isdigit() and 0 < int(args[0]) < 10001):  return "!参数无效哦: " + str(args[0])  # 1ms<参数<=10001ms
             time.sleep(int(args[0]) / 1000)
             return f"已装死{args[0]}ms"
+        # 显示设置项
+        elif cmd in ("say", "显示设置", "提取", "当前项"):
+            if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
+            return str(getattr(config, args[0].strip().upper().replace(' ', '_')))
         # 更改设置
         elif cmd in ("set", "更改设置", "设置"):
             if len(args) != 2:  return f"!参数个数错误({len(args)}/{2})"  # 控制参数个数
-            config.edit_setting(key=args[0], value=args[1])
-            return "已完成更改: " + args[0] + " 更改为 " + args[1]
+            config.edit_setting(key=args[0].lower().replace(' ', '_'), value=args[1])
+            return "更改重启后生效: " + args[0] + " 更改为 " + args[1]
         # 重置设置
         elif cmd in ("reset", "重置设置"):
             config.reset_setting()

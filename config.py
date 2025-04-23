@@ -6,6 +6,7 @@
 @File    : config.py
 """
 from __future__ import annotations
+
 from typing import Any, List, Tuple
 import configparser
 
@@ -87,7 +88,7 @@ SETTINGS = {
     "quick_cmd_on":   [boolean, True,  lambda x: True],
     "save_when_quit": [boolean, False, lambda x: True],
     "INIT_LINEUP":    [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
-    "ai_depth":       [int,     8,     lambda i: 2 <= i <= 12],
+    "ai_depth":       [int,     8,     lambda i: 2 <= i <= 18],
     "promotion_dis":  [int,     2,     lambda i: 1 <= i <= 3],
     "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10],
     "chess_log":      [int,     0,     lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
@@ -156,7 +157,8 @@ def init_setting():
             else:  raise ValueError
         except (KeyError, ValueError):  # 键不存在，或者值不是合理的类型，或者值非法，则设为默认值
             globals()[const_name] = value[1]  # 黑魔法：设置一个以const_name为变量名的，以value[1]为值的变量
-            pass  # TODO: 需要显示和记录错误信息
+            print(f"{key} is not valid, set to default value {value[1]}.")  # 显示错误信息
+
     # >>> print(AI_DEPTH)  # output: 8
 
     # INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
@@ -180,3 +182,6 @@ def init_setting():
         reset_zvgv3()
 
 init_setting()
+
+# DEBUG
+# AI_DEPTH = 30
