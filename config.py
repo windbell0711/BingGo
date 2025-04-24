@@ -84,14 +84,18 @@ def boolean(s: str) -> bool:  # bool()不是exp的作用，为此重新写一个
 
 # 设置相关信息    {key: [type,  default, function_valid]}
 SETTINGS = {
-    "img_style":      [str,    "intl", lambda s: s in ("intl", "chn", "windows")],
-    "quick_cmd_on":   [boolean, True,  lambda x: True],
-    "save_when_quit": [boolean, False, lambda x: True],
-    "INIT_LINEUP":    [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
-    "ai_depth":       [int,     8,     lambda i: 2 <= i <= 18],
-    "promotion_dis":  [int,     2,     lambda i: 1 <= i <= 3],
-    "screen_scale":   [float,   1.0,   lambda f: 0.25 <= f <= 10],
-    "chess_log":      [int,     0,     lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
+    "img_style":       [str,    "intl",   lambda s: s in ("intl", "chn", "windows")],
+    "quick_cmd_on":    [boolean, True,    lambda x: True],
+    "save_when_quit":  [boolean, False,   lambda x: True],
+    "INIT_LINEUP":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
+    "ai_depth":        [int,     8,       lambda i: 2 <= i <= 18],
+    "promotion_dis":   [int,     2,       lambda i: 1 <= i <= 3],
+    "screen_scale":    [float,   1.0,     lambda f: 0.25 <= f <= 10],
+    "battle_online":   [str,    "off",    lambda s: s in ("off", "chn", "intl")],
+    "ba_gists_id":     [str,    "notset", lambda s: s.isalnum()],
+    "ba_gists_access": [str,    "notset", lambda s: s.isalnum()],
+    "username":        [str,    "notset", lambda s: (':' not in s) and s.isprintable()],
+    "chess_log":       [int,     0,       lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
 }
 
 def edit_setting(key: str, value: str) -> None:

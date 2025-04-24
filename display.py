@@ -378,34 +378,24 @@ class WarScreen(FloatLayout):
     def _change_color_turn_label(self, color):
         self.turn_label.color = color
 
-    def ai_move_thread_start(self):
+    def ai_move_thread(self):
         """完全异步化改造  reference: https://blog.csdn.net/xinzhengLUCK/article/details/138504766"""
         if self.war.is_checkmate:
             logging.warning("游戏已结束，无法AI走子")
             return
         self.war.move_allowed = False
-
-        async def _async_task():
-            # try:
-            #     # 耗时操作（AI计算）
-            #     result = self.war.generate_ai_move()
-            #     return result
-            # except Exception as e:
-            #     logging.error("!AI任务异常: " + str(e))
-            #     return None
+        async def _ai_async_task():
             result = self.war.generate_ai_move()
             return result
-
-        def _on_complete(task):
-            def _ui_operation(dt):
+        def _ai_on_complete(task):
+            def _ai_ui_operation(dt):
                 result = task.result()
                 if result is not None and not self.war.is_checkmate:  # 新增有效性检查
                     self.war.main(result)
                 self.remove_widget(self.jiazai)
             self.war.move_allowed = True
-            Clock.schedule_once(_ui_operation)
+            Clock.schedule_once(_ai_ui_operation)
             logging.info("AI任务完成，走子放开")
-
         # ui显示加载中
         self.remove_label()
         self.remove_path()
@@ -413,8 +403,7 @@ class WarScreen(FloatLayout):
             source=self.get_img('jiazai'),
             size_hint=(None, None),
             size=('%ddp' % (70 * S), '%ddp' % (70 * S)),
-            pos_hint={'center_x': 0.875, 'center_y': 0.515
-                      },
+            pos_hint={'center_x': 0.875, 'center_y': 0.515},
         )
         self.add_widget(self.jiazai)
         with self.jiazai.canvas.before:
@@ -422,10 +411,48 @@ class WarScreen(FloatLayout):
         Animation(angle=-18000, duration=300).start(rot)  # 创造并开始旋转动画
         # 通过已初始化的异步事件循环提交任务
         asyncio.run_coroutine_threadsafe(
-            _async_task(),
+            _ai_async_task(),
             self.loop
-        ).add_done_callback(_on_complete)
+        ).add_done_callback(_ai_on_complete)
         logging.info("已通过异步事件循环提交任务，限制走子")
+
+    def gists_move_thread(self):
+        """网络对战异步完成"""
+        if self.war.is_checkmate:
+            logging.warning("游戏已结束，无法走子")
+            return
+        self.war.move_allowed = False
+        async def _gists_async_task():
+            result = self.war.get_gists_move(config.USERNAME)
+            return result
+        def _gists_on_complete(task):
+            def _gists_ui_operation(dt):
+                result = task.result()
+                if result is not None and not self.war.is_checkmate:  # 新增有效性检查
+                    self.war.main(result)
+                self.remove_widget(self.wait_gists)
+            self.war.move_allowed = True
+            Clock.schedule_once(_gists_ui_operation)
+            logging.info("AI任务完成，走子放开")
+        # ui显示加载中
+        self.remove_label()
+        self.remove_path()
+        self.wait_gists = Image(
+            source=self.get_img('jiazai'),
+            size_hint=(None, None),
+            size=('%ddp' % (70 * S), '%ddp' % (70 * S)),
+            pos_hint={'center_x': 0.875, 'center_y': 0.515},
+        )
+        self.add_widget(self.wait_gists)
+        # with self.wait_gists.canvas.before:
+        #     rot = Rotate(angle=0, origin=(1400 * M, 618 * M))  # 固定旋转中心坐标
+        # Animation(angle=-18000, duration=300).start(rot)  # 创造并开始旋转动画
+        # 通过已初始化的异步事件循环提交任务
+        asyncio.run_coroutine_threadsafe(
+            _gists_async_task(),
+            self.loop
+        ).add_done_callback(_gists_on_complete)
+        logging.info("已通过异步事件循环提交等待gists任务，限制走子")
 
     creative_mode = False
     c_typ = 0
@@ -597,7 +624,7 @@ class WarScreen(FloatLayout):
                 elif 705 * 2 < x < 770 * 2 and 230 * 2 < y < 270 * 2:
                     if self.war.move_allowed:
                         if not self.war.is_checkmate:
-                            self.ai_move_thread_start()
+                            self.ai_move_thread()
                         else:
                             logging.warning('游戏已结束')
                     else:

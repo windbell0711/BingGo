@@ -9,11 +9,16 @@
 @File    : war.py
 """
 import logging
+import time
+
+import requests
 from typing import Tuple
 
 from kivy.clock import Clock
 
 import Utils
+import gists
+import history
 from FSF import FSF
 from Utils import pos2uci
 from beach import *
@@ -41,7 +46,7 @@ class War:
         '''
         self.turn = 0
 
-        self.move_allowed = True
+        self.move_allowed = True  # 初始化时允许用户操作
 
         self.auto_intl = False
         self.auto_chn = False
@@ -75,7 +80,7 @@ class War:
             if self.active_qizi.typ == 13 and 79 < p < 89:  # ♟->♛
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 11, p))
-            elif self.active_qizi.typ == 7 and p//10 == config.PROMOTION_DIS:  # 兵 -> 将
+            elif self.active_qizi.typ == 7 and p // 10 == config.PROMOTION_DIS:  # 兵 -> 将
                 moves.append((2, self.active_qizi.typ, p))
                 moves.append((1, 0, p))
 
@@ -114,6 +119,7 @@ class War:
         self.display.generate_animation(moves)
 
         Clock.schedule_once(lambda dt: self.ai_continue(), timeout=0.25)
+        Clock.schedule_once(lambda dt: self.gists_continue(), timeout=0.1)
         return moves
 
     def king_win(self):
@@ -141,7 +147,7 @@ class War:
             logging.warning("!游戏已结束")
             return
         cp = self.ai.get_cp()
-        if self.last_cp == cp == 0: # 和棋
+        if self.last_cp == cp == 0:  # 和棋
             logging.warning("!游戏已结束")
             return
         self.last_cp = cp
@@ -185,19 +191,20 @@ class War:
         if self.beach.occupied(p) and self.beach[p].camp_intl == self.mycamp_intl:
             # 王车易位
             if (self.mycamp_intl and
-                self.active_qizi is not None and
-                self.active_qizi.typ == 12 and
-                self.active_qizi.p == 3 and
-                self.beach[p].typ == 8 and
-                not self.ai.is_checkmate() and
-                ((p == 0 and self.beach[1] == self.beach[2] is None) or
-                 (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None))):
+                    self.active_qizi is not None and
+                    self.active_qizi.typ == 12 and
+                    self.active_qizi.p == 3 and
+                    self.beach[p].typ == 8 and
+                    not self.ai.is_checkmate() and
+                    ((p == 0 and self.beach[1] == self.beach[2] is None) or
+                     (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None))):
                 moves = self.main(p=p, castle=True)
             # 重选棋子
             else:
                 self.active_qizi = self.beach[p]
         # 点选位置self.active_qizi能走到
-        elif self.active_qizi is not None and p in Utils.ucis_to_poses(self.beach, self.ai.get_possible_moves_piece(Utils.posl(self.active_qizi.p))):
+        elif self.active_qizi is not None and p in Utils.ucis_to_poses(self.beach, self.ai.get_possible_moves_piece(
+                Utils.posl(self.active_qizi.p))):
             moves = self.main(p=p)
         else:
             logging.info("无法抵达或无法选中\t" + str(p))
@@ -232,9 +239,35 @@ class War:
         """如果设置了人机对弈，则自动完成下一步"""
         if (self.mycamp_intl and self.auto_intl) or (not self.mycamp_intl and self.auto_chn):
             if self.move_allowed:
-                self.display.ai_move_thread_start()
-            return True
+                self.display.ai_move_thread()
+                return True
         return False
+
+    def gists_continue(self):
+        """如果设置了网络对战，则自动完成下一步"""
+        if not config.BATTLE_ONLINE == "off":
+            if (config.BATTLE_ONLINE == "chn" and self.mycamp_intl) or \
+                    (config.BATTLE_ONLINE == "intl" and not self.mycamp_intl):
+                self.display.gists_move_thread()
+                return True
+        return False
+
+    def get_gists_move(self, username: str):
+        gists.send(username, history.format_to_str(self.logs))  # 发送走子过程
+        time.sleep(5)
+        message = gists.receive(username)
+        if message[message.find(':')+2:message.rstrip('|').rfind('|')+1] == history.format_to_str(self.logs):
+            # self.logs = history.restore_to_list(message[message.find(':')+2:])
+            pass
+        else:
+            logging.critical(f"警告！接收到的远程消息与本地状态不匹配，程序可能出错，已拒绝对方的走棋！\t{message[message.find(':')+2:message.rstrip('|').rfind('|')+1]} != {history.format_to_str(self.logs)}")
+        opers = history.restore_to_list(message[message.find(':')+2:-1])[-1]
+        for o in opers:
+            if o[0] == 0:
+                oper = o
+                break
+        self.active_qizi = self.beach[oper[1]]
+        return oper[2]
 
     @staticmethod
     def reverse_operation(oper: Tuple[int, int, int]) -> Tuple[int, int, int]:
