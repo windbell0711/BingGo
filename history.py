@@ -17,7 +17,7 @@ def format_to_str(l: list) -> str:
         for ii in i:
             s += f"{ii[0]},{ii[1]},{ii[2]};"
         s += "|"
-    return s
+    return s[:-1]
 
 def restore_to_list(s: str) -> list:
     """

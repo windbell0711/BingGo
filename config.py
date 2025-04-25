@@ -79,7 +79,7 @@ def lineup_valid(lineup: str) -> bool:
             return False
     return True
 
-def boolean(s: str) -> bool:  # bool()不是exp的作用，为此重新写一个boolean()
+def boolean(s: str) -> bool:  # bool()不是期望的作用，为此重新写一个boolean()
     return {'True': True, 'False': False}[s]
 
 # 设置相关信息    {key: [type,  default, function_valid]}

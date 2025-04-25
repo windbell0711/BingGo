@@ -9,6 +9,7 @@
 """
 import asyncio
 import json
+import logging
 import os
 import threading
 import time
@@ -17,6 +18,9 @@ import webbrowser
 import config
 
 from kivy.config import Config
+
+import history
+
 Config.set('graphics', 'width', '800')  # 必须在导入其他任何Kivy模块之前设置
 Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', False)  # 禁止调整窗口大小
@@ -270,19 +274,28 @@ class WarScreen(FloatLayout):
         if self.war.active_qizi:
             self.show_path()
 
-    def save(self, file_name="save.json"):
-        with open(file=os.getcwd() + "\\" + file_name, mode='w', encoding='utf-8') as f:
-            json.dump(self.war.logs, f)
-        logging.info("已保存")
+    def save(self, file_name="save.bg"):
+        try:
+            s = history.format_to_str(self.war.logs)
+            with open(file=os.getcwd() + "\\" + file_name, mode='w', encoding='utf-8') as f:
+                f.write(s)
+            logging.info("已保存： " + s)
+        except:
+            logging.error("保存失败")
 
-    def load(self, file_name="save.json"):
+    def load(self, file_name="save.bg"):
         if self.war.turn != 0:
-            self.save("autosave%d.json" % int(time.time()))
-            self.safe_restart()
-        with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
-            ret = json.load(f)
-        self.war.logs = ret
-        logging.info("已载入")
+            if not os.path.exists("autosave\\"):
+                os.mkdir("autosave\\")
+            self.save("autosave\\autosave%d.bg" % int(time.time()))
+            self.restart()
+        try:
+            with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
+                l = history.restore_to_list(f.read())
+                self.war.logs = l
+            logging.info("已载入")
+        except:
+            logging.error("载入失败")
 
     def _move_animation(self, idt, p):
         # 确保图片置于顶层
@@ -635,7 +648,7 @@ class WarScreen(FloatLayout):
                     if not self.war.move_allowed:
                         logging.warning("请等待走子完成")
                         return
-                    self.safe_restart()
+                    self.restart()
                 # 保存、载入
                 elif 174 < y < 262:
                     if not self.war.move_allowed:
@@ -673,7 +686,7 @@ class WarScreen(FloatLayout):
                         config.edit_setting("img_style", 'chn')
                     logging.info("重置成功，准备重启...")
                     # 延迟执行重启保证界面操作完成
-                    Clock.schedule_once(lambda dt: self.safe_restart(), 0.5)
+                    Clock.schedule_once(lambda dt: self.restart(), 0.5)
             elif touch.button == 'right':
                 if len(self.picture_image):
                     self.remove_widget(self.picture_image[-1])
@@ -708,7 +721,7 @@ class WarScreen(FloatLayout):
                         else:
                             self.show_picture(self.beach[p].typ)
 
-    def safe_restart(self):
+    def restart(self):
         """安全重启"""
         if self.parent and self.parent.parent:  # 检查widget树状态
             self.restart_expected = True
@@ -756,8 +769,8 @@ class WarScreen(FloatLayout):
             self.flip()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
-            logging.info("load " + json.dumps(self.war.logs))
-            Clipboard.copy("load " + json.dumps(self.war.logs))
+            logging.info("load：" + history.format_to_str(self.war.logs))
+            Clipboard.copy("load：" + history.format_to_str(self.war.logs))
         # # Ctrl + V
         # elif 'ctrl' in modifier and key == 118:
         #     p = Clipboard.paste().strip().replace("\n", "")
@@ -770,6 +783,7 @@ class WarScreen(FloatLayout):
             if not self.text_input.focus:  self.text_input.focus = True
             if not self.text_input.text == "":
                 ret = self.handle_quick_cmd(user_input=self.text_input.text)
+                logging.info(f"执行{self.text_input.text}的结果：{ret}")
                 self.text_input.text = ret if ret.find(':') == -1 else ret[:ret.find(':')]
 
     def handle_quick_cmd(self, user_input: str) -> str:
@@ -781,6 +795,7 @@ class WarScreen(FloatLayout):
             user_input_li = user_input.replace("；", ";").split(";")
             for inp in user_input_li:
                 ret = self.handle_single_quick_cmd(inp)
+                logging.info(f"执行{inp}的结果：{ret}")
                 if ret[0] == '!':
                     return ret
             return "已完成 " + str(len(user_input_li)) + " 条指令"
@@ -789,7 +804,7 @@ class WarScreen(FloatLayout):
 
     def handle_single_quick_cmd(self, user_input: str) -> str:
         """
-        处理用户输入的单行快速指令。
+        处理用户输入的单行快速指令。命令行规则。
         输入：指令内容。输出：返回信息，第一个字符为“!”表示出错中断。
         """
         # 预处理输入
@@ -806,16 +821,36 @@ class WarScreen(FloatLayout):
             args = [argu.strip() for argu in inp[inp.find(":")+1:].split(",")]
 
         # 处理和执行指令
-        # 载入
-        if cmd in ("load_log", "load", "载入", "导入"):
+        # 保存
+        if cmd in ("save_log", "save", "保存", "导出"):
+            self.save()
+            return "已保存至save.bg"
+        # 导出
+        elif cmd in ("export_log", "export", "导出", "复制", "拷贝"):
             if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
-            try:
-                l = json.loads(args[0])
-                self.restart()
-                self.war.logs = l
-                return "已载入布局"
-            except json.decoder.JSONDecodeError:
-                return "!Invalid log: " + args[0]
+            Clipboard.copy("load：" + history.format_to_str(self.war.logs))
+            return "已复制棋谱"
+        # 载入
+        elif cmd in ("load_log", "load", "载入", "导入"):
+            if len(args) == 0:
+                self.load()
+            elif len(args) == 1:
+                try:
+                    l = history.restore_to_list(args[0])
+                    self.restart()
+                    self.war.logs = l
+                    return "已载入布局"
+                except:
+                    return "!棋谱不合法: " + args[0]
+            else:
+                return f"!参数个数错误({len(args)}/1or2)"
+        # 清理
+        elif cmd in ("clean", "清理"):
+            if os.path.exists("autosave"):  # 删除autosave文件夹及其中所有文件
+                for file in os.listdir("autosave"):
+                    os.remove(os.path.join("autosave", file))
+            os.rmdir("autosave")
+            return "已删除autosave"
         # 翻转
         elif cmd in ("flip", "twist", "翻转", "反转"):
             self.flip()
@@ -830,6 +865,11 @@ class WarScreen(FloatLayout):
             if not (args[0].strip().isdigit() and 0 < int(args[0]) < 10001):  return "!参数无效哦: " + str(args[0])  # 1ms<参数<=10001ms
             time.sleep(int(args[0]) / 1000)
             return f"已装死{args[0]}ms"
+        elif cmd in ("error", "报错"):
+            logging.info("用户要求报错。")
+            raise Exception("用户报错")
+        elif cmd in ("note",):
+            return ""
         # 显示设置项
         elif cmd in ("say", "显示设置", "提取", "当前项"):
             if len(args) != 1:  return f"!参数个数错误({len(args)}/{1})"  # 控制参数个数
@@ -889,17 +929,17 @@ class BingGo(App):
         return self.war_screen
 
     def on_start(self):
-        if os.path.exists("lastsave.json"):
-            self.war_screen.load("lastsave.json")
-            os.remove("./lastsave.json")
-            logging.info("已回复进度并删除lastsave.json")
+        if os.path.exists("lastsave.bg"):
+            self.war_screen.load("lastsave.bg")
+            os.remove("./lastsave.bg")
+            logging.info("已回复进度并删除lastsave.bg")
 
     def on_stop(self):
         """应用退出时保存数据并清理资源"""
         # 保存棋局数据
         if config.SAVE_WHEN_QUIT:
             if self.war_screen.war.turn != 0:
-                self.war_screen.save("lastsave.json")
+                self.war_screen.save("lastsave.bg")
         # 关闭异步事件循环
         if hasattr(self.war_screen, 'loop'):
             self.war_screen.loop.call_soon_threadsafe(self.war_screen.loop.stop)
