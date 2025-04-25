@@ -84,7 +84,7 @@ def boolean(s: str) -> bool:  # bool()不是exp的作用，为此重新写一个
 
 # 设置相关信息    {key: [type,  default, function_valid]}
 SETTINGS = {
-    "img_style":       [str,    "intl",   lambda s: s in ("intl", "chn", "windows")],
+    "img_style":       [str,    "chn",    lambda s: s in ("intl", "chn", "windows")],
     "quick_cmd_on":    [boolean, True,    lambda x: True],
     "save_when_quit":  [boolean, False,   lambda x: True],
     "INIT_LINEUP":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
