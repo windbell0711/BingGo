@@ -87,15 +87,15 @@ SETTINGS = {
     "img_style":       [str,    "chn",    lambda s: s in ("intl", "chn", "windows")],
     "quick_cmd_on":    [boolean, True,    lambda x: True],
     "save_when_quit":  [boolean, False,   lambda x: True],
-    "INIT_LINEUP":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |b bbbbb b| p     p |         |cmxswsxmc|", lineup_valid],
+    "INIT_LINEUP":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |bbb b bbb| p     p |         |cmxswsxmc|", lineup_valid],
     "ai_depth":        [int,     8,       lambda i: 2 <= i <= 18],
-    "promotion_dis":   [int,     2,       lambda i: 1 <= i <= 3],
+    "promotion_dis":   [int,     2,       lambda i: 1 <= i <= 3],  # TODO
     "screen_scale":    [float,   1.0,     lambda f: 0.25 <= f <= 10],
     "battle_online":   [str,    "off",    lambda s: s in ("off", "chn", "intl")],
     "ba_gists_id":     [str,    "notset", lambda s: s.isalnum()],
     "ba_gists_access": [str,    "notset", lambda s: s.isalnum()],
     "username":        [str,    "notset", lambda s: (':' not in s) and s.isprintable()],
-    "chess_log":       [int,     0,       lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
+    "chess_log":       [int,     20,      lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
 }
 
 def edit_setting(key: str, value: str) -> None:
@@ -130,12 +130,13 @@ def edit_zvgv3(key: str, value: str) -> None:
 def reset_zvgv3() -> None:
     """恢复默认zvgv3"""
     with open("zvgv3.ini", mode='w', newline='', encoding='utf-8') as frx:
-        frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\nstartFen = rnbk1qnbr/pppp1pppp/9/9/9/O1OOOOO1O/1C5C1/9/RHEASAEHR w kq - 0 1\n\n"
-                  "wazir = s\nhorse = h\ncustomPiece1 = m:NB2RmpRcpR\ncustomPiece2 = e:B2\ncustomPiece3 = o:fWlWrW\ncustomPiece4 = a:K\ncustomPiece5 = c:mRcpR\n\n"
+        frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\n"
+                  "startFen = rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1\n\n"
+                  "wazir = s\nhorse = h\ncustomPiece1 = m:NB2RmpRcpR\ncustomPiece2 = e:B2\ncustomPiece3 = o:fsW\ncustomPiece4 = a:K\ncustomPiece5 = c:mRimpRcpR\n\n"
                   "king = k\nqueen = q\nrook = r\nbishop = b\nknight = n\npawn= p\n\n"
                   "pawnTypes = po\npromotionPawnTypesWhite = o\npromotionPawnTypesBlack = p\npromotionPieceTypesBlack = nbrq\npromotionPieceTypesWhite = m\npromotionRegionWhite = *9 *8 *7\npromotionRegionBlack = *1\n\n"
                   "castling = true\ncastlingKingsideFile = g\ncastlingQueensideFile = c\ncastlingKingFile = e\ncastlingRookKingsideFile = i\ncastlingRookQueensideFile = a\n"
-                  "checking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\nextinctionPieceTypes = Sk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\nstalemateValue = loss\n\n"
+                  "checking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\ndoubleStepRegionWhite = *4\nextinctionPieceTypes = Sk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\n;stalemateValue = loss\n\n"
                   "mobilityRegionWhiteWazir = d1 e1 f1 d2 e2 f2 d3 e3 f3\n\npieceToCharTable = PNBRQ..Spnbrq..kAaEe..OoCc..")
 
 
