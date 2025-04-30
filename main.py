@@ -7,7 +7,7 @@
 """  # TODO: 删除注释
 import config
 
-debug = False
+debug = True
 
 if not debug:
     try:

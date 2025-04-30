@@ -23,19 +23,20 @@ class FSF:
 
         self.io = Utils.EngineIO()
         cores = os.cpu_count()
-        self.io.init_engine("fairy-stockfish-largeboards_x86-64-bmi2-latest.exe", {"Threads": cores, "Hash": cores*8}, config="zvgv3.ini", variant="zhongxiang_vs_guoxiang")
+        self.io.init_engine("fairy-stockfish-largeboards_x86-64-bmi2-latest.exe", {"Threads": cores, "Hash": cores*8}, config="latest.ini", variant="zhongxiang_vs_guoxiang")
         self.io.init_game()
         self.io.engine.go(depth=1)  # 快速获取当前状态
         self.lasts = []
+        self.black_flag = False
 
     def get_best_move_Intl(self):
-        bm = self.io.go(movetime=100).bestmove
+        bm = self.io.go(depth=config.AI_DEPTH).bestmove
         if self.is_checkmate():
             return None, None
         return Utils.pos(bm[0:2]), Utils.pos(bm[2:])
 
     def get_best_move_Chn(self):
-        bm = self.io.go(movetime=100).bestmove
+        bm = self.io.go(depth=config.AI_DEPTH).bestmove
         if self.is_checkmate():
             return None, None
         logging.debug(bm)
@@ -52,15 +53,18 @@ class FSF:
     def regret(self):
         self.lasts += [self.io.moves[-1]]
         self.io.moves.pop()
+        self.get_status()
 
     def gret(self):
         self.io.moves.append(self.lasts[-1])
         self.lasts.pop()
+        self.get_status()
 
     def get_status(self, move_now=""):
         e = self.io.engine
-        e.send_line("position " + self.io.start_pos + " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
-        e.go(depth=config.AI_DEPTH)
+        print("position " + "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1" if not self.io.moves and not self.black_flag else  "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR b kq - 0 1" + " moves " + " ".join([] if not self.io.moves else self.io.moves[1:] + ([move_now] if move_now else [])))
+        self.io.send_moves(black_flag=self.black_flag)
+        e.go(depth=4)
 
     def get_checked(self, board: Beach, intl: bool):
         # pms = self.io.get_possible_moves().result()
@@ -78,7 +82,7 @@ class FSF:
         #             return 3  # 黑方自己走入将杀
         #         return 4  # 红方将军
         # return 0
-        pms = self.io.get_possible_moves().result()
+        pms = self.io.get_possible_moves(black_flag=self.black_flag).result()
         logging.debug(str(self.io.moves[-1] if self.io.moves else "") + str(pms))
         if self.io.moves and self.io.moves[-1] not in pms:
             if intl:
@@ -95,4 +99,4 @@ class FSF:
         return self.io.info_handler.info["score"][1].cp
 
     def get_possible_moves_piece(self, piece):
-        return [m for m in self.io.get_possible_moves(pop=False).result() if m.startswith(piece)]
+        return [m for m in self.io.get_possible_moves(pop=False, black_flag=self.black_flag).result() if m.startswith(piece)]

@@ -120,16 +120,16 @@ def reset_setting() -> None:
 def edit_zvgv3(key: str, value: str) -> None:
     """zvgv3.ini中添加或覆盖"""
     cfex = configparser.ConfigParser()
-    cfex.read("zvgv3.ini")
+    cfex.read("latest.ini")
     if "zhongxiang_vs_guoxiang" not in cfex:
         cfex.add_section("zhongxiang_vs_guoxiang")
     cfex.set("zhongxiang_vs_guoxiang", key, value)
-    with open("zvgv3.ini", mode='w', newline='', encoding='utf-8') as fex:
+    with open("latest.ini", mode='w', newline='', encoding='utf-8') as fex:
         cfex.write(fex)
 
 def reset_zvgv3() -> None:
     """恢复默认zvgv3"""
-    with open("zvgv3.ini", mode='w', newline='', encoding='utf-8') as frx:
+    with open("latest.ini", mode='w', newline='', encoding='utf-8') as frx:
         frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\n"
                   "startFen = rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1\n\n"
                   "wazir = s\nhorse = h\ncustomPiece1 = m:NB2RmpRcpR\ncustomPiece2 = e:B2\ncustomPiece3 = o:fsW\ncustomPiece4 = a:K\ncustomPiece5 = c:mRimpRcpR\n\n"
@@ -178,10 +178,10 @@ def init_setting():
 
     # 检查zvgv3.ini文件是否存在，不存在则创建
     try:
-        with open(file="zvgv3.ini", mode='r', newline='', encoding='utf-8'):
+        with open(file="latest.ini", mode='r', newline='', encoding='utf-8'):
             pass
         cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
-        cf.read('zvgv3.ini')  # 读取 INI 文件
+        cf.read('latest.ini')  # 读取 INI 文件
         _ = cf["zhongxiang_vs_guoxiang"]
     except (KeyError, FileNotFoundError, configparser.ParsingError):
         reset_zvgv3()
@@ -189,4 +189,4 @@ def init_setting():
 init_setting()
 
 # DEBUG
-# AI_DEPTH = 30
+AI_DEPTH = 8  # 这是用来让dep超过限制的范围的

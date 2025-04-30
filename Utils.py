@@ -227,7 +227,7 @@ class EngineIO:
         self.reset_engine()  # 补充参数
         self.start_pos = random.choice(self.fens) if self.fens else "startpos"
 
-    def get_possible_moves(self, perft=1, pop=True):
+    def get_possible_moves(self, perft=1, pop=True, black_flag=False):
         logging.debug(f"moves: {self.moves}")
         if self.moves and pop:
             temp = self.moves.pop()
@@ -240,5 +240,6 @@ class EngineIO:
         moves = self.engine._queue_command(command, async_callback=True)
         return moves
 
-    def send_moves(self):
-        self.engine.send_line("position " + self.start_pos + " moves " + " ".join(self.moves))
+    def send_moves(self, black_flag=False):
+        self.engine.send_line("position " + "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1" if not self.moves and not black_flag else  "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR b kq - 0 1" + " moves " + " ".join(self.moves))
+

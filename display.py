@@ -610,7 +610,7 @@ class WarScreen(FloatLayout):
                         return
                     self.war.ai.get_status()  # 快速获取当前状态
                     logging.debug(f">>> {self.war.ai.get_checked(self.war.beach, self.war.mycamp_intl)}")
-                    if self.war.is_checkmate and self.war.mycamp_intl == False:
+                    if self.war.ai.is_checkmate() and self.war.mycamp_intl == False:
                         self.add_label('red_wins')
                         logging.info('游戏结束')
                         return
@@ -736,6 +736,7 @@ class WarScreen(FloatLayout):
         self.board_img.texture.flip_vertical()
         # 棋子全部更新位置
         cnt = 0
+        self.war.ai.black_flag = not self.war.ai.black_flag
         for i in self.imgs:
             p = self.pieces[cnt].p
             i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
