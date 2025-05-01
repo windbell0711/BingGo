@@ -62,8 +62,7 @@ class FSF:
 
     def get_status(self, move_now=""):
         e = self.io.engine
-        print("position " + "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1" if not self.io.moves and not self.black_flag else  "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR b kq - 0 1" + " moves " + " ".join([] if not self.io.moves else self.io.moves[1:] + ([move_now] if move_now else [])))
-        self.io.send_moves(black_flag=self.black_flag)
+        e.send_line("position " + "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1" if not self.io.moves and not self.black_flag else "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR b kq - 0 1" " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
         e.go(depth=4)
 
     def get_checked(self, board: Beach, intl: bool):
@@ -82,7 +81,7 @@ class FSF:
         #             return 3  # 黑方自己走入将杀
         #         return 4  # 红方将军
         # return 0
-        pms = self.io.get_possible_moves(black_flag=self.black_flag).result()
+        pms = self.io.get_possible_moves().result()
         logging.debug(str(self.io.moves[-1] if self.io.moves else "") + str(pms))
         if self.io.moves and self.io.moves[-1] not in pms:
             if intl:
@@ -99,4 +98,4 @@ class FSF:
         return self.io.info_handler.info["score"][1].cp
 
     def get_possible_moves_piece(self, piece):
-        return [m for m in self.io.get_possible_moves(pop=False, black_flag=self.black_flag).result() if m.startswith(piece)]
+        return [m for m in self.io.get_possible_moves(pop=False).result() if m.startswith(piece)]

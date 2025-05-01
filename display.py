@@ -732,11 +732,10 @@ class WarScreen(FloatLayout):
     def flip(self):
         # 更新翻转状态
         self.flipped = not self.flipped
-        # 将self.board_img上下翻转
+        # 将self.board_img上下翻转  TODO
         self.board_img.texture.flip_vertical()
         # 棋子全部更新位置
         cnt = 0
-        self.war.ai.black_flag = not self.war.ai.black_flag
         for i in self.imgs:
             p = self.pieces[cnt].p
             i.pos_hint = {'center_x': self.fx(p), 'center_y': self.fy(p)}
