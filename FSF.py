@@ -62,7 +62,7 @@ class FSF:
 
     def get_status(self, move_now=""):
         e = self.io.engine
-        e.send_line("position " + "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1" if not self.io.moves and not self.black_flag else "rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR b kq - 0 1" " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
+        e.send_line("position " + self.io.start_pos + " moves " + " ".join(self.io.moves + ([move_now] if move_now else [])))
         e.go(depth=4)
 
     def get_checked(self, board: Beach, intl: bool):

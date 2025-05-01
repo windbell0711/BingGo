@@ -743,8 +743,9 @@ class WarScreen(FloatLayout):
         logging.info('已翻转棋盘')
 
     def skip(self):
-        self.war.mycamp_intl = not self.war.mycamp_intl
-        logging.info('已切换当前执棋方')
+        # self.war.mycamp_intl = not self.war.mycamp_intl
+        # logging.info('已切换当前执棋方')
+        logging.warning("skip已弃用")
 
     def handle_keyboard(self, window, key, scancode, codepoint, modifier):
         if self.quick_cmd_status == 0:  # 键盘监听关闭
