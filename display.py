@@ -623,11 +623,11 @@ class WarScreen(FloatLayout):
                         return
                     self.war.ai.get_status()  # 快速获取当前状态
                     logging.debug(f">>> {self.war.ai.get_checked(self.war.beach, self.war.mycamp_intl)}")
-                    if self.war.ai.is_checkmate() and self.war.mycamp_intl == False:
+                    if self.war.shuai_win():
                         self.add_label('red_wins')
                         logging.info('游戏结束')
                         return
-                    elif self.war.is_checkmate and self.war.mycamp_intl == True:
+                    elif self.war.king_win():
                         self.add_label('black_wins')
                         logging.info('游戏结束')
                         return

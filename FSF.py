@@ -83,10 +83,10 @@ class FSF:
         # return 0
         pms = self.io.get_possible_moves().result()
         logging.debug(str(self.io.moves[-1] if self.io.moves else "") + str(pms))
-        if self.io.moves and self.io.moves[-1] not in pms:
+        if self.is_checkmate():
             if intl:
-                return 3  # 黑方自己走入将杀 checked
-            return 1  # 红方自己走入将杀 wangbeijj
+                return 1  # black_wins
+            return 3  # red_wins
         check = pyffish.gives_check("zhongxiang_vs_guoxiang", self.io.start_pos, self.io.moves)
         if check:
             if intl:

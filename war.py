@@ -101,20 +101,14 @@ class War:
         self.display.remove_label()
         if label > 0:
             # self.display.add_label("将军！" if label in (2, 4) else "将杀！")
-            self.display.add_label(("", "wangbeijj", "check", "checked", "jiangjun")[label])
-        if label == 1 or label == 3:
-            ms = [self.reverse_operation(m) for m in reversed(moves)]
-            moves.extend(ms)
-            self.conduct_operations(opers=ms)
-            self.ai.io.moves.pop()
-        else:
-            if self.turn != len(self.logs):
-                self.logs = self.logs[:self.turn]
-            self.logs.append(moves)
-            self.turn += 1
-            self.display.turn_label.text = str(self.turn)
-            self.mycamp_intl = not self.mycamp_intl
-            self.active_qizi = None
+            self.display.add_label(("", "black_wins", "check", "red_wins", "jiangjun")[label])
+        if self.turn != len(self.logs):
+            self.logs = self.logs[:self.turn]
+        self.logs.append(moves)
+        self.turn += 1
+        self.display.turn_label.text = str(self.turn)
+        self.mycamp_intl = not self.mycamp_intl
+        self.active_qizi = None
 
         self.display.generate_animation(moves)
 
