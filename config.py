@@ -61,6 +61,21 @@ typ_num2str = {
     12: "K ",
     13: "P "
 }
+typ_str2fsf = {
+    "R": "r",
+    "N": "n",
+    "B": "b",
+    "Q": "q",
+    "K": "k",
+    "P": "p",
+    "c": "C",
+    "x": "X",
+    "s": "S",
+    "m": "M",
+    "p": "L",
+    "b": "O",
+    "w": "W"
+}
 ALL_PIECE_TYPES = 'jcmxspwbRNBQKP'
 
 def lineup_valid(lineup: str) -> bool:
@@ -79,33 +94,54 @@ def lineup_valid(lineup: str) -> bool:
             return False
     return True
 
-def boolean(s: str) -> bool:  # bool()不是期望的作用，为此重新写一个boolean()
-    return {'True': True, 'False': False}[s]
+def lineup_to_fen(lineup: str) -> str:
+    """布局字符串转化为FEN"""
+    fen = ""
+    space = 0
+    for i in range(1, len(lineup)):
+        if lineup[i] == " ":
+            space += 1
+        else:
+            if space != 0:
+                fen += str(space)
+                space = 0
+            if lineup[i] in ALL_PIECE_TYPES:
+                fen += typ_str2fsf[lineup[i]]
+            elif lineup[i].isdigit():
+                fen += lineup[i]
+            elif lineup[i] == "|":
+                fen += "/"
+    return fen[:-1]
 
-# 设置相关信息    {key: [type,  default, function_valid]}
+def boolean(s: str) -> bool:  # bool()不是期望的作用，为此重新写一个boolean()
+    return {'True': True, 'true': True, 'False': False, 'false': False}[s]
+
+# 设置相关信息     {key: [type,   default,  function_valid]}
 SETTINGS = {
     "img_style":       [str,    "chn",    lambda s: s in ("intl", "chn", "windows")],
     "quick_cmd_on":    [boolean, True,    lambda x: True],
     "save_when_quit":  [boolean, False,   lambda x: True],
-    "INIT_LINEUP":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |bbb b bbb| p     p |         |cmxswsxmc|", lineup_valid],
+    "init_lineup":     [str,    "|RNBK QNBR|PPPP PPPP|         |         |         |bbb b bbb| p     p |         |cmxswsxmc|", lineup_valid],
+    "active_camp":     [str,    "chn",    lambda s: s.lower() in ("intl", "chn")],
     "ai_depth":        [int,     8,       lambda i: 2 <= i <= 18],
-    "promotion_dis":   [int,     2,       lambda i: 1 <= i <= 3],  # TODO
+    "promotion_dis":   [int,     2,       lambda i: 1 <= i <= 3],
     "screen_scale":    [float,   1.0,     lambda f: 0.25 <= f <= 10],
     "battle_online":   [str,    "off",    lambda s: s in ("off", "chn", "intl")],
-    "ba_gists_id":     [str,    "notset", lambda s: s.isalnum()],
-    "ba_gists_access": [str,    "notset", lambda s: s.isalnum()],
+    "b_gists_id":      [str,    "notset", lambda s: s.isalnum()],
+    "b_gists_access":  [str,    "notset", lambda s: s.isalnum()],
     "username":        [str,    "notset", lambda s: (':' not in s) and s.isprintable()],
     "chess_log":       [int,     20,      lambda i: i in (0, 10, 20, 30, 40, 50)]  # 0-NOTSET; 10-DEBUG; 20-INFO; 30-WARNING; 40-ERROR; 50-CRITICAL
 }
 
-def edit_setting(key: str, value: str) -> None:
+def edit_setting(key: str, value: str, file="setting.ini", section="BingGo") -> None:
     """在setting.ini中添加或覆盖"""
-    cfe = configparser.ConfigParser()
-    cfe.read("setting.ini")
-    if "BingGo" not in cfe:
-        cfe.add_section("BingGo")
-    cfe.set("BingGo", key, value)
-    with open("setting.ini", mode='w', newline='', encoding='utf-8') as fe:
+    cfe = configparser.RawConfigParser()  # https://blog.csdn.net/weixin_43031092/article/details/109174379
+    cfe.optionxform = lambda option: option
+    cfe.read(file)
+    if section not in cfe:
+        cfe.add_section(section)
+    cfe.set(section, key, value)
+    with open(file=file, mode='w', newline='', encoding='utf-8') as fe:
         cfe.write(fe)
 
 def reset_setting() -> None:
@@ -117,26 +153,26 @@ def reset_setting() -> None:
     with open("setting.ini", mode='w', newline='', encoding='utf-8') as fr:
         cfr.write(fr)
 
-def edit_zvgv3(key: str, value: str) -> None:
-    """zvgv3.ini中添加或覆盖"""
-    cfex = configparser.ConfigParser()
-    cfex.read("latest.ini")
-    if "zhongxiang_vs_guoxiang" not in cfex:
-        cfex.add_section("zhongxiang_vs_guoxiang")
-    cfex.set("zhongxiang_vs_guoxiang", key, value)
-    with open("latest.ini", mode='w', newline='', encoding='utf-8') as fex:
-        cfex.write(fex)
+def edit_rule(key: str, value: str) -> None:
+    """rule.ini中添加或覆盖"""
+    edit_setting(key, value, "latest.ini", "zhongxiang_vs_guoxiang")
+    # cfex = configparser.ConfigParser()
+    # cfex.read("latest.ini")
+    # if "zhongxiang_vs_guoxiang" not in cfex:
+    #     cfex.add_section("zhongxiang_vs_guoxiang")
+    # cfex.set("zhongxiang_vs_guoxiang", key, value)
+    # with open("latest.ini", mode='w', newline='', encoding='utf-8') as fex:
+    #     cfex.write(fex)
 
-def reset_zvgv3() -> None:
-    """恢复默认zvgv3"""
+def reset_rule() -> None:
+    """恢复默认rule"""
     with open("latest.ini", mode='w', newline='', encoding='utf-8') as frx:
-        frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\n"
-                  "startFen = rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1C5C1/9/RHEASAEHR w kq - 0 1\n\n"
-                  "wazir = s\nhorse = h\ncustomPiece1 = m:NB2RmpRcpR\ncustomPiece2 = e:B2\ncustomPiece3 = o:fsW\ncustomPiece4 = a:K\ncustomPiece5 = c:mRimpRcpR\n\n"
+        frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\nstartFen = rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1L5L1/9/CMXSWSXMC w kq - 0 1\n\n"
+                  "wazir = w:s\nhorse = m:h\ncustomPiece1 = j:NB2RmpRcpR\ncustomPiece2 = x:B2\ncustomPiece3 = o:fsW\ncustomPiece4 = s:K\ncustomPiece5 = l:mRimpRcpR\n\n"
                   "king = k\nqueen = q\nrook = r\nbishop = b\nknight = n\npawn= p\n\n"
-                  "pawnTypes = po\npromotionPawnTypesWhite = o\npromotionPawnTypesBlack = p\npromotionPieceTypesBlack = nbrq\npromotionPieceTypesWhite = m\npromotionRegionWhite = *9 *8 *7\npromotionRegionBlack = *1\n\n"
-                  "castling = true\ncastlingKingsideFile = g\ncastlingQueensideFile = c\ncastlingKingFile = e\ncastlingRookKingsideFile = i\ncastlingRookQueensideFile = a\n"
-                  "checking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\ndoubleStepRegionWhite = *4\nextinctionPieceTypes = Sk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\n;stalemateValue = loss\n\n"
+                  "pawnTypes = po\npromotionPawnTypesWhite = o\npromotionPawnTypesBlack = p\npromotionPieceTypesBlack = nbrq\npromotionPieceTypesWhite = j\npromotionRegionWhite = *9 *8 *7\npromotionRegionBlack = *1\n\n"
+                  "castling = true\ncastlingKingsideFile = g\ncastlingQueensideFile = c\ncastlingKingFile = e\ncastlingRookKingsideFile = i\ncastlingRookQueensideFile = a\nchecking = true\ndoubleStep = true\ndoubleStepRegionBlack = *8\ndoubleStepRegionWhite = *4\n"
+                  "extinctionPieceTypes = Wk\nextinctionValue = loss\nextinctionPseudoRoyal = true\nflyingGeneral = true\n;stalemateValue = loss\n\n"
                   "mobilityRegionWhiteWazir = d1 e1 f1 d2 e2 f2 d3 e3 f3\n\npieceToCharTable = PNBRQ..Spnbrq..kAaEe..OoCc..")
 
 
@@ -158,25 +194,14 @@ def init_setting():
         const_name = key.upper()  # 对应的变量名改为全大写
         try:  # 两处可能引发ValueError
             if value[2](value[0](cf["BingGo"][key])):  # 键存在，且值合法，则设为读取的值
-                globals()[const_name] = value[0](cf["BingGo"][key])  # 黑魔法：设置一个以const_name为变量名的，以value[0]为类型，以cf["BingGo"][key]为值的变量
+                globals()[const_name] = value[0](cf["BingGo"][key])  # 设置一个以const_name为变量名的，以value[0]为类型，以cf["BingGo"][key]为值的变量
             else:  raise ValueError
         except (KeyError, ValueError):  # 键不存在，或者值不是合理的类型，或者值非法，则设为默认值
-            globals()[const_name] = value[1]  # 黑魔法：设置一个以const_name为变量名的，以value[1]为值的变量
+            globals()[const_name] = value[1]  # 设置一个以const_name为变量名的，以value[1]为值的变量
             print(f"{key} is not valid, set to default value {value[1]}.")  # 显示错误信息
-
     # >>> print(AI_DEPTH)  # output: 8
 
-    # INIT_LINEUP = read_preference("init_lineup")[1:]  # 去掉起始的“|”
-    #
-    # IMG_STYLE_INTL = {"intl": True, "chn": False}[read_preference("img_style").lower()]
-    # QUICK_CMD_ON   = {"on": 1, "off": 0}[read_preference("quick_cmd_on").lower()]
-    # SAVE_WHEN_QUIT = {"on": True, "off": False}[read_preference("save_when_quit").lower()]
-    #
-    # AI_DEPTH      = check_int  ("ai_depth", 2, 12, 5)
-    # PROMOTION_DIS = check_int  ("promotion_dis", 1, 3, 2)
-    # SCREEN_SCALE  = check_float("screen_scale", 0.25, 10, 1)
-
-    # 检查zvgv3.ini文件是否存在，不存在则创建
+    # 检查rule.ini文件是否存在，不存在则创建
     try:
         with open(file="latest.ini", mode='r', newline='', encoding='utf-8'):
             pass
@@ -184,9 +209,13 @@ def init_setting():
         cf.read('latest.ini')  # 读取 INI 文件
         _ = cf["zhongxiang_vs_guoxiang"]
     except (KeyError, FileNotFoundError, configparser.ParsingError):
-        reset_zvgv3()
+        reset_rule()
+
+    # 修改rule.ini中的FEN
+    edit_rule("startFen", f"{lineup_to_fen(INIT_LINEUP)} {'b' if ACTIVE_CAMP.lower() == 'intl' else 'w'} kq - 0 1")
+
 
 init_setting()
 
 # DEBUG
-AI_DEPTH = 8  # 这是用来让dep超过限制的范围的
+# AI_DEPTH = 8  # 这是用来让dep超过限制的范围的

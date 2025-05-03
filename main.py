@@ -4,7 +4,7 @@
 @Github  : windbell0711/BingGo
 @License : Apache 2.0
 @File    : main.py
-"""  # TODO: 删除注释
+"""
 import config
 
 debug = True

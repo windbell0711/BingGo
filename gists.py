@@ -12,10 +12,8 @@ import time
 import config
 
 # 配置参数
-GIST_ID = config.BA_GISTS_ID
-ACCESS_TOKEN = config.BA_GISTS_ACCESS
-# GIST_ID = "qf23o6y0mx5d81slgjwrt89" TODO: 删除
-# ACCESS_TOKEN = "3b7c9e0cf38d558f2abe4bdaefa1d8f8"
+GIST_ID = config.B_GISTS_ID
+ACCESS_TOKEN = config.B_GISTS_ACCESS
 FILENAME = "gistfile1.txt"  # 代码片段文件名
 API_URL = f"https://gitee.com/api/v5/gists/{GIST_ID}"
 

@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="添加自动安装pyffish（真的）">
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="update">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FSF.py" beforeDir="false" afterPath="$PROJECT_DIR$/FSF.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gists.py" beforeDir="false" afterPath="$PROJECT_DIR$/gists.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/latest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/latest.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setting.ini" beforeDir="false" afterPath="$PROJECT_DIR$/setting.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
     </list>
     <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="" />
     <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
@@ -45,7 +50,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/windbell0711/BingGo&quot;,
-    &quot;accountId&quot;: &quot;e6c225ee-1707-4591-a478-3a8dcd231e2a&quot;
+    &quot;accountId&quot;: &quot;b2803e96-e6d2-4ee0-9234-a19e277e60db&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -71,6 +76,7 @@
     &quot;Python.history.executor&quot;: &quot;Run&quot;,
     &quot;Python.intelligence.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scratch_4.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -116,29 +122,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="config" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="BingGo" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/config.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="gists" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="BingGo" />
       <option name="ENV_FILES" value="" />
@@ -231,13 +214,36 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch_4" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BingGo" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_4.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.scratch_4" />
         <item itemvalue="Python.intelligence" />
         <item itemvalue="Python.history" />
         <item itemvalue="Python.gists" />
-        <item itemvalue="Python.config" />
       </list>
     </recent_temporary>
   </component>
@@ -297,6 +303,8 @@
       <workItem from="1745581375983" duration="661000" />
       <workItem from="1745837692380" duration="322000" />
       <workItem from="1746092129339" duration="1252000" />
+      <workItem from="1746266893468" duration="7350000" />
+      <workItem from="1746237537361" duration="2375000" />
     </task>
     <task id="LOCAL-00001" summary="删除不使用的库引用">
       <option name="closed" value="true" />
@@ -496,7 +504,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/display.py</url>
-          <line>841</line>
+          <line>854</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
@@ -504,9 +512,10 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BingGo$intelligence6_pyx.coverage" NAME="intelligence6.pyx Coverage Results" MODIFIED="1740827274146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$scratch_4.coverage" NAME="scratch_4 Coverage Results" MODIFIED="1746237177212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/BingGo$gists.coverage" NAME="gists Coverage Results" MODIFIED="1745490766336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$history.coverage" NAME="history Coverage Results" MODIFIED="1745500606814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1746108571581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1746281298420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display 覆盖结果" MODIFIED="1743086530603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$intelligence.coverage" NAME="intelligence Coverage Results" MODIFIED="1744374651570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$config.coverage" NAME="config Coverage Results" MODIFIED="1744541697914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

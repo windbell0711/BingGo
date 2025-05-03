@@ -27,7 +27,7 @@ import config
 
 class War:
     def __init__(self, display, args: Tuple):
-        self.mycamp_intl = False
+        self.mycamp_intl = {'chn': False, 'intl': True}[config.ACTIVE_CAMP.lower()]
         self.display = display
         self.beach = Beach()
         for p in range(90):  # 初始化，注意此处只是和self.display按照一样的规则设置了棋盘，其beach和qizi的地址都不一样，所以无法通过idt或地址交流

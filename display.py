@@ -519,9 +519,9 @@ class WarScreen(FloatLayout):
                     shuai = 0
                     king = 0
                     for i in self.beach:
-                        if i != None and i.typ == 6:
+                        if i is not None and i.typ == 6:
                             shuai += 1
-                        elif i != None and i.typ == 12:
+                        elif i is not None and i.typ == 12:
                             king += 1
                     if king != 1 or shuai != 1:
                         logging.error('不正确的王或帅数量')
@@ -532,6 +532,19 @@ class WarScreen(FloatLayout):
                     self.remove_widget(self.cr_image)
                     for i in self.create_p:
                         self.remove_widget(i)
+
+                    # 将当前局面写进setting.ini并重启游戏
+                    lineup = "|"
+                    peach = self.war.beach.to_int()
+                    for p in range(90):
+                        if p % 10 == 9:
+                            lineup += "|"
+                        elif peach[p] is None:
+                            lineup += " "
+                        else:
+                            lineup += config.typ_num2str[peach[p]][0]
+                    print(lineup)
+                    config.edit_setting("init_lineup", lineup)
 
                 elif 1220 < x < 1576 and 228 < y < 1108:
                     self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
@@ -887,10 +900,10 @@ class WarScreen(FloatLayout):
         # 更改zvgv3设置
         elif cmd in ("set_zvgv3", "更改zvgv3设置", "棋类设置"):
             if len(args) != 2:  return f"!参数个数错误({len(args)}/{2})"  # 控制参数个数
-            config.edit_zvgv3(key=args[0], value=args[1])
+            config.edit_rule(key=args[0], value=args[1])
         # 重置zvgv3设置
         elif cmd in ("reset_zvgv3", "重置zvgv3设置", "重置棋类设置"):
-            config.reset_zvgv3()
+            config.reset_rule()
             return "已重置zvgv3设置"
         # 显示帮助
         elif cmd in ("help", "帮助", "芝士什么"):
