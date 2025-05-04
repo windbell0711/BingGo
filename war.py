@@ -129,6 +129,8 @@ class War:
         #     return
         if self.ai.is_checkmate():
             self.is_checkmate = True
+        else:
+            self.is_checkmate = False
         if self.is_checkmate:
             logging.warning("!游戏已结束")
             return
@@ -154,6 +156,7 @@ class War:
         # self.main(p=pt)
 
     def regret(self):
+        self.is_checkmate = False
         self.turn -= 1  # 先上一回合再操作
         ms = [self.reverse_operation(m) for m in reversed(self.logs[self.turn])]
         self.conduct_operations(ms)

@@ -68,13 +68,15 @@ typ_str2fsf = {
     "Q": "q",
     "K": "k",
     "P": "p",
-    "c": "C",
+    "c": "R",
     "x": "X",
     "s": "S",
     "m": "M",
     "p": "L",
     "b": "O",
-    "w": "W"
+    "w": "W",
+    "j": "J"
+
 }
 ALL_PIECE_TYPES = 'jcmxspwbRNBQKP'
 
@@ -152,6 +154,7 @@ def reset_setting() -> None:
         cfr.set("BingGo", k, str(v[1]))
     with open("setting.ini", mode='w', newline='', encoding='utf-8') as fr:
         cfr.write(fr)
+    edit_setting('startFen', ' rnbk1qnbr/pppp1pppp/9/9/9/O1OOOOO1O/1C5C1/9/RHEASAEHR w kq - 0 1', 'latest.ini', 'zhongxiang_vs_guoxiang')
 
 def edit_rule(key: str, value: str) -> None:
     """rule.ini中添加或覆盖"""
