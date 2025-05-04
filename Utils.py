@@ -15,7 +15,7 @@ import os
 import sys
 import warnings
 import random
-from typing import Any
+from typing import Any, List
 
 import pyffish
 
@@ -48,13 +48,15 @@ def pos2uci(l: str) -> str:
             if ii[0] == 0:
                 pf, pt = ii[1], ii[2]
             elif ii[0] == 1:
-                pro = 'm' if ii[1] == 0 else 'q'
+                pro = 'j' if ii[1] == 0 else 'q'
+            elif ii[0] == 4:
+                return posl(i[0][1]) + posl(i[0][2])
         if pf == -1:  raise ValueError(str(ii) + "无移动操作")
         r += posl(pf) + posl(pt) + pro
     return r
 
 
-def uci2pos(b: list[bool], s: str) -> list:
+def uci2pos(b: List[bool], s: str) -> list:
     beach = b
     ret = []
     li = s.split(' ')
@@ -62,18 +64,18 @@ def uci2pos(b: list[bool], s: str) -> list:
         a = []
         pf, pt = pos(i[0:2]), pos(i[2:4])
         if beach[pt] == True:
-            a.append([2, pt, pt])  #sha
-        a.append([0, pf, pt])  #yi
+            a.append([2, pt, pt])  # sha
+        a.append([0, pf, pt])  # yi
         if i[-1] == 'm' or i[-1] == 'q':
-            a.append([2, pt, pt])  #sheng
-            a.append([1, 11 if i[-1] == 'q' else 0, pt])  #sheng
+            a.append([2, pt, pt])  # sheng
+            a.append([1, 11 if i[-1] == 'q' else 0, pt])  # sheng
         beach[pf] = False
         beach[pt] = True
         ret.append(a)
     return ret
 
 
-def ucis_to_poses(beach, ms: list[str]):
+def ucis_to_poses(beach, ms: List[str]):
     moves = []
     beach1 = copy.deepcopy(beach.beach)
     for m in ms:

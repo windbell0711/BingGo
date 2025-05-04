@@ -15,7 +15,7 @@ def format_to_str(l: list) -> str:
     s = ""
     for i in l:
         for ii in i:
-            s += f"{ii[0]},{ii[1]},{ii[2]};"
+            s += f"{ii[0]}.{ii[1]}.{ii[2]}/"
         s += "|"
     return s[:-1]
 
@@ -27,12 +27,11 @@ def restore_to_list(s: str) -> list:
     l = []
     for i in s.split("|"):
         l.append([])
-        for ii in i.split(";"):
+        for ii in i.split("/"):
             if ii != "":
-                l[-1].append(tuple(map(int, ii.split(","))))
+                l[-1].append(tuple(map(int, ii.split("."))))
     return l
 
 if __name__ == '__main__':
     print(format_to_str([[(1, 2, 3), (4, 5, 6)], [(7, 8, 9), (10, 11, 12)]]))
-    print(restore_to_list("1,2,3;4,5,6|7,8,9;10,11,12"))
     print(format_to_str([[(0, 56, 46)]]))

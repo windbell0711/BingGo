@@ -293,7 +293,8 @@ class WarScreen(FloatLayout):
                 l = history.restore_to_list(f.read())
                 self.war.logs = l
                 self.war.ai.lasts = [Utils.pos2uci(str(l)[1:-1])[i:i + 4] for i in
-                                     range(0, len(Utils.pos2uci(str(l)[1:-1])), 4)]
+                                     range(len(Utils.pos2uci(str(l)[1:-1])), -1, -4)]
+                self.war.ai.io.moves = []
             logging.info("已载入")
         except:
             logging.error("载入失败")
@@ -409,7 +410,12 @@ class WarScreen(FloatLayout):
             def _ai_ui_operation(dt):
                 result = task.result()
                 if result is not None and not self.war.is_checkmate:  # 新增有效性检查
-                    self.war.main(result)
+                    # print(self.beach)
+                    # print("result\t", result)
+                    if self.war.mycamp_intl and self.beach[result] and self.beach[result].typ == 8:
+                        self.war.main(result, castle=True)
+                    else:
+                        self.war.main(result)
                 self.remove_widget(self.jiazai)
             self.war.move_allowed = True
             Clock.schedule_once(_ai_ui_operation)
@@ -749,8 +755,11 @@ class WarScreen(FloatLayout):
     def flip(self):
         # 更新翻转状态
         self.flipped = not self.flipped
-        # 将self.board_img上下翻转  TODO
-        self.board_img.texture.flip_vertical()
+        # 将self.board_img上下翻转
+        if self.flipped and config.IMG_STYLE == 'chn':
+            self.board_img.source = self.get_img("flip_board")
+        else:
+            self.board_img.source = self.get_img("board")
         # 棋子全部更新位置
         cnt = 0
         for i in self.imgs:
@@ -785,8 +794,10 @@ class WarScreen(FloatLayout):
             self.flip()
         # Ctrl + C
         elif 'ctrl' in modifier and key == 99:
-            logging.info("load：" + history.format_to_str(self.war.logs))
-            Clipboard.copy("load：" + history.format_to_str(self.war.logs))
+            outp = (f"set：init_lineup，{config.INIT_LINEUP}；"
+                    f"load：{history.format_to_str(self.war.logs)}")
+            logging.info(outp)
+            Clipboard.copy(outp)
         # # Ctrl + V
         # elif 'ctrl' in modifier and key == 118:
         #     p = Clipboard.paste().strip().replace("\n", "")
@@ -852,14 +863,19 @@ class WarScreen(FloatLayout):
                 self.load()
             elif len(args) == 1:
                 try:
+                    # l = history.restore_to_list(args[0])
+                    # self.restart()
+                    # self.war.logs = l TODO
                     l = history.restore_to_list(args[0])
-                    self.restart()
                     self.war.logs = l
+                    self.war.ai.lasts = [Utils.pos2uci(str(l)[1:-1])[i:i + 4] for i in
+                                         range(0, len(Utils.pos2uci(str(l)[1:-1])), 4)]
+                    self.war.ai.lasts.reverse()
                     return "已载入布局"
                 except:
                     return "!棋谱不合法: " + args[0]
             else:
-                return f"!参数个数错误({len(args)}/1or2)"
+                return f"!参数个数错误({len(args)}/0or1)"
         # 清理
         elif cmd in ("clean", "清理"):
             if os.path.exists("autosave"):  # 删除autosave文件夹及其中所有文件
@@ -881,6 +897,9 @@ class WarScreen(FloatLayout):
             if not (args[0].strip().isdigit() and 0 < int(args[0]) < 10001):  return "!参数无效哦: " + str(args[0])  # 1ms<参数<=10001ms
             time.sleep(int(args[0]) / 1000)
             return f"已装死{args[0]}ms"
+        elif cmd in ("restart", "重启"):
+            self.restart()
+            return "已重启"
         elif cmd in ("error", "报错"):
             logging.info("用户要求报错。")
             raise Exception("用户报错")

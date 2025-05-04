@@ -4,15 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="lilold fixed final two bugs">
+    <list default="true" id="a40d2793-e603-4314-b983-127a8200e2f8" name="Changes" comment="lilold fixed more bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gists.py" beforeDir="false" afterPath="$PROJECT_DIR$/gists.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/history.py" beforeDir="false" afterPath="$PROJECT_DIR$/history.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/latest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/latest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save.bg" beforeDir="false" afterPath="$PROJECT_DIR$/save.bg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setting.ini" beforeDir="false" afterPath="$PROJECT_DIR$/setting.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/war.py" beforeDir="false" afterPath="$PROJECT_DIR$/war.py" afterDir="false" />
     </list>
     <list id="3cc8ff53-0200-47be-908b-94d9808463c5" name="admin 进行的更改" comment="" />
     <list id="0b9e6a71-18e8-4077-b433-95c0b784ab5f" name="jiaqi 进行的更改" comment="" />
@@ -79,7 +79,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/Jetbrains/PycharmProjects/BingGo/imgs/chn&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -105,11 +105,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs\chn" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
       <recent name="T:\Python\BingGo\BingGo" />
       <recent name="C:\Users\admin\AppData\Roaming\JetBrains\PyCharmCE2023.2\scratches" />
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\imgs" />
-      <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo\img_readme" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\Jetbrains\PycharmProjects\BingGo" />
@@ -303,7 +303,8 @@
       <workItem from="1746092129339" duration="1252000" />
       <workItem from="1746266893468" duration="7350000" />
       <workItem from="1746237537361" duration="5657000" />
-      <workItem from="1746345799275" duration="4622000" />
+      <workItem from="1746345799275" duration="14436000" />
+      <workItem from="1746366384756" duration="1473000" />
     </task>
     <task id="LOCAL-00001" summary="删除不使用的库引用">
       <option name="closed" value="true" />
@@ -449,7 +450,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746281674056</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="lilold fixed more bugs">
+      <option name="closed" value="true" />
+      <created>1746350974752</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1746350974752</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -504,19 +513,15 @@
     <MESSAGE value="update 保存导出" />
     <MESSAGE value="bugs' boss defeated" />
     <MESSAGE value="lilold fixed final two bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="lilold fixed final two bugs" />
+    <MESSAGE value="lilold fixed more bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="lilold fixed more bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/display.py</url>
-          <line>856</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/display.py</url>
-          <line>550</line>
+          <line>556</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
@@ -527,7 +532,7 @@
     <SUITE FILE_PATH="coverage/BingGo$scratch_4.coverage" NAME="scratch_4 Coverage Results" MODIFIED="1746237177212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/BingGo$gists.coverage" NAME="gists Coverage Results" MODIFIED="1745490766336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$history.coverage" NAME="history Coverage Results" MODIFIED="1745500606814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1746350495761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/BingGo$main.coverage" NAME="main Coverage Results" MODIFIED="1746362790132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$display.coverage" NAME="display Coverage Results" MODIFIED="1746282682744" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$intelligence.coverage" NAME="intelligence Coverage Results" MODIFIED="1744374651570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/BingGo$config.coverage" NAME="config Coverage Results" MODIFIED="1744541697914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

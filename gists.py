@@ -19,7 +19,6 @@ API_URL = f"https://gitee.com/api/v5/gists/{GIST_ID}"
 
 def get_message():
     """获取最新消息"""
-    # global last_content
     params = {"access_token": ACCESS_TOKEN}
     try:
         response = requests.get(API_URL, params=params)
@@ -54,12 +53,16 @@ def update_message(new_msg):
 
 def receive(username: str) -> str:
     """接收消息"""
+    cnt = 0
     while True:
         msg = get_message()
-        time.sleep(5)  # 每隔5秒检查一次消息，不可太快，有api访问限制
         if msg and not msg.startswith(username + ":"):
             print(f"\n[对方] {msg}")
             return msg
+        if cnt > 5:
+            time.sleep(10)  # 每隔10秒检查一次消息，不可太快，有api访问限制
+        time.sleep(2.5)  # 前5次快一些检查
+        cnt += 1
 
 def send(username: str, msg: str):
     """发送消息"""
