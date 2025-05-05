@@ -1,4 +1,5 @@
 # BingGo
+# 该部分长时间未维护，请注意甄别。
 <p align="right">
   <a href="https://github.com/windbelljianjie0711/BingGo/README.md">中文</a> · 
   <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">TECH</a>

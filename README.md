@@ -1,10 +1,11 @@
 # BingGo
-# 别看了，文档几百年没修了
 <p align="right">
   <a href="https://github.com/windbelljianjie0711/BingGo/README_en.md">EN</a> · 
   <a href="https://github.com/windbelljianjie0711/BingGo/README_tech.md">技术文档</a>
 </p>
 挺兵！将中国象棋和国际象棋的玩法结合，9×9的棋局中，中象与国象两军对垒。一同见证这场世界交融的战斗、文化交融的盛宴！
+
+**请注意，该文档暂未全部更新完成，请自行甄别！**
 
 [![](https://img.shields.io/badge/python-3.7.5+-purple)](https://www.python.org)
 [![](https://img.shields.io/badge/issues-0-blue)](https://github.com/windbell0711/BingGo/issues)
@@ -33,6 +34,9 @@
 <p align="center">
   <img src="./img_readme/img1.png" alt="img1">
 </p>
+
+---
+**请注意，该文档暂未全部更新完成，请自行甄别！**
 
 ## 目录
 - [规则介绍](#规则介绍)

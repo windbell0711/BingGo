@@ -1,5 +1,5 @@
 # 技术文档
-
+# 该部分长时间未维护，请注意甄别。
 
 ## Objects and Functions (need updating)
 ```
