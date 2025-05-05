@@ -66,7 +66,7 @@ def uci2pos(b: List[bool], s: str) -> list:
         if beach[pt] == True:
             a.append([2, pt, pt])  # sha
         a.append([0, pf, pt])  # yi
-        if i[-1] == 'm' or i[-1] == 'q':
+        if i[-1] == 'j' or i[-1] == 'q':
             a.append([2, pt, pt])  # sheng
             a.append([1, 11 if i[-1] == 'q' else 0, pt])  # sheng
         beach[pf] = False

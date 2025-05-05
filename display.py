@@ -554,7 +554,8 @@ class WarScreen(FloatLayout):
                     # config.edit_setting('startFen',config.lineup_to_fen(lineup),'rule.ini','zhongxiang_vs_guoxiang')
                     print(config.lineup_to_fen(lineup))  # TODO
 
-                    Clock.schedule_once(lambda dt: self.restart(), 0.2)
+                    # Clock.schedule_once(lambda dt: self.restart(), 0.2)
+                    Clock.schedule_once(lambda dt: App.get_running_app().stop())  # 强制退出
 
                 elif 1220 < x < 1576 and 228 < y < 1108:
                     self.create_p[self.c_typ].size = ('%ddp' % (55 * S), '%ddp' % (55 * S))
