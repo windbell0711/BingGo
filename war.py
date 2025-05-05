@@ -66,11 +66,13 @@ class War:
         moves = []
         if castle:
             if p == 0:
-                moves.append((4, 0, 2))  # 4: castle
-                moves.append((4, 3, 1))
+                moves.append((4, 3, 2))
+                moves.append((4, 0, 3))  # 4: castle
+                self.ai.io.moves.append('d9a9')
             elif p == 8:
-                moves.append((4, 8, 4))
-                moves.append((4, 3, 5))
+                moves.append((4, 8, 5))
+                moves.append((4, 3, 6))
+                self.ai.io.moves.append('d9g9')
             else:
                 raise ValueError("!Wrong p when castling. Received p: " + str(p))
         else:
@@ -93,7 +95,9 @@ class War:
             b = lst[mid]
             return a[1] == b[2] and a[2] == b[1]
 
-        self.ai.io.moves.append(pos2uci(str(moves)))
+        if not castle:
+            print((pos2uci(str(moves))))
+            self.ai.io.moves.append(pos2uci(str(moves)))
         self.display.remove_path()
         # self.display.show_path()
         self.conduct_operations(opers=moves)
@@ -193,15 +197,15 @@ class War:
                     self.active_qizi.p == 3 and
                     self.beach[p].typ == 8 and
                     not self.ai.is_checkmate() and
-                    ((p == 0 and self.beach[1] == self.beach[2] is None) or
-                     (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None))):
+                    ((p == 0 and self.beach[1] == self.beach[2] is None and 'd9a9' in self.ai.get_possible_moves_piece('d9')) or
+                     (p == 8 and self.beach[4] == self.beach[5] == self.beach[6] == self.beach[7] is None and 'd9g9' in self.ai.get_possible_moves_piece('d9')))):
                 moves = self.main(p=p, castle=True)
             # 重选棋子
             else:
                 self.active_qizi = self.beach[p]
         # 点选位置self.active_qizi能走到
         elif self.active_qizi is not None and p in Utils.ucis_to_poses(self.beach, self.ai.get_possible_moves_piece(
-                Utils.posl(self.active_qizi.p))):
+                Utils.posl(self.active_qizi.p))) and not( self.active_qizi.p == 3 and p == 6 and self.active_qizi.typ == 12):
             moves = self.main(p=p)
         else:
             logging.info("无法抵达或无法选中\t" + str(p))

@@ -224,6 +224,8 @@ class WarScreen(FloatLayout):
             '%ddp' % ((65 + config.ACTIVE_QIZI_DELTA_SCALE) * S), '%ddp' % ((65 + config.ACTIVE_QIZI_DELTA_SCALE) * S))
         from_pos = Utils.posl(self.war.active_qizi.p)
         for p in [Utils.pos(m[2:]) for m in self.war.ai.get_possible_moves_piece(from_pos)]:
+            if p == 6 and 'd9g9' in self.war.ai.get_possible_moves_piece(from_pos):
+                p = 8
             if self.beach.occupied(p):
                 if config.IMG_STYLE == 'intl':
                     idt = self.beach[p].idt
