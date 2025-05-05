@@ -294,8 +294,7 @@ class WarScreen(FloatLayout):
             with open(file=os.getcwd() + "\\" + file_name, mode='r', encoding='utf-8') as f:
                 l = history.restore_to_list(f.read())
             self.war.logs = l
-            self.war.ai.lasts = [Utils.pos2uci(str(l)[1:-1])[i:i + 4] for i in
-                                 range(0, len(Utils.pos2uci(str(l)[1:-1])), 4)]
+            self.war.ai.lasts = [Utils.pos2uci(str(i)) for i in l]
             self.war.ai.lasts.reverse()
             self.war.ai.io.moves = []
             logging.info("已载入")
