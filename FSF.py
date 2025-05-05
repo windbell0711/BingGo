@@ -23,7 +23,7 @@ class FSF:
 
         self.io = Utils.EngineIO()
         cores = os.cpu_count()
-        self.io.init_engine("fairy-stockfish-largeboards_x86-64-bmi2-latest.exe", {"Threads": cores, "Hash": cores*8}, config="latest.ini", variant="zhongxiang_vs_guoxiang")
+        self.io.init_engine("fairy-stockfish-largeboards_x86-64-bmi2-latest.exe", {"Threads": cores, "Hash": cores*8}, config="rule.ini", variant="zhongxiang_vs_guoxiang")
         self.io.init_game()
         self.io.engine.go(depth=1)  # 快速获取当前状态
         self.lasts = []

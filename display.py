@@ -551,7 +551,7 @@ class WarScreen(FloatLayout):
                             lineup += config.typ_num2str[peach[p]][0]
                     print(lineup)
                     config.edit_setting("init_lineup", lineup)
-                    # config.edit_setting('startFen',config.lineup_to_fen(lineup),'latest.ini','zhongxiang_vs_guoxiang')
+                    # config.edit_setting('startFen',config.lineup_to_fen(lineup),'rule.ini','zhongxiang_vs_guoxiang')
                     print(config.lineup_to_fen(lineup))  # TODO
 
                     Clock.schedule_once(lambda dt: self.restart(), 0.2)

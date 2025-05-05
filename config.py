@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Any, List, Tuple
 import configparser
 
-VERSION = '(pre-release) alpha-1.2.0'
+VERSION = '(pre-release) beta-1.2.0'
 ACTIVE_QIZI_DELTA_SCALE = 5  # 原大小：65
 IMG_STYLE_DEFAULT = 'chn'
 typ_dict = {
@@ -154,22 +154,22 @@ def reset_setting() -> None:
         cfr.set("BingGo", k, str(v[1]))
     with open("setting.ini", mode='w', newline='', encoding='utf-8') as fr:
         cfr.write(fr)
-    edit_setting('startFen', ' rnbk1qnbr/pppp1pppp/9/9/9/O1OOOOO1O/1C5C1/9/RHEASAEHR w kq - 0 1', 'latest.ini', 'zhongxiang_vs_guoxiang')
+    # edit_setting('startFen', ' rnbk1qnbr/pppp1pppp/9/9/9/O1OOOOO1O/1C5C1/9/RHEASAEHR w kq - 0 1', 'rule.ini', 'zhongxiang_vs_guoxiang')
 
 def edit_rule(key: str, value: str) -> None:
     """rule.ini中添加或覆盖"""
-    edit_setting(key, value, "latest.ini", "zhongxiang_vs_guoxiang")
+    edit_setting(key, value, "rule.ini", "zhongxiang_vs_guoxiang")
     # cfex = configparser.ConfigParser()
-    # cfex.read("latest.ini")
+    # cfex.read("rule.ini")
     # if "zhongxiang_vs_guoxiang" not in cfex:
     #     cfex.add_section("zhongxiang_vs_guoxiang")
     # cfex.set("zhongxiang_vs_guoxiang", key, value)
-    # with open("latest.ini", mode='w', newline='', encoding='utf-8') as fex:
+    # with open("rule.ini", mode='w', newline='', encoding='utf-8') as fex:
     #     cfex.write(fex)
 
 def reset_rule() -> None:
     """恢复默认rule"""
-    with open("latest.ini", mode='w', newline='', encoding='utf-8') as frx:
+    with open("rule.ini", mode='w', newline='', encoding='utf-8') as frx:
         frx.write("[zhongxiang_vs_guoxiang]\nmaxRank = 9\nmaxFile = 9\nstartFen = rnbk1qnbr/pppp1pppp/9/9/9/OOO1O1OOO/1L5L1/9/CMXSWSXMC w kq - 0 1\n\n"
                   "wazir = w:s\nhorse = m:h\ncustomPiece1 = j:NB2RmpRcpR\ncustomPiece2 = x:B2\ncustomPiece3 = o:fsW\ncustomPiece4 = s:K\ncustomPiece5 = l:mRimpRcpR\n\n"
                   "king = k\nqueen = q\nrook = r\nbishop = b\nknight = n\npawn= p\n\n"
@@ -206,10 +206,10 @@ def init_setting():
 
     # 检查rule.ini文件是否存在，不存在则创建
     try:
-        with open(file="latest.ini", mode='r', newline='', encoding='utf-8'):
+        with open(file="rule.ini", mode='r', newline='', encoding='utf-8'):
             pass
         cf = configparser.ConfigParser()  # 配置解析器  https://blog.csdn.net/qq_36283274/article/details/145161987
-        cf.read('latest.ini')  # 读取 INI 文件
+        cf.read('rule.ini')  # 读取 INI 文件
         _ = cf["zhongxiang_vs_guoxiang"]
     except (KeyError, FileNotFoundError, configparser.ParsingError):
         reset_rule()
