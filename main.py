@@ -7,7 +7,7 @@
 """
 import config
 
-debug = False
+debug = True
 
 if not debug:
     try:

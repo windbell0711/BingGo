@@ -921,15 +921,18 @@ class WarScreen(FloatLayout):
         elif cmd in ("reset", "重置设置"):
             config.reset_setting()
             Clock.schedule_once(lambda dt: self.restart())
+            App.get_running_app().stop()
             return "已重置设置"
-        # 更改zvgv3设置
-        elif cmd in ("set_zvgv3", "更改zvgv3设置", "棋类设置"):
+        # 更改rule设置
+        elif cmd in ("set_rule", "更改规则"):
             if len(args) != 2:  return f"!参数个数错误({len(args)}/{2})"  # 控制参数个数
             config.edit_rule(key=args[0], value=args[1])
-        # 重置zvgv3设置
-        elif cmd in ("reset_zvgv3", "重置zvgv3设置", "重置棋类设置"):
+            return "更改重启后生效: " + args[0] + " 更改为 " + args[1]
+        # 重置rule设置
+        elif cmd in ("reset_rule", "重置规则"):
             config.reset_rule()
-            return "已重置zvgv3设置"
+            App.get_running_app().stop()
+            return "已重置rule规则"
         # 显示帮助
         elif cmd in ("help", "帮助", "芝士什么"):
             webbrowser.open("https://gitee.com/thewindbell07/BingGo/blob/master/README.md")
